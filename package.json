@@ -1,20 +1,28 @@
 {
-  "name": "amazone",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0"
-  }
+    "name": "amazone",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "dev": "vue-cli-service serve --host 0.0.0.0"
+    },
+    "dependencies": {
+        "autoprefixer": "^9.8.6",
+        "postcss": "^7.0.35",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.1",
+        "vue": "^3.0.0",
+        "vue-router": "^4.0.0-0",
+        "vuex": "^4.0.0-0"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-router": "~4.5.0",
+        "@vue/cli-plugin-vuex": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/compiler-sfc": "^3.0.0",
+        "eslint": "^7.15.0",
+        "eslint-config-prettier": "^7.0.0",
+        "eslint-plugin-vue": "^7.2.0",
+        "prettier": "2.2.1"
+    }
 }

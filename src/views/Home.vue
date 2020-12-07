@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <navBar></navBar>
+    <div>
+        <div>
+            <img
+                class="xl:w-full xl:z-0 xl:-mb-28 gradient"
+                src="../assets/banniere.jpg"
+                alt=""
+            />
+        </div>
+        <div><product></product></div>
+    </div>
 </template>
-
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import navBar from '../components/Header'
+import product from '../components/Product'
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+    components: {
+        navBar,
+        product,
+    },
 }
 </script>
+<style scoped>
+.gradient {
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+</style>
