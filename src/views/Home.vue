@@ -10,25 +10,9 @@
         </div>
         <div class="flex flex-col xl:flex xl:flex-row">
             <product
-                title="Iphone 12"
-                :price="1500"
-                description="Lorem Ipsum is simply dummy text of the printing ."
-                picture="iphone12.jpg"
-                :rating="3"
-            ></product>
-            <product
-                title="Imprimante Multifonction"
-                :price="1500"
-                description="Lorem Ipsum is simply dummy text of the printing."
-                picture="imprimate.jpg"
-                :rating="5"
-            ></product>
-            <product
-                title="Clavier mecanique"
-                :price="1500"
-                description="Lorem Ipsum is simply dummy text of the printing.."
-                picture="clavier.jpg"
-                :rating="1"
+                v-for="item in data.tab"
+                :key="item.id"
+                :product="item"
             ></product>
         </div>
     </div>
@@ -36,10 +20,19 @@
 <script>
 import navBar from '../components/Header'
 import product from '../components/Product'
+import { reactive, computed } from 'vue'
+import { useStore } from 'vuex'
 export default {
     components: {
         navBar,
         product,
+    },
+    setup() {
+        const store = useStore()
+        const data = reactive({
+            tab: computed(() => store.state.product.tab),
+        })
+        return { data }
     },
 }
 </script>

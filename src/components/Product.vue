@@ -1,37 +1,38 @@
 <template>
     <div class="m-1 flex-1 bg-white">
         <div class="px-2 xl:px-2 text-left">
-            <p class="font-bold text-xl">{{ title }}</p>
+            <p class="font-bold text-xl">{{ product.title }}</p>
             <p>
-                <small>$ </small><strong>{{ price }}</strong>
+                <small>$ </small><strong>{{ product.price }}</strong>
             </p>
-            <p class="py-2 text-sm">{{ description }}</p>
+            <p class="py-2 text-sm">{{ product.description }}</p>
             <div class="flex justify-center">
-                <p class="" v-for="n in rating">⭐</p>
+                <p class="" v-for="n in product.rating">⭐</p>
             </div>
             <img
                 class="xl:w-60 xl:h-60 mx-auto"
-                :src="require(`../assets/${picture}`)"
+                :src="require(`../assets/${product.picture}`)"
                 alt=""
             />
         </div>
         <div class="text-center mb-2">
-            <button class="font-semibold bg-yellow-500 w-36">
-                Add to cart
-            </button>
+            <button @click="add" class="btnOrange">Add to cart</button>
         </div>
     </div>
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { ref } from 'vue'
 export default {
-    name: 'product',
     props: {
-        title: String,
-        description: String,
-        price: Number,
-        picture: String,
-        rating: Number,
+        product: Object,
+    },
+    setup(props) {
+        const store = useStore()
+        const add = () => store.dispatch('product/addToCart', props.product)
+
+        return { add }
     },
 }
 </script>

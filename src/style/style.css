@@ -4,3 +4,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btnOrange {
+    @apply font-semibold bg-yellow-500 w-36;
+}
