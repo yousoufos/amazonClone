@@ -1,5 +1,6 @@
 <template>
     <navBar></navBar>
+    <button @click="test">test</button>
     <div class="max-w-screen-xl mx-auto bg-gray-100">
         <div class="hidden xl:flex">
             <img
@@ -20,7 +21,7 @@
 <script>
 import navBar from '../components/Header'
 import product from '../components/Product'
-import { reactive, computed } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
     components: {
@@ -29,10 +30,11 @@ export default {
     },
     setup() {
         const store = useStore()
+        const test = ref(() => store.dispatch('product/getProducts'))
         const data = reactive({
             tab: computed(() => store.state.product.tab),
         })
-        return { data }
+        return { data, test }
     },
 }
 </script>

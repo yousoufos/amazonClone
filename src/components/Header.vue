@@ -1,15 +1,15 @@
 <template>
-    <div class="flex bg-gray-700 xl:w-full">
-        <div class="hidden xl:flex xl:my-auto">
+    <div class="flex bg-gray-700 lg:w-full">
+        <div class="hidden px-2 w-1/5 lg:flex lg:my-auto">
             <router-link to="/">
-                <img src="../assets/logo.png" alt="" class="xl:w-36 xl:h-16" />
+                <img src="../assets/logo.png" alt="" class="lg:w-36 lg:h-16" />
             </router-link>
         </div>
-        <div class="flex w-4/5 py-3 xl:w-2/3 xl:py-3 xl:px-2">
+        <div class="flex py-3 w-2/5 lg:py-3 lg:px-2">
             <input
                 type="text"
                 placeholder="Rechercher sur Amazon"
-                class="ml-3 w-5/6 h-10 rounded-none xl:h-10 xl:w-full"
+                class="ml-3 w-5/6 h-10 rounded-none lg:h-10 lg:w-full"
             />
             <button class="mb-1">
                 <svg
@@ -26,30 +26,32 @@
                 </svg>
             </button>
         </div>
-        <div class="xl:flex xl:w-1/3 hidden xl:py-3">
-            <div class="flex flex-col xl:w-1/4 xl:ml-2 xl:text-sm">
-                <span class="text-white xl:font-thin">{{
+        <div class="lg:flex hidden w-2/5 lg:py-3 lg:justify-items-auto">
+            <div class="flex flex-col flex-grow lg:px-2 lg:text-sm">
+                <span class="text-white lg:font-thin">{{
                     user != null ? user.email : 'Hello Guest'
                 }}</span
                 ><router-link :to="user != null ? '/logout' : '/login'">
-                    <span class="text-white xl:font-medium">{{
-                        user != null ? 'LogOut' : 'SignIn'
+                    <span class="text-white lg:font-medium">{{
+                        user != null ? 'Logout' : 'SignIn'
                     }}</span>
                 </router-link>
             </div>
-            <div class="flex flex-col xl:w-1/4 xl:text-sm">
-                <span class="text-white xl:font-thin">Hello Guest</span
-                ><span class="text-white xl:font-medium">SignIn</span>
+            <div class="flex flex-col flex-grow lg:px-2 lg:text-sm">
+                <span class="text-white lg:font-thin">Hello Guest</span
+                ><router-link :to="{ name: 'Login' }">
+                    <span class="text-white lg:font-medium">SignIn</span>
+                </router-link>
             </div>
-            <div class="flex flex-col xl:w-1/4 xl:text-sm">
-                <span class="text-white xl:font-thin">Hello Guest</span
-                ><span class="text-white xl:font-medium">SignIn</span>
+            <div class="flex flex-col flex-grow lg:px-2 lg:text-sm">
+                <span class="text-white lg:font-thin">Hello Guest</span
+                ><span class="text-white lg:font-medium">SignIn</span>
             </div>
-            <div class="flex xl:px-2 xl:w-1/4">
+            <div class="flex lg:px-2">
                 <router-link to="/Checkout">
                     <button>
                         <svg
-                            class="xl:w-9 xl:h-9 text-white"
+                            class="lg:w-9 lg:h-9 text-white"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -60,12 +62,12 @@
                         </svg>
                     </button>
                 </router-link>
-                <span class="xl:py-2 xl:ml-2 text-white xl:font-semibold">{{
+                <span class="lg:py-2 lg:ml-2 text-white lg:font-semibold">{{
                     count
                 }}</span>
             </div>
         </div>
-        <div class="flex xl:hidden w-1/5 py-3">
+        <div class="flex lg:hidden flex-grow w-1/5 py-3">
             <router-link to="/Checkout">
                 <button>
                     <svg

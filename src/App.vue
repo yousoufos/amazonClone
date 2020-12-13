@@ -4,9 +4,8 @@
 <script>
 import { auth } from './firebase'
 export default {
-    created: function () {
+    mounted: function () {
         auth.onAuthStateChanged((authUser) => {
-            console.log(authUser)
             if (authUser) {
                 this.$store.state.auth.user = authUser
             } else {

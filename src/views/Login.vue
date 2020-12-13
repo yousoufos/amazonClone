@@ -97,6 +97,8 @@
 <script>
 import { useStore } from 'vuex'
 import { reactive } from 'vue'
+import store from '@/store'
+import { auth } from '../firebase'
 export default {
     setup() {
         const user = reactive({ email: '', password: '' })
@@ -108,7 +110,14 @@ export default {
         const login = function () {
             store.dispatch('auth/login', user)
         }
-        return { user, register }
+        return { user, register, login }
+    },
+    beforeRouteEnter(to, from, next) {
+        if (store.getters['auth/user']) {
+            next('/')
+        } else {
+            next()
+        }
     },
 }
 </script>
