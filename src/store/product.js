@@ -32,22 +32,27 @@ const state = () => ({
 // getters
 const getters = {
   total: function (state) {
-    return state.cart.reduce((a, b) => a + b.price, 0)
+    return state.cart.reduce((a, b) => a + b.price * b.qte, 0)
   }
 }
 
 // actions
 const actions = {
-  addToCart: function ({ commit }, payload) {
-    const product = {
-      id: payload.id,
-      title: payload.title,
-      description: payload.description,
-      price: payload.price,
-      picture: payload.picture,
-      rating: payload.rating
+  addToCart: function ({ commit, state }, payload) {
+    if (state.cart.findIndex((el) => el.id === payload.id) === -1) {
+      const product = {
+        id: payload.id,
+        title: payload.title,
+        description: payload.description,
+        price: payload.price,
+        picture: payload.picture,
+        rating: payload.rating,
+        qte: 1
+      }
+      commit('addToCart', product)
+    } else {
+      alert('Product already in cart')
     }
-    commit('addToCart', product)
   },
   removeFromCart: function ({ commit }, payload) {
     commit('removeFromCart', payload)

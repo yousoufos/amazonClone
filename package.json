@@ -8,7 +8,9 @@
         "dev": "vue-cli-service serve --host 0.0.0.0"
     },
     "dependencies": {
+        "@tailwindcss/forms": "^0.2.1",
         "autoprefixer": "^9.8.6",
+        "firebase": "^8.1.2",
         "postcss": "^7.0.35",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.1",
         "vue": "^3.0.0",

@@ -1,18 +1,20 @@
 <template>
     <navBar></navBar>
-    <div class="mt-10">
+    <div class="mt-10 px-4">
         <div class="flex">
-            <div class="w-2/3 ml-10">
-                <p class="mb-10 text-lg font-bold">Your Shopping Cart :</p>
+            <div class="w-2/3">
+                <p class="mb-10 py-3 text-2xl font-bold border-b-2">
+                    Your Shopping Cart :
+                </p>
                 <product
                     v-for="item in cart"
                     :key="item.id"
                     :product="item"
                 ></product>
             </div>
-            <div class="flex flex-col bg-gray-200 w-1/3 h-40 mr-10 ml-10">
+            <div class="flex flex-col bg-gray-200 w-1/3 h-40 ml-10">
                 <p class="p-10 text-lg font-semibold">
-                    Subtotal (0 items ) :
+                    Subtotal ({{ count }} items ) :
                     <span class="font-bold">{{ total }}</span>
                 </p>
                 <button class="font-semibold bg-yellow-500 w-1/2 mx-auto">
@@ -36,7 +38,8 @@ export default {
         const store = useStore()
         const cart = ref(computed(() => store.state.product.cart))
         const total = ref(computed(() => store.getters['product/total']))
-        return { cart, total }
+        const count = ref(computed(() => store.state.product.cart.length))
+        return { cart, total, count }
     },
 }
 </script>
