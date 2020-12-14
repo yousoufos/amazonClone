@@ -32,10 +32,10 @@ const actions = {
       })
       .catch((err) => alert(err))
   },
-  logout: function ({ commit, rootState }) {
+  logout: function ({ commit }) {
     auth.signOut()
     commit('setUser', null)
-    rootState.cart.cart = []
+    store.dispatch('cart/emptyCart')
     router
       .push('/')
       .then(() => {})

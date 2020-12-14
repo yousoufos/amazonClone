@@ -7,6 +7,7 @@
                     Your Shopping Cart :
                 </p>
                 <product
+                    @qteUpdated="update"
                     v-for="item in cart"
                     :key="item.productId"
                     :product="item"
@@ -40,7 +41,11 @@ export default {
         const cart = ref(computed(() => store.state.cart.cart))
         const total = ref(computed(() => store.getters['cart/total']))
         const count = ref(computed(() => store.state.cart.cart.length))
-        return { cart, total, count }
+        const update = ref((qte) => {
+            store.dispatch('cart/updateQuantity', total.value)
+            console.log(qte)
+        })
+        return { cart, total, count, update }
     },
     beforeRouteEnter(to, from, next) {
         store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)

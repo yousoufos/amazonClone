@@ -51,10 +51,12 @@ const actions = {
       console.log(error)
     }
   },
-  addToCart: async function ({ commit, state, rootState }, payload) {
+  addToCart: async function ({ commit, state, rootState, getters }, payload) {
     if (rootState.auth.user) {
       if (
-        state.cart.findIndex((el) => el.id === payload.productId) === -1
+        state.cart.findIndex(
+          (el) => el.productId === payload.productId
+        ) === -1
       ) {
         const product = {
           productId: payload.productId,
@@ -63,8 +65,9 @@ const actions = {
           price: payload.price,
           picture: payload.picture,
           rating: payload.rating,
-          qte: payload.qte
+          qte: 1
         }
+        commit('addToCart', product)
         await db
           .collection('users')
           .doc(rootState.auth.user.uid)
@@ -77,9 +80,8 @@ const actions = {
           .collection('users')
           .doc(rootState.auth.user.uid)
           .update({
-            total: getters.total
+            'cart.total': getters.total
           })
-        // commit('addToCart', product)
       } else {
         alert('Product already in cart')
       }
@@ -87,8 +89,21 @@ const actions = {
       router.push('/login')
     }
   },
-  removeFromCart: function ({ commit }, payload) {
+  removeFromCart: function ({ commit, getters }, payload) {
     commit('removeFromCart', payload)
+  },
+  emptyCart: function ({ commit }) {
+    commit('emptyCart')
+  },
+  updateQuantity: async function ({ commit, rootState }, payload) {
+    console.log(payload)
+    try {
+      await db.collection('users').doc(rootState.auth.user.uid).update({
+        'cart.total': payload
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

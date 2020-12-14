@@ -23,6 +23,7 @@
                 <div class="">
                     <label class="px-2" for="">Quantity:</label>
                     <input
+                        @change="update"
                         v-model="product.qte"
                         class="w-14 h-9 font-bold"
                         type="number"
@@ -41,12 +42,15 @@ export default {
     props: {
         product: Object,
     },
-    setup() {
+    setup(props, { emit }) {
         const store = useStore()
         const remove = (productId) => {
             store.dispatch('cart/removeFromCart', productId)
         }
-        return { remove }
+        const update = ref(() => {
+            emit('qteUpdated', props.product.qte)
+        })
+        return { remove, update }
     },
 }
 </script>
