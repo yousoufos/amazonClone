@@ -112,13 +112,6 @@ export default {
         }
         return { user, register, login }
     },
-    beforeRouteEnter(to, from, next) {
-        if (store.getters['auth/user']) {
-            next('/')
-        } else {
-            next()
-        }
-    },
 }
 </script>
 

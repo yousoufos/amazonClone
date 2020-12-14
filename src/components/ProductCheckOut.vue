@@ -14,7 +14,7 @@
             <div class="flex">
                 <p class="mb-2" v-for="n in product.rating">⭐</p>
             </div>
-            <button @click="remove(product.id)" class="btnOrange">
+            <button @click="remove(product.productId)" class="btnOrange">
                 Remove from cart
             </button>
         </div>
@@ -43,8 +43,8 @@ export default {
     },
     setup() {
         const store = useStore()
-        const remove = (id) => {
-            store.dispatch('product/removeFromCart', id)
+        const remove = (productId) => {
+            store.dispatch('cart/removeFromCart', productId)
         }
         return { remove }
     },

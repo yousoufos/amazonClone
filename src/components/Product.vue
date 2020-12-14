@@ -30,7 +30,7 @@ export default {
     },
     setup(props) {
         const store = useStore()
-        const add = () => store.dispatch('product/addToCart', props.product)
+        const add = () => store.dispatch('cart/addToCart', props.product)
 
         return { add }
     },

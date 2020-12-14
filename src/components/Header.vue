@@ -96,7 +96,7 @@ export default {
     name: 'navBar',
     setup() {
         const store = useStore()
-        const count = ref(computed(() => store.state.product.cart.length))
+        const count = ref(computed(() => store.state.cart.cart.length))
         const user = ref(computed(() => store.state.auth.user))
         return { count, user }
     },

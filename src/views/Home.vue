@@ -1,6 +1,5 @@
 <template>
     <navBar></navBar>
-    <button @click="test">test</button>
     <div class="max-w-screen-xl mx-auto bg-gray-100">
         <div class="hidden xl:flex">
             <img
@@ -23,6 +22,7 @@ import navBar from '../components/Header'
 import product from '../components/Product'
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import store from '@/store'
 export default {
     components: {
         navBar,
@@ -35,6 +35,14 @@ export default {
             tab: computed(() => store.state.product.tab),
         })
         return { data, test }
+    },
+    beforeRouteEnter(to, from, next) {
+        console.log('test')
+        store.dispatch('product/getProducts')
+        if (store.getters['auth/user']) {
+            store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)
+        }
+        next()
     },
 }
 </script>

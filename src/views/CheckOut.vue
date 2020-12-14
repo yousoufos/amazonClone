@@ -8,7 +8,7 @@
                 </p>
                 <product
                     v-for="item in cart"
-                    :key="item.id"
+                    :key="item.productId"
                     :product="item"
                 ></product>
             </div>
@@ -31,15 +31,20 @@ import Product from '../components/Product.vue'
 import product from '../components/ProductCheckOut'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
+import store from '@/store'
 
 export default {
     components: { navBar, product },
     setup() {
         const store = useStore()
-        const cart = ref(computed(() => store.state.product.cart))
-        const total = ref(computed(() => store.getters['product/total']))
-        const count = ref(computed(() => store.state.product.cart.length))
+        const cart = ref(computed(() => store.state.cart.cart))
+        const total = ref(computed(() => store.getters['cart/total']))
+        const count = ref(computed(() => store.state.cart.cart.length))
         return { cart, total, count }
+    },
+    beforeRouteEnter(to, from, next) {
+        store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)
+        next()
     },
 }
 </script>
