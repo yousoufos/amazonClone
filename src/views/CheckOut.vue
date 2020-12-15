@@ -11,6 +11,7 @@
                     v-for="item in cart"
                     :key="item.productId"
                     :product="item"
+                    :total="total"
                 ></product>
             </div>
             <div class="flex flex-col bg-gray-200 w-1/3 h-40 ml-10">
@@ -41,9 +42,12 @@ export default {
         const cart = ref(computed(() => store.state.cart.cart))
         const total = ref(computed(() => store.getters['cart/total']))
         const count = ref(computed(() => store.state.cart.cart.length))
-        const update = ref((qte) => {
-            store.dispatch('cart/updateQuantity', total.value)
-            console.log(qte)
+        const update = ref(({ qte, productId }) => {
+            store.dispatch('cart/updateQuantity', {
+                total: total.value,
+                qte,
+                productId: productId,
+            })
         })
         return { cart, total, count, update }
     },

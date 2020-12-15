@@ -1,5 +1,5 @@
 <template>
-    <div class="m-1 flex-1 bg-white">
+    <div class="bg-white">
         <div class="px-2 xl:px-2 text-left">
             <p class="font-bold text-xl">{{ product.title }}</p>
             <p>
@@ -10,7 +10,7 @@
                 <p class="" v-for="n in product.rating">⭐</p>
             </div>
             <img
-                class="xl:w-60 xl:h-60 mx-auto"
+                class="xl:w-56 xl:h-56 mx-auto"
                 :src="require(`../assets/${product.picture}`)"
                 alt=""
             />

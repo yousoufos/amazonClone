@@ -8,17 +8,20 @@
                 alt=""
             />
         </div>
-        <div class="flex flex-col xl:flex xl:flex-row">
+        <div class="flex flex-wrap">
             <product
+                class="w-96 mx-auto mb-6 transition duration-500 ease-in-out transform hover:scale-110"
                 v-for="item in data.tab"
                 :key="item.id"
                 :product="item"
             ></product>
         </div>
     </div>
+    <bas></bas>
 </template>
 <script>
 import navBar from '../components/Header'
+import bas from '../components/bas'
 import product from '../components/Product'
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
@@ -27,6 +30,7 @@ export default {
     components: {
         navBar,
         product,
+        bas,
     },
     setup() {
         const store = useStore()
@@ -37,7 +41,6 @@ export default {
         return { data, test }
     },
     beforeRouteEnter(to, from, next) {
-        console.log('test')
         store.dispatch('product/getProducts')
         if (store.getters['auth/user']) {
             store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)

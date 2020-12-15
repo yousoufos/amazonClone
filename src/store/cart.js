@@ -1,7 +1,13 @@
 import { db } from '../firebase'
 import router from '../router'
 import 'firebase/firestore'
-import firebase from 'firebase/app'
+
+import {
+  initializeCart,
+  getUserCart,
+  addToCart,
+  updateItemsCart
+} from '../database/cart'
 // initial state
 const state = () => ({ cart: [] })
 
@@ -14,23 +20,13 @@ const getters = {
 
 // actions
 const actions = {
-  initializeCart: async function ({ commit, rootState }, payload) {
-    try {
-      await db
-        .collection('users')
-        .doc(payload)
-        .set({
-          cart: { items: [], total: 0, createdAt: Date.now() }
-        })
-      console.log('cart initialized')
-    } catch (error) {
-      console.log(error)
-    }
+  initializeCart: async function (payload) {
+    await initializeCart(payload)
   },
   getUserCart: async function ({ commit }, payload) {
     try {
       commit('emptyCart')
-      const data = await db.collection('users').doc(payload).get()
+      const data = await getUserCart(payload)
       if (data.exists) {
         data.data().cart.items.forEach((element) => {
           commit('addToCart', {
@@ -68,20 +64,15 @@ const actions = {
           qte: 1
         }
         commit('addToCart', product)
-        await db
-          .collection('users')
-          .doc(rootState.auth.user.uid)
-          .update({
-            'cart.items': firebase.firestore.FieldValue.arrayUnion(
-              product
-            )
-          })
-        await db
-          .collection('users')
-          .doc(rootState.auth.user.uid)
-          .update({
-            'cart.total': getters.total
-          })
+        try {
+          await addToCart(
+            rootState.auth.user.uid,
+            product,
+            getters.total
+          )
+        } catch (error) {
+          console.log(error)
+        }
       } else {
         alert('Product already in cart')
       }
@@ -89,21 +80,28 @@ const actions = {
       router.push('/login')
     }
   },
-  removeFromCart: function ({ commit, getters }, payload) {
-    commit('removeFromCart', payload)
+  removeFromCart: async function (
+    { commit, state, rootState, getters },
+    payload
+  ) {
+    commit('removeFromCart', payload.productId)
+    await updateItemsCart(rootState.auth.user.uid, {
+      oldItems: state.cart,
+      total: getters.total
+    })
   },
   emptyCart: function ({ commit }) {
     commit('emptyCart')
   },
   updateQuantity: async function ({ commit, rootState }, payload) {
-    console.log(payload)
-    try {
-      await db.collection('users').doc(rootState.auth.user.uid).update({
-        'cart.total': payload
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    const data = await getUserCart(rootState.auth.user.uid)
+    const oldItems = data.data().cart.items
+    oldItems.find((el) => el.productId === payload.productId).qte =
+            payload.qte
+    await updateItemsCart(rootState.auth.user.uid, {
+      oldItems,
+      total: payload.total
+    })
   }
 }
 
@@ -117,7 +115,7 @@ const mutations = {
   },
   removeFromCart: function (state, payload) {
     state.cart.splice(
-      state.cart.findIndex((el) => el.id === payload),
+      state.cart.findIndex((el) => el.productId === payload),
       1
     )
   }

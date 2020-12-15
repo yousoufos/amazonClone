@@ -1,6 +1,8 @@
 import { auth } from '../firebase'
 import router from '../router'
 import store from '@/store'
+import { register, login } from '../database/user'
+
 // initial state
 const state = () => ({ user: null, test: 'test' })
 
@@ -13,24 +15,18 @@ const getters = {
 
 // actions
 const actions = {
-  register: function ({ commit }, payload) {
-    auth.createUserWithEmailAndPassword(payload.email, payload.password)
-      .then((auth) => {
-        if (auth) {
-          store.dispatch('cart/initializeCart', auth.user.uid)
-          router.push('/')
-        }
-      })
-      .catch((err) => alert(err))
+  register: async function ({ commit }, payload) {
+    const authi = await register(payload)
+    if (authi) {
+      store.dispatch('cart/initializeCart', authi.user.uid)
+      router.push('/')
+    }
   },
-  login: function ({ commit }, payload) {
-    auth.signInWithEmailAndPassword(payload.email, payload.password)
-      .then((auth) => {
-        if (auth) {
-          router.go(-1)
-        }
-      })
-      .catch((err) => alert(err))
+  login: async function ({ commit }, payload) {
+    const user = await login(payload)
+    if (user) {
+      router.go(-1)
+    }
   },
   logout: function ({ commit }) {
     auth.signOut()

@@ -7,6 +7,8 @@
         </div>
         <div class="flex py-3 w-2/5 lg:py-3 lg:px-2">
             <input
+                v-model="search"
+                @keydown="test"
                 type="text"
                 placeholder="Rechercher sur Amazon"
                 class="ml-3 w-5/6 h-10 rounded-none lg:h-10 lg:w-full"
@@ -95,10 +97,14 @@ import { reactive, computed, ref } from 'vue'
 export default {
     name: 'navBar',
     setup() {
+        const search = ref('')
+        const test = ($event) => {
+            console.log($event.KeyCode)
+        }
         const store = useStore()
         const count = ref(computed(() => store.state.cart.cart.length))
         const user = ref(computed(() => store.state.auth.user))
-        return { count, user }
+        return { count, user, search, test }
     },
 }
 </script>

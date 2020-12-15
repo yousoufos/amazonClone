@@ -1,5 +1,5 @@
-import router from '../router'
 import { db } from '../firebase'
+import { getProducts } from '../database/product'
 // initial state
 const state = () => ({
   tab: [
@@ -37,9 +37,8 @@ const getters = {}
 const actions = {
   getProducts: async function ({ commit }) {
     commit('emptyProductArray')
-    const products = db.collection('product').limit(3)
     try {
-      const snapshot = await products.get()
+      const snapshot = await getProducts()
       snapshot.forEach((doc) => {
         const obj = {
           productId: doc.id,

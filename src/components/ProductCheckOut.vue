@@ -21,14 +21,25 @@
         <div class="w-1/5">
             <div class="flex py-8">
                 <div class="">
-                    <label class="px-2" for="">Quantity:</label>
-                    <input
-                        @change="update"
+                    <label for="qte" class="px-2 text-black">Quantity</label>
+                    <select
+                        @change="update(product.productId)"
                         v-model="product.qte"
-                        class="w-14 h-9 font-bold"
-                        type="number"
-                        min="0"
-                    />
+                        id="qte"
+                        name="quantity"
+                        class="focus:border-yellow-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent sm:text-sm rounded-md"
+                    >
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -41,14 +52,19 @@ import { ref } from 'vue'
 export default {
     props: {
         product: Object,
+        total: Number,
     },
     setup(props, { emit }) {
         const store = useStore()
+        const test = () => console.log()
         const remove = (productId) => {
-            store.dispatch('cart/removeFromCart', productId)
+            store.dispatch('cart/removeFromCart', {
+                productId,
+                total: props.total,
+            })
         }
-        const update = ref(() => {
-            emit('qteUpdated', props.product.qte)
+        const update = ref((productId) => {
+            emit('qteUpdated', { qte: props.product.qte, productId: productId })
         })
         return { remove, update }
     },
