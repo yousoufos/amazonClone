@@ -23,6 +23,10 @@ const initializeCart = (userId) => {
   db.collection('users')
     .doc(userId)
     .set({
+      nom: '',
+      prenom: '',
+      telephone: '',
+      adresse: '',
       cart: { items: [], total: 0, createdAt: Date.now() }
     })
     .then(() => {
@@ -31,7 +35,7 @@ const initializeCart = (userId) => {
     .catch((err) => console.log(err))
 }
 
-const getUserCart = function (userId) {
+const getUser = function (userId) {
   try {
     const data = db.collection('users').doc(userId).get()
     return data
@@ -49,4 +53,4 @@ const addToCart = function (userId, product, total) {
     })
 }
 
-export { updateItemsCart, initializeCart, getUserCart, addToCart }
+export { updateItemsCart, initializeCart, getUser, addToCart }

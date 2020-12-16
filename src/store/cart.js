@@ -1,10 +1,9 @@
-import { db } from '../firebase'
 import router from '../router'
 import 'firebase/firestore'
 
 import {
   initializeCart,
-  getUserCart,
+  getUser,
   addToCart,
   updateItemsCart
 } from '../database/cart'
@@ -20,13 +19,13 @@ const getters = {
 
 // actions
 const actions = {
-  initializeCart: async function (payload) {
-    await initializeCart(payload)
+  initializeCart: async function ({ commit }, payload) {
+    await initializeCart(payload.userId)
   },
   getUserCart: async function ({ commit }, payload) {
     try {
       commit('emptyCart')
-      const data = await getUserCart(payload)
+      const data = await getUser(payload)
       if (data.exists) {
         data.data().cart.items.forEach((element) => {
           commit('addToCart', {
@@ -94,7 +93,7 @@ const actions = {
     commit('emptyCart')
   },
   updateQuantity: async function ({ commit, rootState }, payload) {
-    const data = await getUserCart(rootState.auth.user.uid)
+    const data = await getUser(rootState.auth.user.uid)
     const oldItems = data.data().cart.items
     oldItems.find((el) => el.productId === payload.productId).qte =
             payload.qte
