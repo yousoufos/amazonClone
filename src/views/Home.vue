@@ -1,6 +1,6 @@
 <template>
     <navBar></navBar>
-    <div class="max-w-screen-xl mx-auto bg-gray-100">
+    <div class="mx-auto bg-gray-100">
         <div class="hidden xl:flex">
             <img
                 class="xl:w-full xl:z-0 xl:-mb-15 gradient"
@@ -8,9 +8,9 @@
                 alt=""
             />
         </div>
-        <div class="flex flex-wrap">
+        <div class="w-11/12 mx-auto grid grid-cols-4 gap-2">
             <product
-                class="w-96 mx-auto mb-6 transition duration-500 ease-in-out transform hover:scale-110"
+                class="mb-6 transition duration-500 ease-in-out transform hover:scale-110"
                 v-for="item in data.tab"
                 :key="item.id"
                 :product="item"
@@ -40,10 +40,13 @@ export default {
         })
         return { data, test }
     },
-    beforeRouteEnter(to, from, next) {
-        store.dispatch('product/getProducts')
+    async beforeRouteEnter(to, from, next) {
+        await store.dispatch('product/getProducts')
         if (store.getters['auth/user']) {
-            store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)
+            await store.dispatch(
+                'cart/getUserCart',
+                store.getters['auth/user'].uid
+            )
         }
         next()
     },

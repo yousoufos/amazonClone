@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white">
+    <div class="bg-white rounded">
         <div class="px-2 xl:px-2 text-left">
             <p class="font-bold text-xl">{{ product.title }}</p>
             <p>

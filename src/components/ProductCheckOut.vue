@@ -7,7 +7,7 @@
                 alt=""
             />
         </div>
-        <div class="w-3/5">
+        <div class="w-3/5 p-4">
             <p class="font-bold">{{ product.title }}</p>
             <p>{{ product.description }}</p>
             <p class="font-bold">$ {{ product.price }}</p>

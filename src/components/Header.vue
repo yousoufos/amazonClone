@@ -8,7 +8,7 @@
         <div class="flex py-3 w-2/5 lg:py-3 lg:px-2">
             <input
                 v-model="search"
-                @keydown="test"
+                @keydown=""
                 type="text"
                 placeholder="Rechercher sur Amazon"
                 class="ml-3 w-5/6 h-10 rounded-none lg:h-10 lg:w-full"
@@ -40,15 +40,12 @@
                 </router-link>
             </div>
             <div class="flex flex-col flex-grow lg:px-2 lg:text-sm">
-                <span class="text-white lg:font-thin">Hello Guest</span
-                ><router-link :to="{ name: 'Login' }">
-                    <span class="text-white lg:font-medium">SignIn</span>
+                <span class="text-white lg:font-thin">See</span
+                ><router-link :to="{ name: 'Orders' }">
+                    <span class="text-white lg:font-medium">Your Orders</span>
                 </router-link>
             </div>
-            <div class="flex flex-col flex-grow lg:px-2 lg:text-sm">
-                <span class="text-white lg:font-thin">Hello Guest</span
-                ><span class="text-white lg:font-medium">SignIn</span>
-            </div>
+
             <div class="flex lg:px-2">
                 <router-link to="/Checkout">
                     <button>
@@ -98,13 +95,20 @@ export default {
     name: 'navBar',
     setup() {
         const search = ref('')
-        const test = ($event) => {
-            console.log($event.KeyCode)
-        }
+
         const store = useStore()
-        const count = ref(computed(() => store.state.cart.cart.length))
+
+        const count = ref(
+            computed(() => {
+                if (store.state.cart.cart === null) {
+                    return 0
+                } else {
+                    return store.state.cart.cart.items.length
+                }
+            })
+        )
         const user = ref(computed(() => store.state.auth.user))
-        return { count, user, search, test }
+        return { count, user, search }
     },
 }
 </script>

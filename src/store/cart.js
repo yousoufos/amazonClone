@@ -8,12 +8,12 @@ import {
   updateItemsCart
 } from '../database/cart'
 // initial state
-const state = () => ({ cart: [] })
+const state = () => ({ cart: null })
 
 // getters
 const getters = {
   total: function (state) {
-    return state.cart.reduce((a, b) => a + b.price * b.qte, 0)
+    return state.cart.items.reduce((a, b) => a + b.price * b.qte, 0)
   }
 }
 
@@ -23,12 +23,14 @@ const actions = {
     await initializeCart(payload.userId)
   },
   getUserCart: async function ({ commit }, payload) {
+    const tab = []
     try {
       commit('emptyCart')
       const data = await getUser(payload)
       if (data.exists) {
+        let car = {}
         data.data().cart.items.forEach((element) => {
-          commit('addToCart', {
+          tab.push({
             productId: element.productId,
             picture: element.picture,
             title: element.title,
@@ -38,6 +40,10 @@ const actions = {
             rating: element.rating
           })
         })
+
+        car = { items: tab, total: data.data().cart.total }
+
+        commit('setCart', car)
       } else {
         // doc.data() will be undefined in this case
         console.log('No such document!')
@@ -49,7 +55,7 @@ const actions = {
   addToCart: async function ({ commit, state, rootState, getters }, payload) {
     if (rootState.auth.user) {
       if (
-        state.cart.findIndex(
+        state.cart.items.findIndex(
           (el) => el.productId === payload.productId
         ) === -1
       ) {
@@ -62,7 +68,7 @@ const actions = {
           rating: payload.rating,
           qte: 1
         }
-        commit('addToCart', product)
+        commit('addItemsToCart', product)
         try {
           await addToCart(
             rootState.auth.user.uid,
@@ -85,11 +91,18 @@ const actions = {
   ) {
     commit('removeFromCart', payload.productId)
     await updateItemsCart(rootState.auth.user.uid, {
-      oldItems: state.cart,
+      oldItems: state.cart.items,
       total: getters.total
     })
   },
-  emptyCart: function ({ commit }) {
+  refreshCart: function ({ commit }) {
+    commit('emptyCart')
+  },
+  emptyCart: async function ({ commit, rootState }) {
+    await updateItemsCart(rootState.auth.user.uid, {
+      total: 0,
+      oldItems: []
+    })
     commit('emptyCart')
   },
   updateQuantity: async function ({ commit, rootState }, payload) {
@@ -106,15 +119,21 @@ const actions = {
 
 // mutations
 const mutations = {
-  addToCart: function (state, payload) {
-    state.cart.push(payload)
+  addItemsToCart: function (state, payload) {
+    state.cart.items.push(payload)
   },
-  emptyCart: function (state, payload) {
-    state.cart = []
+  setCart: function (state, payload) {
+    state.cart = payload
+  },
+  emptyCart: function (state) {
+    if (state.cart) {
+      state.cart.items = []
+      state.cart.total = 0
+    }
   },
   removeFromCart: function (state, payload) {
-    state.cart.splice(
-      state.cart.findIndex((el) => el.productId === payload),
+    state.cart.items.splice(
+      state.cart.items.findIndex((el) => el.productId === payload),
       1
     )
   }

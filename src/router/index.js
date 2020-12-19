@@ -4,6 +4,7 @@ import CheckOut from '../views/CheckOut.vue'
 import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import CheckOutProceed from '../views/CheckOutProceed.vue'
+import Orders from '../views/Orders.vue'
 import store from '@/store'
 // import isAuth from '../middleware/Auth'
 
@@ -50,6 +51,11 @@ const routes = [
     path: '/checkoutproceed',
     name: 'CheckOutProceed',
     component: CheckOutProceed
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders
   }
 ]
 

@@ -6,14 +6,14 @@ const updateItemsCart = function (userId, payload) {
     .doc(userId)
     .update({
       cart: { items: payload.oldItems },
-      total: payload.total
+      'cart.total': payload.total
     })
     .then(() => {
       console.log('Update reussi')
     })
     .catch((err) => console.log(err))
 }
-const deleteAllItemsCart = async function (userId) {
+const deleteCart = async function (userId) {
   await db.collection('users').doc(userId).update({
     'cart.items': firebase.firestore.FieldValue.delete()
   })
@@ -49,7 +49,7 @@ const addToCart = function (userId, product, total) {
     .doc(userId)
     .update({
       'cart.items': firebase.firestore.FieldValue.arrayUnion(product),
-      total: total
+      'cart.total': total
     })
 }
 
