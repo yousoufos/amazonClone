@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import CheckOutProceed from '../views/CheckOutProceed.vue'
 import Orders from '../views/Orders.vue'
+import test from '../views/test.vue'
 import store from '@/store'
 // import isAuth from '../middleware/Auth'
 
@@ -56,7 +57,12 @@ const routes = [
     path: '/orders',
     name: 'Orders',
     component: Orders
-  }
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: test
+  },
 ]
 
 const router = createRouter({

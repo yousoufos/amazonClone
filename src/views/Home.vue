@@ -8,9 +8,11 @@
                 alt=""
             />
         </div>
-        <div class="w-11/12 mx-auto grid grid-cols-4 gap-2">
+        <div
+            class="flex flex-col lg:w-11/12 lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
+        >
             <product
-                class="mb-6 transition duration-500 ease-in-out transform hover:scale-110"
+                class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-110"
                 v-for="item in data.tab"
                 :key="item.id"
                 :product="item"

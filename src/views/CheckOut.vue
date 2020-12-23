@@ -1,12 +1,38 @@
 <template>
     <navBar></navBar>
-    <div class="w-4/5 mx-auto mt-10 px-4">
-        <div class="flex">
-            <div class="w-2/3">
-                <p class="mb-10 py-3 text-2xl font-bold border-b-2">
-                    Your Shopping Cart :
-                </p>
+    <div class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4">
+        <div class="lg:w-8/12">
+            <p class="lg:mb-10 lg:py-3 lg:text-2xl lg:font-bold lg:border-b-2">
+                Your Shopping Cart :
+            </p>
+            <product
+                class="bg-gray-100 rounded-lg"
+                @qteUpdated="update"
+                v-for="item in cart.items"
+                :key="item.productId"
+                :product="item"
+                :total="total"
+            ></product>
+        </div>
+        <div class="flex flex-col bg-gray-200 w-4/12 h-40 ml-10">
+            <p class="p-10 text-lg font-semibold">
+                Subtotal ({{ count }} items ) :
+                <span class="font-bold">{{ total }}</span>
+            </p>
+            <button
+                :disabled="cart.items.length === 0 ? true : false"
+                @click="proceed"
+                class="px-4 font-semibold bg-yellow-500 mx-auto"
+            >
+                Proceed to Payment
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-col lg:hidden">
+        <div class="m-4">
+            <div class="">
                 <product
+                    class="bg-gray-100 mb-2 rounded-lg"
                     @qteUpdated="update"
                     v-for="item in cart.items"
                     :key="item.productId"
@@ -14,17 +40,26 @@
                     :total="total"
                 ></product>
             </div>
-            <div class="flex flex-col bg-gray-200 w-1/3 h-40 ml-10">
-                <p class="p-10 text-lg font-semibold">
-                    Subtotal ({{ count }} items ) :
-                    <span class="font-bold">{{ total }}</span>
-                </p>
+        </div>
+        <div class="bg-gray-100 h-20">
+            <div class="flex px-4 py-2 font-sans font-medium justify-between">
+                <span>Total</span
+                ><span class="text-yellow-500 font-bold">{{ total }}</span>
+            </div>
+            <div class="mx-2">
                 <button
-                    :disabled="cart.items.length === 0 ? true : false"
                     @click="proceed"
-                    class="px-4 font-semibold bg-yellow-500 mx-auto"
+                    class="bg-yellow-500 rounded-lg w-full h-10 font-bold"
                 >
-                    Proceed to CheckOut
+                    Proceed to checkout
+                </button>
+            </div>
+            <div class="mt-2 mx-2">
+                <button
+                    @click="back"
+                    class="bg-gray-300 rounded-lg w-full h-10 font-bold"
+                >
+                    Cancel
                 </button>
             </div>
         </div>
@@ -33,7 +68,6 @@
 
 <script>
 import navBar from '../components/Header'
-import Product from '../components/Product.vue'
 import product from '../components/ProductCheckOut'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
@@ -56,7 +90,8 @@ export default {
             })
         })
         const proceed = ref(() => router.push({ name: 'CheckOutProceed' }))
-        return { cart, total, count, update, proceed }
+        const back = ref(() => router.push('/'))
+        return { cart, total, count, update, proceed, back }
     },
     async beforeRouteEnter(to, from, next) {
         await store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)

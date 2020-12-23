@@ -1,6 +1,8 @@
 <template>
     <navBar></navBar>
-    <div class="w-4/5 mx-auto mt-10 px-4 relative">
+    <div
+        class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4 lg:relative"
+    >
         <cardUser
             :user="user"
             @formCancel="cancel"
@@ -26,6 +28,9 @@
             <order-summary @valider="valider" :cart="cart"></order-summary>
         </div>
     </div>
+    <div>
+        <user-order-details :user="user" :show="show"></user-order-details>
+    </div>
 </template>
 
 <script>
@@ -38,7 +43,6 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import store from '@/store'
 import PaymentMethods from '../components/PaymentMethods.vue'
-import UserOrderDetails from '../components/UserOrderDetails.vue'
 export default {
     setup() {
         const store = useStore()

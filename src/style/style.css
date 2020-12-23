@@ -1,10 +1,19 @@
 /* ./src/index.css */
 
 /*! @import */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+html,
+body {
+    font-family: 'Helevetica', sans-serif;
+}
 
+#app {
+    font-family: 'Helevetica', sans-serif;
+}
 .btnOrange {
     @apply font-semibold bg-yellow-500 w-36;
 }
