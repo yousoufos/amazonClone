@@ -1,6 +1,6 @@
 <template>
-    <div class="lg:m-auto lg:px-4 lg:py-8 lg:max-w-xl">
-        <div class="bg-white lg:shadow-2xl">
+    <div class="m-auto px-4 py-8 max-w-xl">
+        <div class="bg-white shadow-2xl">
             <div class="px-4 py-2 mt-2 bg-white">
                 <h2 class="font-bold text-2xl text-gray-800">
                     {{ user.email }}
@@ -20,6 +20,7 @@
                                             v-model="form.nom"
                                             type="text"
                                             name="first_name"
+                                            id="first_name"
                                             autocomplete="given-name"
                                             required
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -36,6 +37,7 @@
                                             v-model="form.prenom"
                                             type="text"
                                             name="last_name"
+                                            id="last_name"
                                             required
                                             autocomplete="family-name"
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -52,6 +54,7 @@
                                             v-model="form.adresse"
                                             type="text"
                                             name="street_address"
+                                            id="street_address"
                                             required
                                             autocomplete="street-address"
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -71,6 +74,7 @@
                                             type="text"
                                             name="tel"
                                             required
+                                            id="tel"
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         />
                                     </div>
@@ -121,7 +125,7 @@ export default {
                 store.dispatch('auth/updateUser', form)
                 emit('formCancel', false)
             } else {
-                alert('Tous les champs doivents etres rempli')
+                alert('Toys les champs doivents etres rempli')
             }
         })
         const cancel = ref(() => {

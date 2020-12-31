@@ -1,31 +1,48 @@
 <template>
-    <navBar></navBar>
-    <div class="mx-auto bg-gray-100">
-        <div class="hidden xl:flex">
-            <img
-                class="xl:w-full xl:z-0 xl:-mb-15 gradient"
-                src="../assets/banniere.jpg"
-                alt=""
-            />
-        </div>
-        <div
-            class="flex flex-col lg:w-11/12 lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
-        >
-            <product
-                class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-110"
-                v-for="item in data.tab"
-                :key="item.id"
-                :product="item"
-            ></product>
-        </div>
+    <div v-if="loading">
+        <spin></spin>
     </div>
-    <bas></bas>
+    <div v-else>
+        <navBar></navBar>
+        <transition
+            enter-active-class="animate__animated animate__fadeInLeft"
+            leave-active-class="animate__animated animate__fadeOutLeft"
+        >
+            <notif
+                v-if="notification.show"
+                :notification="notification"
+                :show="notification.show"
+            ></notif>
+        </transition>
+        <div class="mx-auto bg-gray-100">
+            <div class="hidden xl:flex">
+                <img
+                    class="xl:w-full xl:z-0 xl:-mb-15 gradient"
+                    src="../assets/banniere.jpg"
+                    alt=""
+                />
+            </div>
+            <div
+                class="flex flex-col lg:w-11/12 lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
+            >
+                <product
+                    class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-110"
+                    v-for="item in data.tab"
+                    :key="item.id"
+                    :product="item"
+                ></product>
+            </div>
+        </div>
+        <bas></bas>
+    </div>
 </template>
 <script>
 import navBar from '../components/Header'
+import spin from '../components/Spin'
 import bas from '../components/bas'
 import product from '../components/Product'
-import { reactive, computed, ref } from 'vue'
+import notif from '../components/notif'
+import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import store from '@/store'
 export default {
@@ -33,16 +50,48 @@ export default {
         navBar,
         product,
         bas,
+        notif,
+        spin,
     },
     setup() {
         const store = useStore()
-        const test = ref(() => store.dispatch('product/getProducts'))
+        const loading = ref(true)
+        onMounted(async () => {
+            console.log('loading')
+            await store.dispatch('product/getProducts')
+
+            if (store.getters['auth/user']) {
+                await store.dispatch(
+                    'cart/getUserCart',
+                    store.getters['auth/user'].uid
+                )
+            }
+
+            loading.value = false
+        })
+        const test = async () => {}
+        console.log('setup')
         const data = reactive({
             tab: computed(() => store.state.product.tab),
         })
-        return { data, test }
+        const notification = ref(
+            computed(() => {
+                if (store.state.cart.notification) {
+                    return store.state.cart.notification
+                } else {
+                    return { message: '', type: '', show: false }
+                }
+            })
+        )
+
+        return {
+            data,
+            test,
+            notification,
+            loading,
+        }
     },
-    async beforeRouteEnter(to, from, next) {
+    /* async beforeRouteEnter(to, from, next) {
         await store.dispatch('product/getProducts')
         if (store.getters['auth/user']) {
             await store.dispatch(
@@ -51,7 +100,7 @@ export default {
             )
         }
         next()
-    },
+    }, */
 }
 </script>
 <style scoped>

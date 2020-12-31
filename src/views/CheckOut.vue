@@ -20,9 +20,10 @@
                 <span class="font-bold">{{ total }}</span>
             </p>
             <button
-                :disabled="cart.items.length === 0 ? true : false"
                 @click="proceed"
                 class="px-4 font-semibold bg-yellow-500 mx-auto"
+                :disabled="count === 0"
+                :class="{ 'disabled:opacity-50': count === 0 }"
             >
                 Proceed to Payment
             </button>
@@ -50,6 +51,8 @@
                 <button
                     @click="proceed"
                     class="bg-yellow-500 rounded-lg w-full h-10 font-bold"
+                    :disabled="count === 0"
+                    :class="{ 'disabled:opacity-50': count === 0 }"
                 >
                     Proceed to checkout
                 </button>

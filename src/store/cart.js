@@ -8,7 +8,7 @@ import {
   updateItemsCart
 } from '../database/cart'
 // initial state
-const state = () => ({ cart: null })
+const state = () => ({ cart: null, notification: null })
 
 // getters
 const getters = {
@@ -44,6 +44,11 @@ const actions = {
         car = { items: tab, total: data.data().cart.total }
 
         commit('setCart', car)
+        commit('setNotification', {
+          message: '',
+          type: '',
+          show: false
+        })
       } else {
         // doc.data() will be undefined in this case
         console.log('No such document!')
@@ -69,6 +74,11 @@ const actions = {
           qte: 1
         }
         commit('addItemsToCart', product)
+        commit('setNotification', {
+          message: 'Produit ajouté avec succeée',
+          type: 'success',
+          show: true
+        })
         try {
           await addToCart(
             rootState.auth.user.uid,
@@ -114,6 +124,9 @@ const actions = {
       oldItems,
       total: payload.total
     })
+  },
+  setNotification: function ({ commit }, payload) {
+    commit('setNotification', payload)
   }
 }
 
@@ -136,6 +149,9 @@ const mutations = {
       state.cart.items.findIndex((el) => el.productId === payload),
       1
     )
+  },
+  setNotification (state, payload) {
+    state.notification = payload
   }
 }
 

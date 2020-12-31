@@ -1,63 +1,161 @@
 <template>
-    <div class="flex items-center">
+    <div class="flex flex-col">
+        <input @change="onChange" type="file" name="" id="" />
         <div>
-            <button :disabled="qte <= 1" @click="moins" class="flex">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    class="w-4 h-4 text-yellow-500"
-                    :class="{ 'disabled:opacity-50': qte <= 1 }"
+            <button class="bg-yellow-500" @click="onUpload">Upload</button>
+        </div>
+
+        <div v-if="loading" class="w-1/5">
+            <div class="shadow w-full bg-grey-light">
+                <div
+                    class="bg-blue-600 text-xs leading-none py-1 text-center"
+                    :style="{ width: progressBar + '%' }"
                 >
-                    <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
-            </button>
+                    {{ progressBar + '%' }}
+                </div>
+            </div>
         </div>
-        <div>
-            <input
-                disabled
-                v-model="qte"
-                class="font-mono h-4 text-center"
-                size="2"
-                type="text"
-            />
-        </div>
-        <div>
-            <button :disabled="qte >= 10" @click="plus" class="flex">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    class="w-4 h-4 text-yellow-500"
-                    :class="{ 'disabled:opacity-50': qte >= 10 }"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
-            </button>
-        </div>
+    </div>
+    <div>
+        <select @change="onSelected(selected)" v-model="selected">
+            <option
+                v-for="option in category"
+                :key="option.id"
+                v-bind:value="option.id"
+            >
+                {{ option.data.name }}
+            </option>
+        </select>
+        <span>Sélectionné : {{ selected }}</span>
+    </div>
+    <div>
+        <ul>
+            <li v-for="elem in productCategory" :key="elem.productId">
+                {{ elem.title }}
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { storage, firebaseApp, db } from '../firebase'
+import spin from '../components/Spin'
 export default {
-    data() {
-        return { qte: 1 }
-    },
-    methods: {
-        plus() {
-            if (this.qte <= 10) this.qte++
-        },
-        moins() {
-            if (this.qte >= 1) this.qte--
-        },
+    components: { spin },
+    setup() {
+        const file = ref(null)
+        const loading = ref(false)
+        const progressBar = ref(0)
+        const onChange = (e) => (file.value = e.target.files[0])
+        const onUpload = () => {
+            loading.value = true
+            progressBar.value = 0
+            var storageRef = storage.ref('products/' + file.value.name)
+            let uploadedFile = storageRef.put(file.value)
+            // Listen for state changes, errors, and completion of the upload.
+            uploadedFile.on(
+                'state_changed', // or 'state_changed'
+                function (snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    progressBar.value = progress.toFixed(0)
+                    console.log('Upload is ' + progress.toFixed(0) + '% done')
+                    switch (snapshot.state) {
+                        case 'paused': // or 'paused'
+                            console.log('Upload is paused')
+                            break
+                        case 'running': // or 'running'
+                            console.log('Upload is running')
+                            break
+                    }
+                },
+                function (error) {
+                    // A full list of error codes is available at
+                    // https://google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break
+
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break
+                    }
+                },
+                function () {
+                    // Upload completed successfully, now we can get the download URL
+                    uploadedFile.snapshot.ref
+                        .getDownloadURL()
+                        .then(function (downloadURL) {
+                            loading.value = false
+                            console.log('File available at', downloadURL)
+                        })
+                }
+            )
+        }
+
+        const productCategory = ref([])
+        const category = ref([])
+        const selected = ref('')
+
+        const onSelected = (categoryId) => {
+            productCategory.value = []
+            db.collection('productCategory')
+                .where('categoryId', '==', categoryId)
+                .get()
+                .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        let obj = { id: doc.id, data: doc.data() }
+                        // doc.data() is never undefined for query doc snapshots
+
+                        db.collection('product')
+                            .doc(obj.data.productId)
+                            .get()
+                            .then(function (query) {
+                                if (query.exists) {
+                                    productCategory.value.push(query.data())
+                                }
+                            })
+                    })
+                    console.log(productCategory.value)
+                })
+                .catch(function (error) {
+                    console.log('Error getting documents: ', error)
+                })
+        }
+
+        const fetchCaterories = () => {
+            db.collection('category')
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach(function (doc) {
+                        category.value.push({ id: doc.id, data: doc.data() })
+                    })
+                    console.log(category.value)
+                })
+        }
+
+        onMounted(() => {
+            fetchCaterories()
+        })
+
+        return {
+            file,
+            onUpload,
+            onChange,
+            loading,
+            progressBar,
+            category,
+            selected,
+            onSelected,
+            productCategory,
+        }
     },
 }
 </script>

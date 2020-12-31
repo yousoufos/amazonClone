@@ -15,5 +15,5 @@ body {
     font-family: 'Helevetica', sans-serif;
 }
 .btnOrange {
-    @apply font-semibold bg-yellow-500 w-36;
+    @apply font-semibold bg-yellow-500 w-36 rounded-sm;
 }

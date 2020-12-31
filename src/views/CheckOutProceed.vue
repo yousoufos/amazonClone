@@ -9,7 +9,7 @@
             v-if="show"
             class="absolute top-0 left-0 right-0 bottom-0"
         ></cardUser>
-        <div class="flex">
+        <div class="flex w-full">
             <div class="w-2/3">
                 <p class="py-3 text-2xl font-bold border-b-2">
                     Finalize your order
@@ -28,8 +28,57 @@
             <order-summary @valider="valider" :cart="cart"></order-summary>
         </div>
     </div>
-    <div>
-        <user-order-details :user="user" :show="show"></user-order-details>
+    <div class="flex lg:hidden">
+        <cardUser
+            class="w-full"
+            v-if="show === true"
+            :user="user"
+            @formCancel="cancel"
+        ></cardUser>
+
+        <div class="w-full" v-else>
+            <user-order-details
+                @modifier="modifier"
+                :user="user"
+                :show="show"
+            ></user-order-details>
+            <payment-methods
+                class="py-2"
+                @methodSelected="paymentFromEvent"
+            ></payment-methods>
+            <div class="p-4 bg-gray-200 flex flex-col w-full">
+                <div
+                    class="flex flex-col border-t border-b border-gray-400 py-2"
+                >
+                    <div
+                        class="flex justify-between text-sm font-medium text-black"
+                    >
+                        <span class="px-4">Sous-total : </span>
+                        <span class="px-4">{{ cart.total }}</span>
+                    </div>
+                    <div
+                        class="flex justify-between text-sm font-medium text-black"
+                    >
+                        <span class="px-4">Frais de livraison : </span>
+                        <span class="px-4">5</span>
+                    </div>
+                </div>
+                <div class="flex justify-between p-4">
+                    <span class="font-semibold text-lg">Total : </span>
+                    <span class="font-bold text-lg text-yellow-500">{{
+                        Number(cart.total) + 5
+                    }}</span>
+                </div>
+                <div class="p-6">
+                    <button
+                        @click="valider"
+                        class="font-semibold bg-yellow-500 rounded-lg h-10 w-full"
+                    >
+                        Order Now
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -42,7 +91,6 @@ import userorderdetails from '../components/UserOrderDetails'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import store from '@/store'
-import PaymentMethods from '../components/PaymentMethods.vue'
 export default {
     setup() {
         const store = useStore()
@@ -51,8 +99,9 @@ export default {
         const modifier = ref(() => {
             show.value = !show.value
         })
-        const cancel = ref(() => {
-            show.value = !show.value
+        const cancel = ref((elm) => {
+            show.value = elm
+            console.log(show.value)
         })
         const user = ref(computed(() => store.state.auth.user))
         const cart = ref(computed(() => store.state.cart.cart))

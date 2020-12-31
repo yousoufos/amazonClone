@@ -17,8 +17,14 @@
                 alt=""
             />
         </div>
-        <div class="text-center my-5">
-            <button @click="add" class="btnOrange">Add to cart</button>
+        <div class="text-center my-5 flex">
+            <button @click="add" class="btnOrange mr-2">Add to cart</button>
+            <button
+                @click="detail"
+                class="bg-green-500 w-36 font-semibold rounded-sm"
+            >
+                Show
+            </button>
         </div>
     </div>
 </template>
@@ -26,15 +32,33 @@
 <script>
 import { useStore } from 'vuex'
 import { ref } from 'vue'
+import notif from '../components/notif'
+import { useRouter } from 'vue-router'
+
 export default {
     props: {
         product: Object,
     },
-    setup(props) {
-        const store = useStore()
-        const add = () => store.dispatch('cart/addToCart', props.product)
+    components: {
+        notif,
+    },
 
-        return { add }
+    setup(props, { emit }) {
+        const store = useStore()
+        const router = useRouter()
+
+        const add = () => {
+            store.dispatch('cart/addToCart', props.product)
+        }
+        const detail = () => {
+            router.push({
+                name: 'ProductDetails',
+                query: {
+                    productId: props.product.productId,
+                },
+            })
+        }
+        return { add, detail }
     },
 }
 </script>

@@ -140,12 +140,17 @@
                 enter-active-class="animate__animated animate__fadeInDown"
                 leave-active-class="animate__animated animate__fadeOutUp"
             >
-                <div v-if="menu" class="text-white">
+                <div v-if="menu" class="text-white flex flex-col">
+                    <router-link :to="{ name: 'Home' }">
+                        <div class="px-2 py-2">Home</div>
+                    </router-link>
                     <ul class="p-4">
                         <li class="py-2">
                             {{ user != null ? user.email : 'Guest' }}
                         </li>
-                        <li v-if="user != null" class="py-2">Orders</li>
+                        <router-link :to="{ name: 'Orders' }">
+                            <li v-if="user != null" class="py-2">Orders</li>
+                        </router-link>
                         <router-link :to="user != null ? '/logout' : '/login'">
                             <li class="py-2">
                                 {{ user != null ? 'Logout' : 'Sign In' }}

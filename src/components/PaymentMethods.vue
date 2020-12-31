@@ -1,8 +1,10 @@
 <template>
-    <div class="py-4">
+    <div class="lg:py-4">
         <fieldset>
             <div>
-                <legend class="text-lg font-medium">
+                <legend
+                    class="p-4 w-full text-sm text-gray-500 tracking-wider lg:bg-white lg:text-lg lg:font-medium bg-gray-200"
+                >
                     Choose your payment method :
                 </legend>
             </div>
@@ -15,7 +17,7 @@
                         value="Payment on delivery"
                         name="payment"
                         type="radio"
-                        class="focus:ring-yellow-500 h-4 w-4 text-yellow-500 border-gray-300"
+                        class="focus:ring-white h-4 w-4 text-yellow-500 border-gray-300"
                     />
                     <label
                         for="livraison"
@@ -32,7 +34,7 @@
                         value="Payment with credit card"
                         name="payment"
                         type="radio"
-                        class="focus:ring-yellow-500 h-4 w-4 text-yellow-500 border-gray-300"
+                        class="focus:ring-white h-4 w-4 text-yellow-500 border-gray-300"
                     />
                     <label
                         for="carte"

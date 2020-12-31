@@ -10,4 +10,9 @@ const getProducts = async function () {
   }
 }
 
-export { getProducts }
+const getProductById = async function (productId) {
+  const product = await db.collection('product').doc(productId).get()
+  return product
+}
+
+export { getProducts, getProductById }

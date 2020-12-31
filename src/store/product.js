@@ -1,33 +1,7 @@
-import { db } from '../firebase'
-import { getProducts } from '../database/product'
+import { getProducts, getProductById } from '../database/product'
 // initial state
 const state = () => ({
-  tab: [
-    // {
-    //   id: '1',
-    //   title: 'Iphone 12',
-    //   price: 1500,
-    //   description: 'Lorem Ipsum is simply dummy text of the printing .',
-    //   picture: 'iphone12.jpg',
-    //   rating: 5
-    // },
-    // {
-    //   id: '2',
-    //   title: 'Imprimante Multifonction',
-    //   price: 1500,
-    //   description: 'Lorem Ipsum is simply dummy text of the printing .',
-    //   picture: 'imprimate.jpg',
-    //   rating: 2
-    // },
-    // {
-    //   id: '3',
-    //   title: 'Claveir mecanique',
-    //   price: 1500,
-    //   description: 'Lorem Ipsum is simply dummy text of the printing .',
-    //   picture: 'clavier.jpg',
-    //   rating: 3
-    // }
-  ]
+  product: null
 })
 
 // getters
@@ -53,6 +27,19 @@ const actions = {
     } catch (error) {
       console.log(error)
     }
+  },
+  getProductById: async function ({ commit }, productId) {
+    try {
+      const product = await getProductById(productId)
+      if (product.exists) {
+        commit('setProduct', {
+          productId: product.id,
+          data: product.data()
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
@@ -63,6 +50,9 @@ const mutations = {
   },
   emptyProductArray: function (state) {
     state.tab = []
+  },
+  setProduct: function (state, payload) {
+    state.product = payload
   }
 }
 
