@@ -7,6 +7,7 @@ import CheckOutProceed from '../views/CheckOutProceed.vue'
 import Orders from '../views/Orders.vue'
 import test from '../views/test.vue'
 import ProductDetails from '../views/ProductDetails.vue'
+import slider from '../components/slider.vue'
 import store from '@/store'
 // import isAuth from '../middleware/Auth'
 
@@ -68,6 +69,11 @@ const routes = [
         path: '/productdetails',
         name: 'ProductDetails',
         component: ProductDetails,
+    },
+    {
+        path: '/slider',
+        name: 'slider',
+        component: slider,
     },
 ]
 

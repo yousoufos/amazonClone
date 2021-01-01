@@ -7,7 +7,9 @@
     </div>
 
     <div v-else class="bg-gray-200">
-        <div class="lg:flex lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg">
+        <div
+            class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
+        >
             <div class="w-2/3 mx-auto py-2 lg:w-3/5 lg:m-0 lg:p-0">
                 <img
                     :src="require(`../assets/${product.data.picture}`)"
