@@ -8,6 +8,8 @@
         "dev": "vue-cli-service serve --host 0.0.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^24.0.0",
+        "@ckeditor/ckeditor5-vue": "^2.0.1",
         "@tailwindcss/forms": "^0.2.1",
         "autoprefixer": "^9.8.6",
         "axios": "^0.21.1",

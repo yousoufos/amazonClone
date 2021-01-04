@@ -7,13 +7,13 @@
             <p>
                 <small>$ </small><strong>{{ product.price }}</strong>
             </p>
-            <p class="py-2 text-sm">{{ product.description }}</p>
+            <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
             <div class="flex justify-center">
                 <p class="" v-for="n in product.rating">⭐</p>
             </div>
             <img
                 class="xl:w-56 xl:h-56 mx-auto my-auto"
-                :src="require(`../assets/${product.picture}`)"
+                :src="product.defaultPicture"
                 alt=""
             />
         </div>

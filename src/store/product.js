@@ -1,4 +1,4 @@
-import { getProducts, getProductById } from '../database/product'
+import { getProducts, getProductById, createProduct } from '../database/product'
 // initial state
 const state = () => ({
   product: null
@@ -20,7 +20,8 @@ const actions = {
           description: doc.data().description,
           price: doc.data().price,
           rating: doc.data().rating,
-          picture: doc.data().picture
+          pictures: doc.data().pictures,
+          defaultPicture: doc.data().defaultPicture
         }
         commit('addProducts', obj)
       })
@@ -37,6 +38,13 @@ const actions = {
           data: product.data()
         })
       }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  createProduct: async function ({ commit }, payload) {
+    try {
+      await createProduct(payload)
     } catch (error) {
       console.log(error)
     }

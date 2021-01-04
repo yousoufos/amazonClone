@@ -6,11 +6,7 @@
         <div v-for="item in cart.items" :key="item.productId">
             <div class="flex">
                 <div class="p-4">
-                    <img
-                        class="w-16 h-16"
-                        :src="require(`../assets/${item.picture}`)"
-                        alt=""
-                    />
+                    <img class="w-16 h-16" :src="item.defaultPicture" alt="" />
                 </div>
                 <div class="py-4">
                     <p class="text-sm">{{ item.title }}</p>

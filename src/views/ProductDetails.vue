@@ -11,10 +11,7 @@
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
             <div class="w-2/3 mx-auto py-2 lg:w-3/5 lg:m-0 lg:p-0">
-                <img
-                    :src="require(`../assets/${product.data.picture}`)"
-                    alt=""
-                />
+                <img :src="product.data.defaultPicture" alt="" />
             </div>
             <div class="bg-white p-4 lg:w-full lg:py-14">
                 <p class="font-light text-sm lg:text-3xl">
@@ -55,9 +52,9 @@
                     DETAILS DU PRODUIT
                 </p>
             </div>
-            <p class="p-2 text-justify">
-                {{ product.data.description }}
-            </p>
+            <div class="p-4">
+                <span class="" v-html="product.data.description"></span>
+            </div>
         </div>
         <div class="p-2 text-gray-600 text-sm lg:hidden">
             AVIS DES UTILISATEURS
@@ -97,7 +94,8 @@ export default {
                         price: '',
                         title: '',
                         rating: '',
-                        picture: '',
+                        defaultPicture: '',
+                        pictures: [],
                     }
                 } else {
                     return store.state.product.product

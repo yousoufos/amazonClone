@@ -1,6 +1,12 @@
 <template>
     <div class="flex flex-col">
-        <input @change="onChange" type="file" name="" id="" />
+        <input
+            @change="onChange"
+            type="file"
+            name=""
+            id=""
+            accept="image/x-png,image/gif,image/jpeg"
+        />
         <div>
             <button class="bg-yellow-500" @click="onUpload">Upload</button>
         </div>
@@ -35,12 +41,20 @@
             </li>
         </ul>
     </div>
+    <div class="lg:w-1/2">
+        <ckeditor
+            :editor="editor"
+            v-model="editorData"
+            :config="editorConfig"
+        ></ckeditor>
+    </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
 import { storage, firebaseApp, db } from '../firebase'
 import spin from '../components/Spin'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 export default {
     components: { spin },
     setup() {
@@ -155,6 +169,24 @@ export default {
             selected,
             onSelected,
             productCategory,
+        }
+    },
+    data() {
+        return {
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+                toolbar: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    'blockQuote',
+                ],
+            },
         }
     },
 }

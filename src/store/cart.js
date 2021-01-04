@@ -32,7 +32,7 @@ const actions = {
         data.data().cart.items.forEach((element) => {
           tab.push({
             productId: element.productId,
-            picture: element.picture,
+            defaultPicture: element.defaultPicture,
             title: element.title,
             description: element.description,
             price: element.price,
@@ -69,7 +69,7 @@ const actions = {
           title: payload.title,
           description: payload.description,
           price: payload.price,
-          picture: payload.picture,
+          defaultPicture: payload.defaultPicture,
           rating: payload.rating,
           qte: 1
         }

@@ -4,7 +4,7 @@
             <div class="lg:w-1/5">
                 <img
                     class="w-20 h-20 lg:w-36 lg:h-36"
-                    :src="require(`../assets/${product.picture}`)"
+                    :src="product.defaultPicture"
                     alt=""
                 />
             </div>

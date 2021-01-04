@@ -15,4 +15,12 @@ const getProductById = async function (productId) {
   return product
 }
 
-export { getProducts, getProductById }
+const createProduct = async function (payload) {
+  const product = payload.product
+  try {
+    await payload.ref.set(product)
+  } catch (error) {
+    console.log(error)
+  }
+}
+export { getProducts, getProductById, createProduct }
