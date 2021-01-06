@@ -70,14 +70,13 @@ export default {
             loading.value = false
         })
         const test = async () => {}
-        console.log('setup')
         const data = reactive({
             tab: computed(() => store.state.product.tab),
         })
         const notification = ref(
             computed(() => {
-                if (store.state.cart.notification) {
-                    return store.state.cart.notification
+                if (store.state.notification.notification) {
+                    return store.state.notification.notification
                 } else {
                     return { message: '', type: '', show: false }
                 }

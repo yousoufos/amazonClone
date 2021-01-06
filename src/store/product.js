@@ -1,4 +1,5 @@
 import { getProducts, getProductById, createProduct } from '../database/product'
+import store from '@/store'
 // initial state
 const state = () => ({
   product: null
@@ -45,6 +46,18 @@ const actions = {
   createProduct: async function ({ commit }, payload) {
     try {
       await createProduct(payload)
+      store.dispatch('notification/setNotification', {
+        message: 'Product created sucefully',
+        type: 'success',
+        show: true
+      })
+      setTimeout(function () {
+        store.dispatch('notification/setNotification', {
+          message: '',
+          type: '',
+          show: false
+        })
+      }, 3000)
     } catch (error) {
       console.log(error)
     }

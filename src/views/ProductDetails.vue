@@ -11,7 +11,7 @@
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
             <div class="w-2/3 mx-auto py-2 lg:w-3/5 lg:m-0 lg:p-0">
-                <img :src="product.data.defaultPicture" alt="" />
+                <slider :pictures="product.data.pictures"></slider>
             </div>
             <div class="bg-white p-4 lg:w-full lg:py-14">
                 <p class="font-light text-sm lg:text-3xl">
@@ -65,12 +65,13 @@
 <script>
 import Header from '../components/Header.vue'
 import spin from '../components/Spin'
+import slider from '../components/slider'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 
 export default {
-    components: { Header, spin },
+    components: { Header, spin, slider },
     setup() {
         const store = useStore()
         const router = useRouter()

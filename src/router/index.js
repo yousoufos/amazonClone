@@ -6,6 +6,7 @@ import Logout from '../views/Logout.vue'
 import CheckOutProceed from '../views/CheckOutProceed.vue'
 import Orders from '../views/Orders.vue'
 import test from '../views/test.vue'
+import test1 from '../views/test1.vue'
 import ProductDetails from '../views/ProductDetails.vue'
 import slider from '../components/slider.vue'
 import notFound from '../views/404.vue'
@@ -66,6 +67,11 @@ const routes = [
     path: '/test',
     name: 'test',
     component: test
+  },
+  {
+    path: '/test1',
+    name: 'test1',
+    component: test1
   },
   {
     path: '/productdetails',

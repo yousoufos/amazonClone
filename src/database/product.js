@@ -18,7 +18,19 @@ const getProductById = async function (productId) {
 const createProduct = async function (payload) {
   const product = payload.product
   try {
+    await addProductCategory(payload.productCategory)
     await payload.ref.set(product)
+  } catch (error) {
+    console.log(error)
+  }
+}
+const addProductCategory = async function (payload) {
+  try {
+    payload.categories.forEach((element) => {
+      db.collection('productCategory')
+        .doc()
+        .set({ productId: payload.productId, categoryId: element.id })
+    })
   } catch (error) {
     console.log(error)
   }

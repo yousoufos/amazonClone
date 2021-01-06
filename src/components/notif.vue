@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         hide() {
-            this.$store.dispatch('cart/setNotification', {
+            this.$store.dispatch('notification/setNotification', {
                 message: '',
                 type: '',
                 show: false,

@@ -1,4 +1,5 @@
 import router from '../router'
+import store from '@/store'
 import 'firebase/firestore'
 
 import {
@@ -44,11 +45,6 @@ const actions = {
         car = { items: tab, total: data.data().cart.total }
 
         commit('setCart', car)
-        commit('setNotification', {
-          message: '',
-          type: '',
-          show: false
-        })
       } else {
         // doc.data() will be undefined in this case
         console.log('No such document!')
@@ -57,7 +53,10 @@ const actions = {
       console.log(error)
     }
   },
-  addToCart: async function ({ commit, state, rootState, getters }, payload) {
+  addToCart: async function (
+    { commit, state, rootState, getters, dispatch },
+    payload
+  ) {
     if (rootState.auth.user) {
       if (
         state.cart.items.findIndex(
@@ -74,11 +73,12 @@ const actions = {
           qte: 1
         }
         commit('addItemsToCart', product)
-        commit('setNotification', {
+        store.dispatch('notification/setNotification', {
           message: 'Produit ajouté avec succeée',
           type: 'success',
           show: true
         })
+
         try {
           await addToCart(
             rootState.auth.user.uid,
@@ -88,6 +88,13 @@ const actions = {
         } catch (error) {
           console.log(error)
         }
+        setTimeout(function () {
+          store.dispatch('notification/setNotification', {
+            message: '',
+            type: '',
+            show: false
+          })
+        }, 3000)
       } else {
         alert('Product already in cart')
       }
@@ -124,9 +131,6 @@ const actions = {
       oldItems,
       total: payload.total
     })
-  },
-  setNotification: function ({ commit }, payload) {
-    commit('setNotification', payload)
   }
 }
 
@@ -149,9 +153,6 @@ const mutations = {
       state.cart.items.findIndex((el) => el.productId === payload),
       1
     )
-  },
-  setNotification (state, payload) {
-    state.notification = payload
   }
 }
 

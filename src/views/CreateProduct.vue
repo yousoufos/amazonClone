@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <form @submit.prevent="onSubmit">
+    <div class="">
+        <form @submit.prevent class="">
             <div class="shadow overflow-hidden sm:rounded-md">
                 <div class="px-4 py-5 bg-white sm:p-6">
                     <div class="grid grid-cols-6 gap-6">
@@ -17,6 +17,25 @@
                                 required
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                             />
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <MultiSelect
+                                ref="children"
+                                :category="category"
+                            ></MultiSelect>
+                            <!-- <select
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                @change="onSelected(selected)"
+                                v-model="selected"
+                            >
+                                <option
+                                    v-for="option in category"
+                                    :key="option.id"
+                                    v-bind:value="option.id"
+                                >
+                                    {{ option.name }}
+                                </option>
+                            </select> -->
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -39,7 +58,7 @@
                                 >Price</label
                             >
                             <input
-                                type="text"
+                                type="number"
                                 name="price"
                                 v-model="form.price"
                                 required
@@ -53,7 +72,7 @@
                                 >Stock</label
                             >
                             <input
-                                type="text"
+                                type="number"
                                 name="stock"
                                 v-model="form.stock"
                                 required
@@ -62,20 +81,43 @@
                         </div>
 
                         <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                            <label
-                                for="file"
-                                class="block text-sm font-medium text-gray-700"
-                                >Upload picture</label
-                            >
+                            <div class="">
+                                <label
+                                    for="file"
+                                    class="flex text-sm font-medium text-gray-700"
+                                    >Upload picture<span class="px-2"
+                                        ><svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="black"
+                                            width="18px"
+                                            height="18px"
+                                        >
+                                            <path
+                                                d="M0 0h24v24H0z"
+                                                fill="none"
+                                            />
+                                            <path
+                                                d="M2 6H0v5h.01L0 20c0 1.1.9 2 2 2h18v-2H2V6zm20-2h-8l-2-2H6c-1.1 0-1.99.9-1.99 2L4 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7 15l4.5-6 3.5 4.51 2.5-3.01L21 15H7z"
+                                            /></svg
+                                    ></span>
+                                </label>
+                            </div>
                             <input
                                 @change="onChange"
                                 type="file"
                                 name="file"
                                 accept="image/x-png,image/gif,image/jpeg"
                                 required
-                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                id="file"
                             />
-                            <button @click="onUpload">Upload</button>
+                            <!-- <button
+                                class="mt-2 font-semibold bg-yellow-500 w-20"
+                                @click="onUpload"
+                            >
+                                Upload
+                            </button> -->
                             <div v-if="loading" class="w-1/5">
                                 <div class="shadow w-full bg-grey-light">
                                     <div
@@ -115,6 +157,8 @@
                                                 >Default</label
                                             >
                                             <input
+                                                checked
+                                                name="picture"
                                                 type="radio"
                                                 id="one"
                                                 :value="img"
@@ -130,13 +174,13 @@
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <button
-                        type="submit"
+                        @click="onSubmit"
                         class="font-semibold bg-yellow-500 w-20"
                     >
                         Save
                     </button>
                     <button
-                        @click=""
+                        @click="cancel"
                         class="ml-4 font-semibold bg-yellow-500 w-20"
                     >
                         Cancel
@@ -144,15 +188,23 @@
                 </div>
             </div>
         </form>
+        <notif
+            v-if="notification.show"
+            :notification="notification"
+            :show="notification.show"
+        ></notif>
     </div>
 </template>
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { storage, firebaseApp, db } from '../firebase'
 import { useStore } from 'vuex'
+import MultiSelect from '../components/MultiSelect.vue'
+import notif from '../components/notif.vue'
 export default {
+    components: { MultiSelect, notif },
     setup() {
         const form = reactive({
             title: '',
@@ -168,8 +220,10 @@ export default {
         const progressBar = ref(0)
         const refi = db.collection('product').doc()
         const id = refi.id
+        const children = ref(null)
         const onChange = (e) => {
             file.value = e.target.files[0]
+            onUpload()
         }
         const onUpload = () => {
             loading.value = true
@@ -221,7 +275,6 @@ export default {
                         .then(function (downloadURL) {
                             fileTab.value.push(downloadURL)
                             loading.value = false
-                            console.log('File available at', downloadURL)
                         })
                 }
             )
@@ -240,6 +293,11 @@ export default {
                 })
         }
         const onSubmit = () => {
+            /* if ((typeof form.price && typeof form.stock) !== 'number') {
+                alert('Price or stock must be a number')
+                return
+            } */
+
             if (
                 (form.title && form.description && form.price && form.stock) !==
                 ''
@@ -256,10 +314,80 @@ export default {
                 store.dispatch('product/createProduct', {
                     ref: refi,
                     product: product,
+                    productCategory: {
+                        productId: id,
+                        categories: children.value.selectedOptions,
+                    },
                 })
-                console.log(product)
+            } else {
+                alert('All fields must be entred')
             }
         }
+        const selected = ref('')
+        const productCategory = ref([])
+        const category = ref(
+            computed(() => {
+                if (store.state.category.categories === null) {
+                    return [{ id: '', data: { name: '' } }]
+                } else {
+                    return store.state.category.categories
+                }
+            })
+        )
+        const fetchCaterories = () => {
+            /* db.collection('category')
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach(function (doc) {
+                        category.value.push({ id: doc.id, data: doc.data() })
+                    })
+                    console.log(category.value)
+                }) */
+            store.dispatch('category/getCategories')
+        }
+        const onSelected = (categoryId) => {
+            /* 
+            productCategory.value = []
+            db.collection('productCategory')
+                .where('categoryId', '==', categoryId)
+                .get()
+                .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        let obj = { id: doc.id, data: doc.data() }
+                        // doc.data() is never undefined for query doc snapshots
+
+                        db.collection('product')
+                            .doc(obj.data.productId)
+                            .get()
+                            .then(function (query) {
+                                if (query.exists) {
+                                    productCategory.value.push(query.data())
+                                }
+                            })
+                    })
+                    console.log(productCategory.value)
+                })
+                .catch(function (error) {
+                    console.log('Error getting documents: ', error)
+                }) */
+        }
+        const cancel = () => {
+            console.log(children.value.selectedOptions)
+        }
+
+        const notification = ref(
+            computed(() => {
+                if (store.state.notification.notification) {
+                    return store.state.notification.notification
+                } else {
+                    return { message: '', type: '', show: false }
+                }
+            })
+        )
+
+        onMounted(() => {
+            fetchCaterories()
+        })
 
         return {
             fileTab,
@@ -272,6 +400,12 @@ export default {
             onSubmit,
             form,
             alaune,
+            category,
+            selected,
+            onSelected,
+            children,
+            cancel,
+            notification,
         }
     },
     data() {
@@ -292,6 +426,7 @@ export default {
             },
         }
     },
+    methods: {},
 }
 </script>
 

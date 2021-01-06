@@ -23,13 +23,17 @@
         </div>
     </div>
     <div>
-        <select @change="onSelected(selected)" v-model="selected">
+        <select
+            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            @change="onSelected(selected)"
+            v-model="selected"
+        >
             <option
                 v-for="option in category"
                 :key="option.id"
                 v-bind:value="option.id"
             >
-                {{ option.data.name }}
+                {{ option.name }}
             </option>
         </select>
         <span>Sélectionné : {{ selected }}</span>
@@ -41,23 +45,28 @@
             </li>
         </ul>
     </div>
-    <div class="lg:w-1/2">
+
+    <!-- <div class="lg:w-1/2">
         <ckeditor
             :editor="editor"
             v-model="editorData"
             :config="editorConfig"
         ></ckeditor>
-    </div>
+    </div> -->
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { storage, firebaseApp, db } from '../firebase'
 import spin from '../components/Spin'
+
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import { useStore } from 'vuex'
 export default {
     components: { spin },
+
     setup() {
+        const store = useStore()
         const file = ref(null)
         const loading = ref(false)
         const progressBar = ref(0)
@@ -115,8 +124,16 @@ export default {
         }
 
         const productCategory = ref([])
-        const category = ref([])
-        const selected = ref('')
+        const category = ref(
+            computed(() => {
+                if (store.state.category.categories === null) {
+                    return [{ id: '', data: { name: '' } }]
+                } else {
+                    return store.state.category.categories
+                }
+            })
+        )
+        const selected = ref(null)
 
         const onSelected = (categoryId) => {
             productCategory.value = []
@@ -145,14 +162,15 @@ export default {
         }
 
         const fetchCaterories = () => {
-            db.collection('category')
+            /* db.collection('category')
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach(function (doc) {
                         category.value.push({ id: doc.id, data: doc.data() })
                     })
                     console.log(category.value)
-                })
+                }) */
+            store.dispatch('category/getCategories')
         }
 
         onMounted(() => {

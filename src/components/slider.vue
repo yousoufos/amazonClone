@@ -1,6 +1,6 @@
 <template>
     <div
-        class="mx-auto flex flex-nowrap w-4/5 lg:w-1/4 space-x-2 overflow-x-auto"
+        class="mx-auto flex flex-nowrap w-4/5 lg:10/12 space-x-2 overflow-x-auto"
     >
         <div
             v-for="item in pictures"
