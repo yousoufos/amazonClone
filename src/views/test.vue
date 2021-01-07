@@ -207,6 +207,9 @@ export default {
             },
         }
     },
+    beforeRouteLeave(to, from, next) {
+        console.log(bye)
+    },
 }
 </script>
 
