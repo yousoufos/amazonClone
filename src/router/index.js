@@ -10,7 +10,11 @@ import test1 from '../views/test1.vue'
 import ProductDetails from '../views/ProductDetails.vue'
 import slider from '../components/slider.vue'
 import notFound from '../views/404.vue'
-import createProduct from '../views/CreateProduct.vue'
+import createProduct from '../views/admin/product/newProduct.vue'
+import UserOrderDetails from '../views/UserOrderDetails.vue'
+import adminHome from '../views/admin/home.vue'
+import listProduct from '../views/admin/product/listProduct.vue'
+import editProduct from '../views/admin/product/editproduct.vue'
 import store from '@/store'
 // import isAuth from '../middleware/Auth'
 
@@ -56,12 +60,14 @@ const routes = [
   {
     path: '/checkoutproceed',
     name: 'CheckOutProceed',
-    component: CheckOutProceed
+    component: CheckOutProceed,
+    beforeEnter: isNotAuth
   },
   {
     path: '/orders',
     name: 'Orders',
-    component: Orders
+    component: Orders,
+    beforeEnter: isNotAuth
   },
   {
     path: '/test',
@@ -79,15 +85,38 @@ const routes = [
     component: ProductDetails
   },
   {
+    path: '/userorderdetails',
+    name: 'UserOrderDetails',
+    component: UserOrderDetails,
+    beforeEnter: isNotAuth
+  },
+  {
     path: '/slider',
     name: 'slider',
     component: slider
   },
+  // Admin Section
   {
-    path: '/admin/createproduct',
+    path: '/admin/product/newproduct',
     name: 'CreateProduct',
     component: createProduct
   },
+  {
+    path: '/admin/',
+    name: 'adminHome',
+    component: adminHome
+  },
+  {
+    path: '/admin/product/listproduct',
+    name: 'listProduct',
+    component: listProduct
+  },
+  {
+    path: '/admin/product/editproduct',
+    name: 'editProduct',
+    component: editProduct
+  },
+  // errors
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

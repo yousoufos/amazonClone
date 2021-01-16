@@ -1,0 +1,240 @@
+<template>
+    <div class="">
+        <div>
+            <navbar title="Products List"></navbar>
+        </div>
+        <div class="flex">
+            <div><sidebar :selected="selected"></sidebar></div>
+
+            <div class="w-full">
+                <div class="py-4 mx-auto flex flex-col w-11/12">
+                    <router-link to="/admin/product/newProduct">
+                        <div
+                            class="flex w-48 mb-4 space-x-2 justify-center rounded-md py-2 bg-gray-300 cursor-pointer"
+                        >
+                            <span class="material-icons">
+                                add_circle_outline
+                            </span>
+                            <span>New Product</span>
+                        </div>
+                    </router-link>
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div
+                            class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+                        >
+                            <div
+                                class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                            >
+                                <table
+                                    class="min-w-full divide-y divide-gray-200"
+                                    :class="{ 'flex-row': toggle }"
+                                >
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Reference
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Title
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Price
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Stock
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Category
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Picture
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="bg-white divide-y divide-gray-200"
+                                    >
+                                        <tr
+                                            v-for="product in products"
+                                            :key="product.productId"
+                                        >
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                {{ product.productId }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                {{ product.title }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                {{ product.price }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                {{ product.stock }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-500 flex space-x-1"
+                                            >
+                                                <div v-if="loading">
+                                                    Loading...
+                                                </div>
+                                                <div
+                                                    v-else
+                                                    v-for="item in product.categories"
+                                                    :key="item.id"
+                                                    class="bg-green-400 rounded-lg px-2 mt-3"
+                                                >
+                                                    {{ item.data.name }}
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                <img
+                                                    class="w-12 h-12"
+                                                    :src="
+                                                        product.defaultPicture
+                                                    "
+                                                    alt=""
+                                                />
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2"
+                                            >
+                                                <span
+                                                    @click="remove(product)"
+                                                    class="material-icons cursor-pointer"
+                                                >
+                                                    delete_forever
+                                                </span>
+                                                <span
+                                                    @click="edit(product)"
+                                                    class="material-icons cursor-pointer"
+                                                >
+                                                    edit
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import navbar from '../../../components/admin/navbar'
+import sidebar from '../../../components/admin/sidebar'
+import spin from '../../../components/Spin'
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { storage } from '../../../firebase'
+import { useRouter } from 'vue-router'
+export default {
+    components: {
+        navbar,
+        sidebar,
+        spin,
+    },
+    setup() {
+        const store = useStore()
+        const router = useRouter()
+        const toggle = ref(true)
+        const selected = ref('Product')
+        const loading = ref(true)
+        const products = ref(
+            computed(() => {
+                return store.state.product.tab
+            })
+        )
+        onMounted(() => {
+            setTimeout(function () {
+                toggle.value = false
+                loading.value = false
+            }, 3000)
+        })
+
+        const removePicture = (item) => {
+            var httpsReference = storage.refFromURL(item)
+            httpsReference
+                .delete()
+                .then(console.log('pictures removed'))
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+
+        const removeAllPictures = (product) => {
+            if (product.pictures.length !== 0) {
+                product.pictures.forEach((item) => {
+                    removePicture(item)
+                })
+            }
+        }
+        const remove = (product) => {
+            if (confirm('Do you really want to remove this product')) {
+                removeAllPictures(product)
+                store.dispatch('product/removeProduct', product.productId)
+                console.log('Delete succeful')
+            } else {
+                return
+            }
+        }
+
+        const edit = (product) => {
+            router.push({
+                name: 'editProduct',
+                query: { productId: product.productId },
+            })
+        }
+
+        return { products, toggle, selected, loading, remove, edit }
+    },
+
+    mounted: async function () {
+        await this.$store.dispatch('product/getProducts')
+    },
+}
+</script>
+
+<style>
+@media screen and (max-width: 768px) {
+    .width655px {
+        width: 768px;
+    }
+}
+</style>

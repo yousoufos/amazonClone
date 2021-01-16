@@ -5,6 +5,9 @@
             <p class="lg:mb-10 lg:py-3 lg:text-2xl lg:font-bold lg:border-b-2">
                 Your Shopping Cart :
             </p>
+            <div v-if="count === 0">
+                <img src="../assets/empty-cart.png" alt="" />
+            </div>
             <product
                 class="bg-gray-100 rounded-lg"
                 @qteUpdated="update"
@@ -30,6 +33,9 @@
         </div>
     </div>
     <div class="flex flex-col lg:hidden">
+        <div v-if="count === 0">
+            <img src="../assets/empty-cart.png" alt="" />
+        </div>
         <div class="m-4">
             <div class="">
                 <product

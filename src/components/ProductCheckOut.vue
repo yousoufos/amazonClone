@@ -17,11 +17,12 @@
             </div>
         </div>
         <div class="flex p-2 w-10/12 mx-auto justify-between content-center">
-            <div class="">
+            <div>
                 <button
                     @click="remove(product.productId)"
-                    class="text-yellow-500"
+                    class="text-yellow-500 flex"
                 >
+                    Remove
                     <svg
                         class="h-6 w-6"
                         xmlns="http://www.w3.org/2000/svg"

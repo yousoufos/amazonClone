@@ -2,6 +2,7 @@
     <div class="w-full mx-auto">
         <div
             class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            :class="{ 'flex-grow': toggle }"
         >
             <div class="flex flex-wrap">
                 <span
@@ -9,12 +10,14 @@
                     class="block text-sm font-medium text-gray-700"
                     >Choose your category</span
                 >
+                <div v-if="loading">Loading...</div>
                 <div
-                    v-for="item in selectedOptions"
+                    v-else
+                    v-for="item in option"
                     :key="item.id"
                     class="flex bg-green-400 rounded-lg p-1 m-2"
                 >
-                    <span class="text-sm font-medium">{{ item.name }}</span
+                    <span class="text-sm font-medium">{{ item.data.name }}</span
                     ><span class="px-1" @click="removeTag(item)"
                         ><svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -69,41 +72,86 @@
 </template>
 
 <script>
+import { ref, computed, watchEffect, onMounted } from 'vue'
+
 export default {
     props: {
         category: Object,
+        selectedCategories: Object,
+        types: String,
     },
-    data() {
-        return {
-            showList: false,
-            options: [
-                { id: 1, name: 'Informatique' },
-                { id: 2, name: 'Telephone' },
-                { id: 3, name: 'Inprimante' },
-                { id: 4, name: 'Console' },
-                { id: 5, name: 'Voiture' },
-            ],
-            selectedOptions: [],
-            placeholder: true,
+    setup(props) {
+        const toggle = ref(false)
+        const loading = ref(true)
+        const showList = ref(false)
+        const selectedOptions = ref(
+            props.types === 'edit' ? props.selectedCategories : []
+        )
+        console.log(props.selectedCategories.length)
+        const placeholder = ref(
+            computed(() => {
+                if (option.value.length === 0) {
+                    return true
+                } else {
+                    return false
+                }
+            })
+        )
+        const option = ref(
+            computed(() => {
+                return selectedOptions.value
+            })
+        )
+
+        const removeTag = (item) => {
+            selectedOptions.value.splice(selectedOptions.value.indexOf(item), 1)
+            if (selectedOptions.value.length === 0) {
+                showList.value = false
+            }
         }
-    },
-    methods: {
-        removeTag(item) {
-            this.selectedOptions.splice(this.selectedOptions.indexOf(item), 1)
-            if (this.selectedOptions.length === 0) {
-                this.placeholder = true
-                this.showList = false
+
+        const toggleList = () => {
+            showList.value = !showList.value
+        }
+
+        const selectCategory = (item) => {
+            if (selectedOptions.value.indexOf(item) === -1) {
+                selectedOptions.value.push({
+                    id: item.id,
+                    data: { name: item.name },
+                })
             }
-        },
-        toggleList() {
-            this.showList = !this.showList
-        },
-        selectCategory(item) {
-            if (this.selectedOptions.indexOf(item) === -1) {
-                this.selectedOptions.push(item)
-                this.placeholder = false
-            }
-        },
+        }
+        onMounted(() => {
+            setTimeout(() => {
+                toggle.value = true
+                selectedOptions.value.push({
+                    id: '1',
+                    data: { name: '' },
+                })
+                selectedOptions.value.splice(
+                    selectedOptions.value.indexOf({
+                        id: '1',
+                        data: { name: '' },
+                    }),
+                    1
+                )
+
+                loading.value = false
+            }, 2000)
+        })
+
+        return {
+            toggle,
+            loading,
+            showList,
+            selectedOptions,
+            removeTag,
+            toggleList,
+            selectCategory,
+            placeholder,
+            option,
+        }
     },
 }
 </script>

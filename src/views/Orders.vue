@@ -44,7 +44,12 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="item in orders" :key="item.orderId">
+                            <tr
+                                @click="detail(item.orderId)"
+                                v-for="item in orders"
+                                :key="item.orderId"
+                                class="cursor-pointer"
+                            >
                                 <td
                                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                 >
@@ -94,14 +99,26 @@ import navBar from '../components/Header'
 import store from '@/store'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
     components: { 'nav-bar': navBar },
     setup(props) {
+        const router = useRouter()
         const store = useStore()
-        const orders = ref(computed(() => store.state.order.order))
+        const orders = ref(computed(() => store.state.order.orders))
+
+        const detail = (id) => {
+            router.push({
+                name: 'UserOrderDetails',
+                query: {
+                    orderId: id,
+                },
+            })
+        }
 
         return {
             orders,
+            detail,
         }
     },
 

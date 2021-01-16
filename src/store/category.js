@@ -1,7 +1,8 @@
 import { getCategories } from '../database/category'
+import { db } from '../firebase'
 
 // initial state
-const state = () => ({ categories: null })
+const state = () => ({ categories: null, productCategories: null })
 
 // getters
 const getters = {}

@@ -7,10 +7,7 @@
                 <div
                     class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
                 >
-                    <table
-                        class="min-w-full divide-y divide-gray-200"
-                        :class="{ 'flex-row': toggle }"
-                    >
+                    <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th
@@ -57,7 +54,6 @@
                                 </th>
                             </tr>
                         </thead>
-
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr
                                 v-for="product in products"
@@ -81,23 +77,19 @@
                                 <td
                                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                 >
-                                    {{ product.stock }}
+                                    {{ product.price }}
                                 </td>
-
                                 <td
-                                    class="px-6 py-4 text-sm text-gray-500 flex space-x-1"
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex flex-wrap space-x-1"
                                 >
-                                    <span
-                                        v-for="(
-                                            item, index
-                                        ) in product.categories"
-                                        :key="index"
-                                        class="bg-green-400 rounded-lg px-2 mt-4"
+                                    <div
+                                        v-for="item in product.categories"
+                                        :key="item.id"
+                                        class="bg-green-400 rounded-lg px-2 mt-3"
                                     >
                                         {{ item.name }}
-                                    </span>
+                                    </div>
                                 </td>
-
                                 <td
                                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                 >
@@ -130,19 +122,12 @@ import { useStore } from 'vuex'
 export default {
     setup() {
         const store = useStore()
-        const toggle = ref(true)
         const products = ref(
             computed(() => {
                 return store.state.product.tab
             })
         )
-        onMounted(() => {
-            setTimeout(function () {
-                toggle.value = false
-            }, 1000)
-        })
-
-        return { products, toggle }
+        return { products }
     },
 
     beforeMount: async function () {

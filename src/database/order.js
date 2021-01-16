@@ -1,4 +1,3 @@
-import { doc } from 'prettier'
 import { db } from '../firebase'
 
 const addOrder = async function (order) {
@@ -44,5 +43,14 @@ const getOrder = async function (userId) {
     console.log(error)
   }
 }
+const getOrderById = async function (orderId) {
+  try {
+    const order = await db.collection('orders').doc(orderId).get()
+    return order
+  } catch (error) {
+    console.log(error)
+    return { order: { error: 'forbidden' } }
+  }
+}
 
-export { addOrder, getOrder }
+export { addOrder, getOrder, getOrderById }

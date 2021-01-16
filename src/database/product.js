@@ -35,4 +35,50 @@ const addProductCategory = async function (payload) {
     console.log(error)
   }
 }
-export { getProducts, getProductById, createProduct }
+
+const removeProduct = async function (productId) {
+  try {
+    await db.collection('product').doc(productId).delete()
+    const productCategory = await db
+      .collection('productCategory')
+      .where('productId', '==', productId)
+    productCategory.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete()
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getProductCategories = async function (productId) {
+  const tab = []
+  try {
+    const productcategory = await db
+      .collection('productCategory')
+      .where('productId', '==', productId)
+      .get()
+    productcategory.forEach(function (doc) {
+      const obj = { id: doc.id, data: doc.data() }
+      db.collection('category')
+        .doc(obj.data.categoryId)
+        .get()
+        .then(function (query) {
+          if (query.exists) {
+            tab.push({ id: query.id, data: query.data() })
+          }
+        })
+    })
+    return tab
+  } catch (error) {
+    console.log(error)
+  }
+}
+export {
+  getProducts,
+  getProductById,
+  createProduct,
+  getProductCategories,
+  removeProduct
+}

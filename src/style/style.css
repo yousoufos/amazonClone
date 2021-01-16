@@ -6,6 +6,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 html,
 body {
     font-family: 'Helevetica', sans-serif;

@@ -77,7 +77,6 @@ export default {
         const router = useRouter()
         const route = useRoute()
         const loading = ref(true)
-        console.log(route.query.productId)
 
         onMounted(async () => {
             await store.dispatch(
@@ -103,7 +102,6 @@ export default {
                 }
             })
         )
-        console.log(product.value)
 
         return { product, loading }
     },

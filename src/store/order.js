@@ -1,9 +1,9 @@
 import router from '../router'
 import store from '@/store'
-import { addOrder, getOrder } from '../database/order'
+import { addOrder, getOrder, getOrderById } from '../database/order'
 
 // initial state
-const state = () => ({ order: null })
+const state = () => ({ orders: null, order: null })
 
 // getters
 const getters = {}
@@ -21,12 +21,30 @@ const actions = {
 
     commit('setOrders', orders)
     console.log(state.order)
+  },
+  getOrderById: async function ({ commit }, orderId) {
+    try {
+      const order = await getOrderById(orderId)
+      if (order.exists) {
+        commit('setOrder', {
+          OrderId: order.id,
+          data: order.data()
+        })
+      } else {
+        commit('setOrder', { error: 'forbiden' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
 // mutations
 const mutations = {
   setOrders: function (state, payload) {
+    state.orders = payload
+  },
+  setOrder: function (state, payload) {
     state.order = payload
   }
 }
