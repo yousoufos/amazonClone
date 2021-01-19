@@ -13,7 +13,7 @@
                 <div v-if="loading">Loading...</div>
                 <div
                     v-else
-                    v-for="item in option"
+                    v-for="item in selectedOptions"
                     :key="item.id"
                     class="flex bg-green-400 rounded-lg p-1 m-2"
                 >
@@ -82,24 +82,18 @@ export default {
     },
     setup(props) {
         const toggle = ref(false)
-        const loading = ref(true)
+        const loading = ref(false)
         const showList = ref(false)
         const selectedOptions = ref(
             props.types === 'edit' ? props.selectedCategories : []
         )
-        console.log(props.selectedCategories.length)
         const placeholder = ref(
             computed(() => {
-                if (option.value.length === 0) {
+                if (selectedOptions.value.length === 0) {
                     return true
                 } else {
                     return false
                 }
-            })
-        )
-        const option = ref(
-            computed(() => {
-                return selectedOptions.value
             })
         )
 
@@ -123,7 +117,7 @@ export default {
             }
         }
         onMounted(() => {
-            setTimeout(() => {
+            /* setTimeout(() => {
                 toggle.value = true
                 selectedOptions.value.push({
                     id: '1',
@@ -138,7 +132,7 @@ export default {
                 )
 
                 loading.value = false
-            }, 2000)
+            }, 2000) */
         })
 
         return {
@@ -150,7 +144,6 @@ export default {
             toggleList,
             selectCategory,
             placeholder,
-            option,
         }
     },
 }

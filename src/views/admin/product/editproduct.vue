@@ -21,7 +21,7 @@
                                         <input
                                             type="text"
                                             name="title"
-                                            v-model="product.data.title"
+                                            v-model="form.title"
                                             required
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         />
@@ -45,7 +45,7 @@
                                         >
                                         <ckeditor
                                             :editor="editor"
-                                            v-model="product.data.description"
+                                            v-model="form.description"
                                             :config="editorConfig"
                                         ></ckeditor>
                                     </div>
@@ -59,7 +59,7 @@
                                         <input
                                             type="number"
                                             name="price"
-                                            v-model="product.data.price"
+                                            v-model="form.price"
                                             required
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         />
@@ -73,7 +73,7 @@
                                         <input
                                             type="number"
                                             name="stock"
-                                            v-model="product.data.stock"
+                                            v-model="form.stock"
                                             required
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         />
@@ -115,7 +115,7 @@
                                             id="file"
                                         />
 
-                                        <div v-if="loading" class="w-1/5">
+                                        <div v-if="loadingBar" class="w-1/5">
                                             <div
                                                 class="shadow w-full bg-grey-light"
                                             >
@@ -140,6 +140,7 @@
                                                 >
                                                     <span class=""
                                                         ><button
+                                                            type="button"
                                                             @click="
                                                                 removePicture(
                                                                     img
@@ -166,7 +167,6 @@
                                                             >Default</label
                                                         >
                                                         <input
-                                                            checked
                                                             name="picture"
                                                             type="radio"
                                                             id="one"
@@ -189,12 +189,14 @@
                                 class="px-4 py-3 bg-gray-50 text-right sm:px-6"
                             >
                                 <button
+                                    type="button"
                                     @click="onSubmit"
                                     class="font-semibold bg-yellow-500 w-20"
                                 >
                                     Save
                                 </button>
                                 <button
+                                    type="button"
                                     @click="cancel"
                                     class="ml-4 font-semibold bg-yellow-500 w-20"
                                 >
@@ -246,6 +248,7 @@ export default {
         const alaune = ref('')
         const loading = ref(true)
         const progressBar = ref(0)
+        const loadingBar = ref(false)
         const refi = db.collection('product').doc()
         const id = refi.id
         const children = ref(null)
@@ -254,7 +257,7 @@ export default {
             onUpload()
         }
         const onUpload = () => {
-            loading.value = true
+            loadingBar.value = true
             progressBar.value = 0
 
             var storageRef = storage.ref(
@@ -303,7 +306,7 @@ export default {
                         .then(function (downloadURL) {
                             fileTab.value.push(downloadURL)
                             alaune.value = downloadURL
-                            loading.value = false
+                            loadingBar.value = false
                         })
                 }
             )
@@ -328,12 +331,11 @@ export default {
                 alert('Price or stock must be a number')
                 return
             } */
-
             if (
                 (form.title && form.description && form.price && form.stock) !==
                 ''
             ) {
-                let product = {
+                let prod = {
                     title: form.title,
                     description: form.description,
                     price: form.price,
@@ -342,15 +344,25 @@ export default {
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
                 }
-                store.dispatch('product/createProduct', {
-                    ref: refi,
-                    product: product,
-                    productCategory: {
-                        productId: id,
-                        categories: children.value.selectedOptions,
+                store.dispatch(
+                    'product/updateProduct',
+                    {
+                        productId: product.value.productId,
+                        productCategory: {
+                            productId: product.value.productId,
+                            categories: children.value.selectedOptions,
+                        },
+                        product: prod,
+                    }
+                    /* product.value.productId,
+                    {
+                        productCategory: {
+                            productId: product.value.productId,
+                            categories: children.value.selectedOptions,
+                        },
                     },
-                })
-                resetForm()
+                    prod */
+                )
             } else {
                 alert('All fields must be entred')
             }
@@ -408,13 +420,17 @@ export default {
                 'product/getProductById',
                 route.query.productId
             )
-
+            fileTab.value = product.value.data.pictures
+            alaune.value = product.value.data.defaultPicture
             loading.value = false
+            form.title = product.value.data.title
+            form.description = product.value.data.description
+            form.price = product.value.data.price
+            form.stock = product.value.data.stock
         })
 
         const product = ref(
             computed(() => {
-                console.log(JSON.stringify(store.state.product.product))
                 return store.state.product.product
             })
         )
@@ -436,6 +452,7 @@ export default {
             cancel,
             notification,
             product,
+            loadingBar,
         }
     },
     data() {

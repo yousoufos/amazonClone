@@ -7,7 +7,8 @@
             <div><sidebar :selected="selected"></sidebar></div>
 
             <div class="w-full">
-                <div class="py-4 mx-auto flex flex-col w-11/12">
+                <div v-if="loading">Loading...</div>
+                <div v-else class="py-4 mx-auto flex flex-col w-11/12">
                     <router-link to="/admin/product/newProduct">
                         <div
                             class="flex w-48 mb-4 space-x-2 justify-center rounded-md py-2 bg-gray-300 cursor-pointer"
@@ -103,16 +104,12 @@
                                                 {{ product.stock }}
                                             </td>
                                             <td
-                                                class="px-6 py-4 text-sm text-gray-500 flex space-x-1"
+                                                class="px-6 py-4 text-sm text-gray-500 flex space-x-1 w-56 overflow-auto"
                                             >
-                                                <div v-if="loading">
-                                                    Loading...
-                                                </div>
                                                 <div
-                                                    v-else
                                                     v-for="item in product.categories"
                                                     :key="item.id"
-                                                    class="bg-green-400 rounded-lg px-2 mt-3"
+                                                    class="bg-green-400 rounded-lg px-2 mt-3 flex flex-nowrap"
                                                 >
                                                     {{ item.data.name }}
                                                 </div>
@@ -182,10 +179,10 @@ export default {
             })
         )
         onMounted(() => {
-            setTimeout(function () {
+            /* setTimeout(function () {
                 toggle.value = false
                 loading.value = false
-            }, 3000)
+            }, 3000) */
         })
 
         const removePicture = (item) => {
@@ -222,11 +219,12 @@ export default {
             })
         }
 
-        return { products, toggle, selected, loading, remove, edit }
-    },
+        onMounted(async () => {
+            await store.dispatch('product/getProducts')
+            loading.value = false
+        })
 
-    mounted: async function () {
-        await this.$store.dispatch('product/getProducts')
+        return { products, toggle, selected, loading, remove, edit }
     },
 }
 </script>

@@ -1,5 +1,8 @@
-import { getCategories } from '../database/category'
-import { db } from '../firebase'
+import {
+  getCategories,
+  updateCategory,
+  deleteCategory
+} from '../database/category'
 
 // initial state
 const state = () => ({ categories: null, productCategories: null })
@@ -13,6 +16,19 @@ const actions = {
     const cat = await getCategories()
 
     commit('setCategories', cat)
+  },
+  setCategories: function ({ commit }, payload) {
+    commit('setCategories', payload)
+  },
+  updateCategory: async function ({ commit }, payload) {
+    await updateCategory(payload)
+
+    commit('setCategories', payload.categories)
+  },
+  deleteCategory: async function ({ commit }, payload) {
+    await deleteCategory(payload.categoryId)
+
+    commit('deleteCategory', payload.categoryId)
   }
 }
 
@@ -20,6 +36,12 @@ const actions = {
 const mutations = {
   setCategories: function (state, payload) {
     state.categories = payload
+  },
+  deleteCategory: function (state, payload) {
+    state.categories.splice(
+      state.categories.findIndex((e) => e.id === payload),
+      1
+    )
   }
 }
 

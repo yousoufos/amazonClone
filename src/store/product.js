@@ -3,7 +3,8 @@ import {
   getProductById,
   createProduct,
   getProductCategories,
-  removeProduct
+  removeProduct,
+  updateProduct
 } from '../database/product'
 import store from '@/store'
 // initial state
@@ -26,7 +27,7 @@ const actions = {
     commit('emptyProductArray')
     try {
       const snapshot = await getProducts()
-      snapshot.forEach(async (doc) => {
+      for (const doc of snapshot.docs) {
         const obj = {
           productId: doc.id,
           title: doc.data().title,
@@ -40,18 +41,22 @@ const actions = {
         }
 
         commit('addProducts', obj)
-      })
+      }
     } catch (error) {
       console.log(error)
     }
   },
   getProductById: async function ({ commit }, productId) {
     try {
+      let Obj = {}
       const product = await getProductById(productId)
       if (product.exists) {
-        const Obj = Object.assign({}, product.data(), {
-          categories: await getProductCategories(productId)
+        const cat = await getProductCategories(productId)
+
+        Obj = Object.assign({}, product.data(), {
+          categories: cat
         })
+
         commit('setProduct', {
           productId: product.id,
           data: Obj
@@ -95,6 +100,15 @@ const actions = {
     } catch (error) {
       console.log(error)
     }
+  },
+  updateProduct: function ({ commit }, payload) {
+    updateProduct(
+      payload.productId,
+      payload.productCategory,
+      payload.product
+    )
+    console.log(payload)
+    console.log('Update product ')
   }
 }
 
@@ -102,7 +116,6 @@ const actions = {
 const mutations = {
   addProducts: function (state, payload) {
     state.tab.push(payload)
-    console.log(state.tab)
   },
   emptyProductArray: function (state) {
     state.tab = []

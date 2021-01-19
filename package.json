@@ -15,23 +15,23 @@
         "axios": "^0.21.1",
         "cors": "^2.8.5",
         "emailjs-com": "^2.6.4",
-        "firebase": "^8.2.1",
+        "firebase": "^8.2.3",
         "nodemailer": "^6.4.17",
         "postcss": "^7.0.35",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-        "vue": "^3.0.0",
-        "vue-currency-input": "^2.0.0-beta.0",
-        "vue-router": "^4.0.1",
+        "vue": "^3.0.5",
+        "vue-currency-input": "^2.0.0-beta.2",
+        "vue-router": "^4.0.3",
         "vuex": "^4.0.0-0"
     },
     "devDependencies": {
-        "@vue/cli-plugin-router": "~4.5.0",
-        "@vue/cli-plugin-vuex": "~4.5.0",
-        "@vue/cli-service": "~4.5.0",
-        "@vue/compiler-sfc": "^3.0.0",
-        "eslint": "^7.16.0",
+        "@vue/cli-plugin-router": "^4.5.10",
+        "@vue/cli-plugin-vuex": "^4.5.10",
+        "@vue/cli-service": "^4.5.10",
+        "@vue/compiler-sfc": "^3.0.5",
+        "eslint": "^7.18.0",
         "eslint-config-prettier": "^7.1.0",
-        "eslint-plugin-vue": "^7.3.0",
+        "eslint-plugin-vue": "^7.4.1",
         "prettier": "2.2.1"
     }
 }

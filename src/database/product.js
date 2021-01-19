@@ -1,4 +1,5 @@
 import { db } from '../firebase'
+import { deleteProductCategoryById } from '../database/category'
 
 const getProducts = async function () {
   const products = db.collection('product').limit(4)
@@ -26,11 +27,13 @@ const createProduct = async function (payload) {
 }
 const addProductCategory = async function (payload) {
   try {
-    payload.categories.forEach((element) => {
-      db.collection('productCategory')
+    for (const element of payload.categories) {
+      await db
+        .collection('productCategory')
         .doc()
         .set({ productId: payload.productId, categoryId: element.id })
-    })
+      console.log(element.id)
+    }
   } catch (error) {
     console.log(error)
   }
@@ -39,14 +42,7 @@ const addProductCategory = async function (payload) {
 const removeProduct = async function (productId) {
   try {
     await db.collection('product').doc(productId).delete()
-    const productCategory = await db
-      .collection('productCategory')
-      .where('productId', '==', productId)
-    productCategory.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete()
-      })
-    })
+    deleteProductCategoryById(productId)
   } catch (error) {
     console.log(error)
   }
@@ -59,26 +55,45 @@ const getProductCategories = async function (productId) {
       .collection('productCategory')
       .where('productId', '==', productId)
       .get()
-    productcategory.forEach(function (doc) {
+
+    for (const doc of productcategory.docs) {
       const obj = { id: doc.id, data: doc.data() }
-      db.collection('category')
+      const query = await db
+        .collection('category')
         .doc(obj.data.categoryId)
         .get()
-        .then(function (query) {
-          if (query.exists) {
-            tab.push({ id: query.id, data: query.data() })
-          }
-        })
-    })
+      if (query.exists) {
+        tab.push({ id: query.id, data: query.data() })
+      }
+    }
     return tab
   } catch (error) {
     console.log(error)
   }
 }
+const updateProduct = async function (productId, productCategory, product) {
+  try {
+    await deleteProductCategoryById(productId)
+    await db.collection('product').doc(productId).update({
+      title: product.title,
+      description: product.description,
+      defaultPicture: product.defaultPicture,
+      price: product.price,
+      stock: product.stock,
+      pictures: product.pictures
+    })
+
+    await addProductCategory(productCategory)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
   getProducts,
   getProductById,
   createProduct,
   getProductCategories,
-  removeProduct
+  removeProduct,
+  updateProduct
 }
