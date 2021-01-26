@@ -63,7 +63,7 @@ export default {
             if (store.getters['auth/user']) {
                 await store.dispatch(
                     'cart/getUserCart',
-                    store.getters['auth/user'].uid
+                    store.getters['auth/user'].userId
                 )
             }
 

@@ -16,6 +16,7 @@
         "cors": "^2.8.5",
         "emailjs-com": "^2.6.4",
         "firebase": "^8.2.3",
+        "moment": "^2.29.1",
         "nodemailer": "^6.4.17",
         "postcss": "^7.0.35",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",

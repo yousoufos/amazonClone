@@ -4,7 +4,8 @@ import {
   createProduct,
   getProductCategories,
   removeProduct,
-  updateProduct
+  updateProduct,
+  updateProductPictures
 } from '../database/product'
 import store from '@/store'
 // initial state
@@ -101,19 +102,36 @@ const actions = {
       console.log(error)
     }
   },
-  updateProduct: function ({ commit }, payload) {
-    updateProduct(
+  updateProduct: async function ({ commit }, payload) {
+    await updateProduct(
       payload.productId,
       payload.productCategory,
       payload.product
     )
-    console.log(payload)
-    console.log('Update product ')
+    store.dispatch('notification/setNotification', {
+      message: 'Product Updated',
+      type: 'success',
+      show: true
+    })
+    setTimeout(function () {
+      store.dispatch('notification/setNotification', {
+        message: '',
+        type: '',
+        show: false
+      })
+    }, 3000)
+  },
+  updateProductPictures: async function ({ commit }, payload) {
+    await updateProductPictures(payload)
   }
 }
 
 // mutations
 const mutations = {
+  setProductPictures: function (state, payload) {
+    state.product.pictures = payload.pictures
+    state.product.defaultPicture = payload.defaultPicture
+  },
   addProducts: function (state, payload) {
     state.tab.push(payload)
   },

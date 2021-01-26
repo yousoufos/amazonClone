@@ -70,8 +70,17 @@
                                 >
                                     <span
                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
+                                        :class="
+                                            item.deliveryStatus === 'pending'
+                                                ? 'bg-red-200'
+                                                : 'bg-green-200'
+                                        "
                                     >
-                                        {{ item.deliveryStatus }}</span
+                                        {{
+                                            item.deliveryDate != null
+                                                ? item.deliveryDate
+                                                : item.deliveryStatus
+                                        }}</span
                                     >
                                 </td>
                                 <td
@@ -79,8 +88,17 @@
                                 >
                                     <span
                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
+                                        :class="
+                                            item.paymentStatus === 'pending'
+                                                ? 'bg-red-200'
+                                                : 'bg-green-200'
+                                        "
                                     >
-                                        {{ item.paymentStatus }}</span
+                                        {{
+                                            item.paymentDate != null
+                                                ? item.paymentDate
+                                                : item.paymentStatus
+                                        }}</span
                                     >
                                 </td>
                             </tr>
@@ -124,7 +142,7 @@ export default {
 
     async beforeRouteEnter(to, from, next) {
         if (store.state.auth.user) {
-            await store.dispatch('order/getOrder', store.state.auth.user.uid)
+            await store.dispatch('order/getOrder', store.state.auth.user.userId)
             next()
         } else {
             next('/')

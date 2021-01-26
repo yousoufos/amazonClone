@@ -123,7 +123,7 @@ export default {
                 return alert('Veuillez renseigner vos coordonnees')
             }
             var order = {
-                userId: user.value.uid,
+                userId: user.value.userId,
                 items: cart.value.items,
                 paymentMethod: payment.value,
                 date: Date.now(),
@@ -152,8 +152,11 @@ export default {
         'user-order-details': userorderdetails,
     },
     async beforeRouteEnter(to, from, next) {
-        await store.dispatch('auth/getUserDetails', store.state.auth.user.uid)
-        await store.dispatch('cart/getUserCart', store.state.auth.user.uid)
+        await store.dispatch(
+            'auth/getUserDetails',
+            store.state.auth.user.userId
+        )
+        await store.dispatch('cart/getUserCart', store.state.auth.user.userId)
         if (store.state.cart.cart.items.length > 0) {
             next()
         } else {

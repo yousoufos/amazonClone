@@ -55,10 +55,18 @@ const deleteCategory = async function (payload) {
     console.log(error)
   }
 }
+const addCategory = async function (payload) {
+  try {
+    return await db.collection('category').add({ name: payload })
+  } catch (error) {
+    console.log(error)
+  }
+}
 export {
   getCategories,
   deleteProductCategoryById,
   updateCategory,
   deleteCategory,
-  deleteCategoryProductById
+  deleteCategoryProductById,
+  addCategory
 }

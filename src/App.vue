@@ -5,13 +5,15 @@
 import { auth } from './firebase'
 export default {
     mounted: function () {
-        auth.onAuthStateChanged((authUser) => {
+        /* auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
-                this.$store.state.auth.user = authUser
+                console.log(authUser)
+                await this.$store.dispatch('auth/getUserById', authUser.uid)
+                //this.$store.state.auth.user = authUser
             } else {
                 this.$store.state.auth.user = null
             }
-        })
+        }) */
     },
 }
 </script>

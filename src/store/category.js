@@ -1,7 +1,8 @@
 import {
   getCategories,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  addCategory
 } from '../database/category'
 
 // initial state
@@ -29,6 +30,11 @@ const actions = {
     await deleteCategory(payload.categoryId)
 
     commit('deleteCategory', payload.categoryId)
+  },
+  addCategory: async function ({ commit }, payload) {
+    const cat = await addCategory(payload)
+
+    commit('addCategory', { id: cat.id, name: payload, editable: false })
   }
 }
 
@@ -42,6 +48,9 @@ const mutations = {
       state.categories.findIndex((e) => e.id === payload),
       1
     )
+  },
+  addCategory: function (state, payload) {
+    state.categories.push(payload)
   }
 }
 

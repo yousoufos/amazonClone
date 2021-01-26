@@ -21,7 +21,7 @@ const getters = {
 // actions
 const actions = {
   initializeCart: async function ({ commit }, payload) {
-    await initializeCart(payload.userId)
+    await initializeCart(payload)
   },
   getUserCart: async function ({ commit }, payload) {
     const tab = []
@@ -47,7 +47,7 @@ const actions = {
         commit('setCart', car)
       } else {
         // doc.data() will be undefined in this case
-        console.log('No such document!')
+        console.log('No such document!1')
       }
     } catch (error) {
       console.log(error)
@@ -81,7 +81,7 @@ const actions = {
 
         try {
           await addToCart(
-            rootState.auth.user.uid,
+            rootState.auth.user.userId,
             product,
             getters.total
           )
@@ -107,7 +107,7 @@ const actions = {
     payload
   ) {
     commit('removeFromCart', payload.productId)
-    await updateItemsCart(rootState.auth.user.uid, {
+    await updateItemsCart(rootState.auth.user.userId, {
       oldItems: state.cart.items,
       total: getters.total
     })
@@ -116,18 +116,18 @@ const actions = {
     commit('emptyCart')
   },
   emptyCart: async function ({ commit, rootState }) {
-    await updateItemsCart(rootState.auth.user.uid, {
+    await updateItemsCart(rootState.auth.user.userId, {
       total: 0,
       oldItems: []
     })
     commit('emptyCart')
   },
   updateQuantity: async function ({ commit, rootState }, payload) {
-    const data = await getUser(rootState.auth.user.uid)
+    const data = await getUser(rootState.auth.user.userId)
     const oldItems = data.data().cart.items
     oldItems.find((el) => el.productId === payload.productId).qte =
             payload.qte
-    await updateItemsCart(rootState.auth.user.uid, {
+    await updateItemsCart(rootState.auth.user.userId, {
       oldItems,
       total: payload.total
     })

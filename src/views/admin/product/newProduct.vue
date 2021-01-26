@@ -5,7 +5,7 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Product"></sidebar></div>
-            <div class="w-full">
+            <div class="width568">
                 <div class="">
                     <form @submit.prevent class="">
                         <div class="shadow overflow-hidden sm:rounded-md">
@@ -134,7 +134,7 @@
                                                 class="shadow w-full bg-grey-light"
                                             >
                                                 <div
-                                                    class="bg-blue-600 text-xs leading-none py-1 text-center"
+                                                    class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
                                                     :style="{
                                                         width:
                                                             progressBar + '%',
@@ -217,11 +217,16 @@
                             </div>
                         </div>
                     </form>
-                    <notif
-                        v-if="notification.show"
-                        :notification="notification"
-                        :show="notification.show"
-                    ></notif>
+                    <transition
+                        enter-active-class="animate__animated animate__fadeInLeft"
+                        leave-active-class="animate__animated animate__fadeOutLeft"
+                    >
+                        <notif
+                            v-if="notification.show"
+                            :notification="notification"
+                            :show="notification.show"
+                        ></notif>
+                    </transition>
                 </div>
             </div>
         </div>

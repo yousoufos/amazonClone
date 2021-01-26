@@ -4,9 +4,39 @@
             <navbar title="List Categories"></navbar>
         </div>
         <div class="flex">
-            <div><sidebar></sidebar></div>
-            <div class="w-full">
+            <div><sidebar selected="Categories"></sidebar></div>
+            <div class="width568 w-full">
                 <div class="py-4 mx-auto flex flex-col w-11/12">
+                    <div
+                        class="flex mb-4 space-x-2 justify-center items-center rounded-md py-2 bg-gray-300 cursor-pointer"
+                        :class="[add === false ? 'w-48' : 'w-80']"
+                    >
+                        <div
+                            @click="addCategory"
+                            v-if="add === false"
+                            class="flex"
+                        >
+                            <span class="material-icons">
+                                add_circle_outline
+                            </span>
+                            <span>New Category</span>
+                        </div>
+                        <div v-else class="px-2 space-x-2">
+                            <input
+                                v-model="newCategory"
+                                class="rounded-md"
+                                type="text"
+                                ref="addInput"
+                                @keyup.esc="cancelAdd($event)"
+                            />
+                            <button
+                                @click="submit"
+                                class="bg-white w-16 rounded-md"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </div>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -37,7 +67,7 @@
                                         class="bg-white divide-y divide-gray-200"
                                     >
                                         <tr
-                                            v-for="cat in categories"
+                                            v-for="(cat, i) in categories"
                                             :key="cat.id"
                                         >
                                             <td
@@ -45,11 +75,16 @@
                                             >
                                                 <span v-if="cat.editable"
                                                     ><input
+                                                        :ref="
+                                                            (el) => {
+                                                                divs[i] = el
+                                                            }
+                                                        "
                                                         @keyup.enter="
-                                                            edit(cat, $event)
+                                                            edit(cat, i, $event)
                                                         "
                                                         @keyup.esc="
-                                                            edit(cat, $event)
+                                                            edit(cat, i, $event)
                                                         "
                                                         v-model="cat.name"
                                                         type="text"
@@ -64,12 +99,14 @@
                                             >
                                                 <span
                                                     @click="remove(cat)"
-                                                    class="material-icons cursor-pointer"
+                                                    class="material-icons cursor-pointer text-red-500"
                                                 >
                                                     delete_forever
                                                 </span>
                                                 <span
-                                                    @click="edit(cat, $event)"
+                                                    @click="
+                                                        edit(cat, i, $event)
+                                                    "
                                                     class="material-icons cursor-pointer"
                                                 >
                                                     edit
@@ -90,12 +127,18 @@
 <script>
 import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 export default {
     components: {
         navbar,
         sidebar,
+    },
+    methods: {
+        /* test() {
+            console.log('data')
+            this.$refs.addInput.focus()
+        }, */
     },
     setup() {
         const store = useStore()
@@ -106,11 +149,19 @@ export default {
                 return store.state.category.categories
             })
         )
+        const add = ref(false)
+        const newCategory = ref('')
+        const addInput = ref(null)
+        const divs = ref([])
 
-        const edit = (params, event) => {
+        const edit = (params, i, event) => {
             if (params.editable === false && event.key === undefined) {
                 params.editable = true
                 oldValue = JSON.parse(JSON.stringify(categories.value))
+                setTimeout(() => {
+                    console.log(divs.value[i])
+                    divs.value[i].focus()
+                }, 0.5)
             } else if (params.editable === true && event.key === 'Enter') {
                 let cat = categories.value.indexOf(params)
                 if (oldValue[cat].name === categories.value[cat].name) {
@@ -141,14 +192,46 @@ export default {
             } else return
         }
 
+        const addCategory = () => {
+            add.value = true
+            setTimeout((params) => {
+                addInput.value.focus()
+            }, 0.5)
+        }
+        const test = (params) => {
+            addInput.value.focus()
+        }
+        const submit = (params) => {
+            if (newCategory.value === '') {
+                alert('Category field must be not empty')
+            } else {
+                store.dispatch('category/addCategory', newCategory.value)
+                add.value = false
+            }
+        }
+        const cancelAdd = (params) => {
+            newCategory.value = ''
+            add.value = false
+        }
         onMounted(async (params) => {
             await store.dispatch('category/getCategories')
+        })
+        onBeforeUpdate(() => {
+            divs.value = []
         })
         return {
             categories,
             editable,
             edit,
             remove,
+            add,
+            addCategory,
+            submit,
+            newCategory,
+            addInput,
+            cancelAdd,
+            test,
+            divs,
         }
     },
 }

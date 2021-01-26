@@ -6,7 +6,7 @@
         <div class="flex">
             <div><sidebar :selected="selected"></sidebar></div>
 
-            <div class="w-full">
+            <div class="width568 w-full">
                 <div v-if="loading">Loading...</div>
                 <div v-else class="py-4 mx-auto flex flex-col w-11/12">
                     <router-link to="/admin/product/newProduct">
@@ -107,12 +107,17 @@
                                                 class="px-6 py-4 text-sm text-gray-500 flex space-x-1 w-56 overflow-auto"
                                             >
                                                 <div
+                                                    v-if="
+                                                        product.categories
+                                                            .length !== 0
+                                                    "
                                                     v-for="item in product.categories"
                                                     :key="item.id"
                                                     class="bg-green-400 rounded-lg px-2 mt-3 flex flex-nowrap"
                                                 >
                                                     {{ item.data.name }}
                                                 </div>
+                                                <div v-else>No categories</div>
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -120,7 +125,10 @@
                                                 <img
                                                     class="w-12 h-12"
                                                     :src="
-                                                        product.defaultPicture
+                                                        product.defaultPicture ===
+                                                        ''
+                                                            ? require('../../../assets/no-image.jpg')
+                                                            : product.defaultPicture
                                                     "
                                                     alt=""
                                                 />
@@ -130,7 +138,7 @@
                                             >
                                                 <span
                                                     @click="remove(product)"
-                                                    class="material-icons cursor-pointer"
+                                                    class="material-icons cursor-pointer text-red-500"
                                                 >
                                                     delete_forever
                                                 </span>

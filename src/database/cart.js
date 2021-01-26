@@ -19,14 +19,18 @@ const deleteCart = async function (userId) {
   })
 }
 
-const initializeCart = (userId) => {
+const initializeCart = (payload) => {
   db.collection('users')
-    .doc(userId)
+    .doc(payload.userId)
     .set({
       nom: '',
       prenom: '',
       telephone: '',
       adresse: '',
+      email: payload.email,
+      createdAt: payload.createdAt,
+      role: payload.role,
+      userId: payload.userId,
       cart: { items: [], total: 0, createdAt: Date.now() }
     })
     .then(() => {

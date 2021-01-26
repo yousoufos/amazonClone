@@ -8,7 +8,7 @@
                         <img
                             src="../assets/logo.png"
                             alt=""
-                            class="w-36 h-16"
+                            class="w-56 h-16"
                         />
                     </router-link>
                 </div>
@@ -89,7 +89,7 @@
                 <!-- mobile cart -->
                 <!-- menu lg -->
                 <div
-                    class="hidden lg:flex lg:max-w-sm lg:py-4 lg:px-2 lg:w-full"
+                    class="hidden lg:flex lg:space-x-12 lg:py-4 lg:px-2 lg:w-full"
                 >
                     <div class="flex flex-col px-4 text-sm">
                         <span class="text-white font-thin">{{
@@ -106,6 +106,14 @@
                         ><router-link :to="{ name: 'Orders' }">
                             <span class="text-white font-bold"
                                 >Your Orders</span
+                            >
+                        </router-link>
+                    </div>
+                    <div v-if="isAdmin" class="flex flex-col px-4 text-sm">
+                        <span class="text-white font-thin">Go to</span
+                        ><router-link to="/admin">
+                            <span class="text-white font-bold"
+                                >Admin Section</span
                             >
                         </router-link>
                     </div>
@@ -148,6 +156,9 @@
                         <li class="py-2">
                             {{ user != null ? user.email : 'Guest' }}
                         </li>
+                        <router-link to="/admin">
+                            <li v-if="user.role === 'admin'">Admin Section</li>
+                        </router-link>
                         <router-link :to="{ name: 'Orders' }">
                             <li v-if="user != null" class="py-2">Orders</li>
                         </router-link>
@@ -186,8 +197,17 @@ export default {
                 }
             })
         )
+        const isAdmin = ref(
+            computed(() => {
+                if (store.state.auth.user === null) {
+                    return false
+                } else {
+                    return store.state.auth.user.role === 'admin'
+                }
+            })
+        )
         const user = ref(computed(() => store.state.auth.user))
-        return { count, user, search, checkout, toggle, menu }
+        return { count, user, search, checkout, toggle, menu, isAdmin }
     },
 }
 </script>

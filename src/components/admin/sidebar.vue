@@ -10,13 +10,15 @@
                     <p class="px-2">Product</p>
                 </li>
             </router-link>
-            <li
-                class="p-4 text-lg flex items-center hover:bg-gray-300 cursor-pointer"
-                :class="{ 'bg-gray-300': selected === 'Orders' }"
-            >
-                <span class="material-icons"> receipt </span>
-                <p class="px-2">Orders</p>
-            </li>
+            <router-link to="/admin/orders/listorders">
+                <li
+                    class="p-4 text-lg flex items-center hover:bg-gray-300 cursor-pointer"
+                    :class="{ 'bg-gray-300': selected === 'Orders' }"
+                >
+                    <span class="material-icons"> receipt </span>
+                    <p class="px-2">Orders</p>
+                </li>
+            </router-link>
             <router-link to="/admin/category/listcategory">
                 <li
                     class="p-4 text-lg flex items-center hover:bg-gray-300 cursor-pointer"
@@ -26,13 +28,15 @@
                     <p class="px-2">Categories</p>
                 </li>
             </router-link>
-            <li
-                class="p-4 text-lg flex items-center hover:bg-gray-300 cursor-pointer"
-                :class="{ 'bg-gray-300': selected === 'Users' }"
-            >
-                <span class="material-icons"> face</span>
-                <p class="px-2">Users</p>
-            </li>
+            <router-link to="/admin/users/listusers">
+                <li
+                    class="p-4 text-lg flex items-center hover:bg-gray-300 cursor-pointer"
+                    :class="{ 'bg-gray-300': selected === 'Users' }"
+                >
+                    <span class="material-icons"> face</span>
+                    <p class="px-2">Users</p>
+                </li>
+            </router-link>
         </ul>
     </div>
 </template>

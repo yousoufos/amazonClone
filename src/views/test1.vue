@@ -1,152 +1,112 @@
 <template>
-    <div class="py-4 w-11/12 mx-auto flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div
-                class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+    <div class="flex flex-col space-y-2">
+        <div
+            class="mx-auto w-1/2 text-center bg-green-400"
+            v-for="cat in tabCat"
+        >
+            {{ cat.name }}
+        </div>
+        <div v-if="loading" class="mx-auto w-1/2 text-center">Loading...</div>
+
+        <div class="mx-auto w-1/2 justify-between flex">
+            <span
+                ><button @click="previous" class="bg-yellow-400 px-2">
+                    Prev
+                </button></span
             >
-                <div
-                    class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+            <span
+                ><button
+                    :disabled="nextDisabled"
+                    @click="next"
+                    class="bg-yellow-400 px-2"
                 >
-                    <table
-                        class="min-w-full divide-y divide-gray-200"
-                        :class="{ 'flex-row': toggle }"
-                    >
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Reference
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Title
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Price
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Stock
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Category
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Picture
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr
-                                v-for="product in products"
-                                :key="product.productId"
-                            >
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ product.productId }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ product.title }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ product.price }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ product.stock }}
-                                </td>
-
-                                <td
-                                    class="px-6 py-4 text-sm text-gray-500 flex space-x-1"
-                                >
-                                    <span
-                                        v-for="(
-                                            item, index
-                                        ) in product.categories"
-                                        :key="index"
-                                        class="bg-green-400 rounded-lg px-2 mt-4"
-                                    >
-                                        {{ item.name }}
-                                    </span>
-                                </td>
-
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    <img
-                                        class="w-12 h-12"
-                                        :src="product.defaultPicture"
-                                        alt=""
-                                    />
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2"
-                                >
-                                    <span class="material-icons">
-                                        delete_forever
-                                    </span>
-                                    <span class="material-icons"> edit </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                    Next
+                </button></span
+            >
+        </div>
+        <div>
+            <input v-model="date" type="text" />
+            <button @click="convert">date</button>
+            <span>{{ convertDate }}</span>
         </div>
     </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import { ref, onMounted } from 'vue'
+import { db } from '../firebase'
+import { getOrders } from '../database/order'
+import moment from 'moment'
 export default {
     setup() {
-        const store = useStore()
-        const toggle = ref(true)
-        const products = ref(
-            computed(() => {
-                return store.state.product.tab
-            })
-        )
-        onMounted(() => {
-            setTimeout(function () {
-                toggle.value = false
-            }, 1000)
+        const tabCat = ref([])
+        const lastDoc = ref(null)
+        const loading = ref(false)
+        const nextDisabled = ref(false)
+        const next = () => {
+            loading.value = true
+            db.collection('category')
+                .orderBy('name')
+                .startAfter(lastDoc.value)
+                .limit(2)
+                .get()
+                .then((doc) => {
+                    console.log(doc.size)
+                    if (doc.size === 0) {
+                        nextDisabled.value = true
+                        loading.value = false
+                        return
+                    } else {
+                        tabCat.value = [...doc.docs.map((cat) => cat.data())]
+
+                        lastDoc.value = doc.docs[doc.docs.length - 1]
+                        loading.value = false
+                    }
+                })
+        }
+        const previous = (params) => {
+            db.collection('category')
+                .orderBy('name')
+                .endBefore(lastDoc.value)
+                .limit(2)
+                .get()
+                .then((doc) => {
+                    console.log(doc.size)
+                    tabCat.value = [...doc.docs.map((cat) => cat.data())]
+                    lastDoc.value = doc.docs[doc.docs.length - 1]
+                })
+        }
+        onMounted(async (params) => {
+            await db
+                .collection('category')
+                .orderBy('name')
+                .limit(2)
+                .get()
+                .then((doc) => {
+                    tabCat.value = doc.docs.map((cat) => cat.data())
+                    lastDoc.value = doc.docs[doc.docs.length - 1]
+                })
+
+            await getOrders()
         })
 
-        return { products, toggle }
-    },
+        const date = ref('1610277857628')
+        const convertDate = ref('')
+        const convert = (params) => {
+            convertDate.value = moment(date).format('LL')
+            console.log(convertDate.value)
+        }
 
-    beforeMount: async function () {
-        await this.$store.dispatch('product/getProducts')
+        return {
+            tabCat,
+            next,
+            loading,
+            nextDisabled,
+            previous,
+            date,
+            convertDate,
+            convert,
+        }
     },
 }
 </script>

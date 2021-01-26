@@ -103,7 +103,10 @@ export default {
         return { cart, total, count, update, proceed, back }
     },
     async beforeRouteEnter(to, from, next) {
-        await store.dispatch('cart/getUserCart', store.getters['auth/user'].uid)
+        await store.dispatch(
+            'cart/getUserCart',
+            store.getters['auth/user'].userId
+        )
         next()
     },
 }

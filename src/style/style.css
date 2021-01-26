@@ -18,3 +18,10 @@ body {
 .btnOrange {
     @apply font-semibold bg-yellow-500 w-36 rounded-sm;
 }
+
+@media screen and (max-width: 768px) {
+    .width568 {
+        width: 568px;
+        min-width: 568px;
+    }
+}

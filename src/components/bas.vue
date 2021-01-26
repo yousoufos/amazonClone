@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-700 h-80">t</div>
+    <div class="bg-gray-700 h-48">t</div>
 </template>
 
 <script>

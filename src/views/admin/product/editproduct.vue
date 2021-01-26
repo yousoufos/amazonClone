@@ -5,7 +5,7 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Product"></sidebar></div>
-            <div class="w-full">
+            <div class="width568">
                 <div v-if="loading">Loading</div>
                 <div v-else class="">
                     <form @submit.prevent class="">
@@ -205,11 +205,16 @@
                             </div>
                         </div>
                     </form>
-                    <notif
-                        v-if="notification.show"
-                        :notification="notification"
-                        :show="notification.show"
-                    ></notif>
+                    <transition
+                        enter-active-class="animate__animated animate__fadeInLeft"
+                        leave-active-class="animate__animated animate__fadeOutLeft"
+                    >
+                        <notif
+                            v-if="notification.show"
+                            :notification="notification"
+                            :show="notification.show"
+                        ></notif>
+                    </transition>
                 </div>
             </div>
         </div>
@@ -320,7 +325,16 @@ export default {
                     fileTab.value.splice(fileTab.value.indexOf(item), 1)
                     if (fileTab.value.length === 0) {
                         alaune.value = ''
+                    } else {
+                        if (item === alaune.value) {
+                            alaune.value = fileTab.value[0]
+                        }
                     }
+                    store.dispatch('product/updateProductPictures', {
+                        pictures: fileTab.value,
+                        defaultPicture: alaune.value,
+                        productId: product.value.productId,
+                    })
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -400,7 +414,6 @@ export default {
         const onSelected = (categoryId) => {}
         const cancel = () => {
             removeAllPictures()
-            resetForm()
             router.push('/admin/product/listproduct')
         }
 

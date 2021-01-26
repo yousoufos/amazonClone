@@ -5,7 +5,7 @@ module.exports = {
     extend: {}
   },
   variants: {
-    extend: { opacity: ['disabled'] }
+    extend: { opacity: ['disabled'], borderStyle: ['hover', 'focus'] }
   },
   plugins: [require('@tailwindcss/forms')]
 }

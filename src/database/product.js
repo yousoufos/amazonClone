@@ -32,7 +32,6 @@ const addProductCategory = async function (payload) {
         .collection('productCategory')
         .doc()
         .set({ productId: payload.productId, categoryId: element.id })
-      console.log(element.id)
     }
   } catch (error) {
     console.log(error)
@@ -72,6 +71,7 @@ const getProductCategories = async function (productId) {
   }
 }
 const updateProduct = async function (productId, productCategory, product) {
+  console.log(product.pictures)
   try {
     await deleteProductCategoryById(productId)
     await db.collection('product').doc(productId).update({
@@ -88,6 +88,17 @@ const updateProduct = async function (productId, productCategory, product) {
     console.log(error)
   }
 }
+const updateProductPictures = async function (payload) {
+  console.log(payload)
+  try {
+    await db.collection('product').doc(payload.productId).update({
+      defaultPicture: payload.defaultPicture,
+      pictures: payload.pictures
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export {
   getProducts,
@@ -95,5 +106,6 @@ export {
   createProduct,
   getProductCategories,
   removeProduct,
-  updateProduct
+  updateProduct,
+  updateProductPictures
 }
