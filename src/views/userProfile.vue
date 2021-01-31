@@ -114,6 +114,11 @@
                 </div>
                 <div class="space-y-4">
                     <div class="flex flex-col">
+                        <!-- <InputPassword
+                            type="password"
+                            placeholder="New password"
+                            @changed="checkUpdateButton"
+                        ></InputPassword> -->
                         <input
                             class="rounded-md"
                             type="password"
@@ -184,6 +189,7 @@
 <script>
 import Header from '../components/Header.vue'
 import Notif from '../components/notif.vue'
+import InputPassword from '../components/InputPassword'
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
@@ -192,6 +198,7 @@ export default {
     components: {
         Header,
         Notif,
+        InputPassword,
     },
     setup() {
         const store = useStore()
