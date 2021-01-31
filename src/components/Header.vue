@@ -86,37 +86,104 @@
                         </svg>
                     </button>
                 </div>
+
                 <!-- mobile cart -->
-                <!-- menu lg -->
-                <div
-                    class="hidden lg:flex lg:space-x-12 lg:py-4 lg:px-2 lg:w-full"
-                >
-                    <div class="flex flex-col px-4 text-sm">
-                        <span class="text-white font-thin">{{
-                            user != null ? user.email : 'Hello Guest'
-                        }}</span
-                        ><router-link :to="user != null ? '/logout' : '/login'">
-                            <span class="text-white font-bold">{{
-                                user != null ? 'Logout' : 'SignIn'
-                            }}</span>
-                        </router-link>
+                <!--  menu lg -->
+                <div class="hidden lg:flex lg:space-x-12 lg:py-4 lg:px-2">
+                    <div class="flex items-center">
+                        <div class="flex flex-col px-4 text-base">
+                            <span
+                                class="text-white font-thin whitespace-nowrap"
+                                >{{
+                                    user != null ? user.email : 'Hello Guest'
+                                }}</span
+                            ><router-link :to="user != null ? '' : '/login'">
+                                <span class="text-white font-bold">{{
+                                    user != null ? '' : 'SignIn'
+                                }}</span>
+                            </router-link>
+                        </div>
+                        <div
+                            @click="toggleSettings = !toggleSettings"
+                            v-if="user != null"
+                            class="relative cursor-pointer"
+                        >
+                            <span class="mt-1 material-icons text-white">
+                                {{
+                                    toggleSettings === false
+                                        ? 'keyboard_arrow_down'
+                                        : 'keyboard_arrow_up'
+                                }}
+                            </span>
+                            <transition
+                                enter-active-class="transition ease-out duration-100 transform"
+                                enter-from-class="opacity-0 scale-95"
+                                enter-to-class="opacity-100 scale-100"
+                                leave-active-class="transition ease-in duration-75 transform"
+                                leave-from-class="opacity-100 scale-100"
+                                leave-to-class="opacity-0 scale-95"
+                            >
+                                <div
+                                    v-show="toggleSettings"
+                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="user-menu"
+                                >
+                                    <router-link
+                                        :to="{
+                                            name: 'userProfile',
+                                            query: { userId: user.userId },
+                                        }"
+                                    >
+                                        <div
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            role="menuitem"
+                                        >
+                                            Your Profile
+                                        </div></router-link
+                                    >
+
+                                    <a
+                                        href="/orders"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        role="menuitem"
+                                        >Orders</a
+                                    >
+                                    <a
+                                        href="/admin"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        role="menuitem"
+                                        v-if="isAdmin"
+                                        >Admin Section</a
+                                    >
+
+                                    <a
+                                        href="/logout"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        role="menuitem"
+                                        >Sign out</a
+                                    >
+                                </div>
+                            </transition>
+                        </div>
                     </div>
-                    <div class="flex flex-col px-4 text-sm">
+                    <!-- <div class="flex flex-col px-4 text-sm">
                         <span class="text-white font-thin">See</span
                         ><router-link :to="{ name: 'Orders' }">
-                            <span class="text-white font-bold"
+                            <span class="text-white font-bold whitespace-nowrap"
                                 >Your Orders</span
                             >
                         </router-link>
-                    </div>
-                    <div v-if="isAdmin" class="flex flex-col px-4 text-sm">
+                    </div> -->
+                    <!-- <div v-if="isAdmin" class="flex flex-col px-4 text-sm">
                         <span class="text-white font-thin">Go to</span
                         ><router-link to="/admin">
-                            <span class="text-white font-bold"
+                            <span class="text-white font-bold whitespace-nowrap"
                                 >Admin Section</span
                             >
                         </router-link>
-                    </div>
+                    </div> -->
 
                     <div class="flex relative">
                         <div
@@ -187,6 +254,7 @@ export default {
         const checkout = ref(() => router.push('/checkout'))
         const search = ref('')
         const menu = ref(false)
+        const toggleSettings = ref(false)
         const toggle = ref(() => (menu.value = !menu.value))
         const count = ref(
             computed(() => {
@@ -207,7 +275,16 @@ export default {
             })
         )
         const user = ref(computed(() => store.state.auth.user))
-        return { count, user, search, checkout, toggle, menu, isAdmin }
+        return {
+            count,
+            user,
+            search,
+            checkout,
+            toggle,
+            menu,
+            isAdmin,
+            toggleSettings,
+        }
     },
 }
 </script>

@@ -11,6 +11,7 @@ import test1 from '../views/test1.vue'
 import ProductDetails from '../views/ProductDetails.vue'
 import slider from '../components/slider.vue'
 import notFound from '../views/404.vue'
+import userProfile from '../views/userProfile.vue'
 import createProduct from '../views/admin/product/newProduct.vue'
 import UserOrderDetails from '../views/UserOrderDetails.vue'
 import adminHome from '../views/admin/home.vue'
@@ -83,6 +84,12 @@ const routes = [
     path: '/checkoutproceed',
     name: 'CheckOutProceed',
     component: CheckOutProceed,
+    beforeEnter: isAuth
+  },
+  {
+    path: '/userprofile',
+    name: 'userProfile',
+    component: userProfile,
     beforeEnter: isAuth
   },
   {

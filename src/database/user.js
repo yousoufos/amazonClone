@@ -1,4 +1,5 @@
 import { auth, db } from '../firebase'
+import firebase from 'firebase'
 
 const register = async function (payload) {
   try {
@@ -20,6 +21,31 @@ const login = async function (payload) {
     )
     return authi
   } catch (error) {}
+}
+const reLogin = async function (payload) {
+  let result = false
+  try {
+    const user = auth.currentUser
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      payload.email,
+      payload.password
+    )
+    await user.reauthenticateWithCredential(credential)
+    result = true
+    return result
+  } catch (error) {
+    result = false
+    console.log(error)
+    return result
+  }
+}
+const updatePassword = async function (payload) {
+  const user = firebase.auth().currentUser
+  try {
+    await user.updatePassword(payload)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const updateUser = async function (userId, payload) {
@@ -63,4 +89,12 @@ const getUsers = async function () {
     console.log(error)
   }
 }
-export { register, login, updateUser, getUserById, getUsers }
+export {
+  register,
+  login,
+  updateUser,
+  getUserById,
+  getUsers,
+  reLogin,
+  updatePassword
+}

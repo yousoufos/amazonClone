@@ -1,18 +1,21 @@
 import { auth } from '../firebase'
 import router from '../router'
 import store from '@/store'
+
 import {
   register,
   login,
   updateUser,
   getUsers,
-  getUserById
+  getUserById,
+  reLogin,
+  updatePassword
 } from '../database/user'
 import { getUser } from '../database/cart'
 import moment from 'moment'
 
 // initial state
-const state = () => ({ user: null, users: null })
+const state = () => ({ user: null, users: null, resultPwd: null })
 
 // getters
 const getters = {
@@ -47,6 +50,26 @@ const actions = {
     if (user) {
       router.go(-1)
     }
+  },
+  reLogin: async function ({ commit }, payload) {
+    const result = await reLogin(payload)
+
+    commit('reLogin', result)
+  },
+  updatePassword: async function ({ commit }, payload) {
+    await updatePassword(payload)
+    store.dispatch('notification/setNotification', {
+      message: 'Password Updated',
+      type: 'success',
+      show: true
+    })
+    setTimeout(function () {
+      store.dispatch('notification/setNotification', {
+        message: '',
+        type: '',
+        show: false
+      })
+    }, 3000)
   },
   logout: async function ({ commit }) {
     await auth.signOut()
@@ -119,6 +142,9 @@ const mutations = {
   },
   setUsers: function (state, payload) {
     state.users = payload
+  },
+  reLogin: function (state, payload) {
+    state.resultPwd = payload
   }
 }
 
