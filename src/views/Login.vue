@@ -37,16 +37,16 @@
                     </div>
                     <div>
                         <label for="password" class="sr-only">Password</label>
-                        <input
+                        <InputPassword
                             v-model="user.password"
                             id="password"
                             name="password"
                             type="password"
                             autocomplete="current-password"
-                            required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            required="true"
+                            class="appearance-none rounded-none block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Password"
-                        />
+                        ></InputPassword>
                     </div>
                 </div>
 
@@ -97,9 +97,11 @@
 <script>
 import { useStore } from 'vuex'
 import { reactive } from 'vue'
-import store from '@/store'
-import { auth } from '../firebase'
+import InputPassword from '../components/InputPassword'
 export default {
+    components: {
+        InputPassword,
+    },
     setup() {
         const user = reactive({ email: '', password: '' })
 

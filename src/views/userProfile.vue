@@ -104,28 +104,22 @@
             </div>
             <div class="bg-gray-100 p-2 text-sm flex flex-col space-y-4">
                 <div class="flex flex-col">
-                    <input
-                        class="rounded-md"
+                    <InputPassword
                         type="password"
-                        placeholder="Current password"
+                        placeholder="New password"
+                        class="rounded-md w-full"
                         v-model="login.currentPwd"
-                        @keyup="checkUpdateButton"
-                    />
+                    ></InputPassword>
                 </div>
                 <div class="space-y-4">
                     <div class="flex flex-col">
-                        <!-- <InputPassword
+                        <InputPassword
                             type="password"
                             placeholder="New password"
-                            @changed="checkUpdateButton"
-                        ></InputPassword> -->
-                        <input
-                            class="rounded-md"
-                            type="password"
-                            placeholder="New password"
+                            class="rounded-md w-full"
                             v-model="login.newPwd"
-                            @keyup="checkUpdateButton"
-                        />
+                        ></InputPassword>
+
                         <div
                             v-if="login.newPwd !== ''"
                             class="rounded-md p-1 mt-1"
@@ -156,13 +150,12 @@
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <input
-                            class="rounded-md"
+                        <InputPassword
                             type="password"
-                            placeholder="Confirm passowrd"
+                            placeholder="New password"
                             v-model="login.verifyPwd"
-                            @keyup="checkUpdateButton"
-                        />
+                            class="rounded-md w-full"
+                        ></InputPassword>
                     </div>
                 </div>
                 <div class="flex space-x-4">
@@ -190,7 +183,7 @@
 import Header from '../components/Header.vue'
 import Notif from '../components/notif.vue'
 import InputPassword from '../components/InputPassword'
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import passwordStrength from 'check-password-strength'
@@ -210,6 +203,21 @@ export default {
             verifyPwd: '',
         })
         const toggleUpdate = ref(true)
+        watchEffect((params) => {
+            if ((login.newPwd && login.verifyPwd && login.currentPwd) !== '') {
+                if (login.newPwd === login.verifyPwd) {
+                    if (passwordStrength(login.newPwd).value !== 'Weak') {
+                        toggleUpdate.value = false
+                    } else {
+                        toggleUpdate.value = true
+                    }
+                } else {
+                    toggleUpdate.value = true
+                }
+            } else {
+                toggleUpdate.value = true
+            }
+        })
         const checkUpdateButton = (params) => {
             if ((login.newPwd && login.verifyPwd && login.currentPwd) !== '') {
                 if (login.newPwd === login.verifyPwd) {

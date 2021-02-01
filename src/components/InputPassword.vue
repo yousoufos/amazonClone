@@ -1,7 +1,6 @@
 <template>
     <div class="flex items-center">
         <input
-            class="rounded-md"
             :type="prop.type"
             :name="name"
             :id="id"
@@ -9,6 +8,7 @@
             :required="required"
             :autocomplete="autocomplete"
             :value="modelValue"
+            :class="class"
             @input="$emit('update:modelValue', $event.target.value)"
         />
 
@@ -40,6 +40,7 @@ export default {
         autocomplete: String,
         required: Boolean,
         modelValue: String,
+        class: String,
     },
     setup(props, { emit }) {
         const prop = reactive({
@@ -47,7 +48,6 @@ export default {
         })
         const password = ref('')
         const toggleType = (params) => {
-            console.log(prop.type)
             if (prop.type === 'password') {
                 prop.type = 'text'
                 setTimeout((params) => {
