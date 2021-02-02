@@ -5,7 +5,9 @@ import {
   getProductCategories,
   removeProduct,
   updateProduct,
-  updateProductPictures
+  updateProductPictures,
+  updateAlgolia,
+  searchProduct
 } from '../database/product'
 import store from '@/store'
 // initial state
@@ -78,6 +80,7 @@ const actions = {
   createProduct: async function ({ commit }, payload) {
     try {
       await createProduct(payload)
+      await updateAlgolia()
       store.dispatch('notification/setNotification', {
         message: 'Product created sucefully',
         type: 'success',
@@ -123,6 +126,13 @@ const actions = {
   },
   updateProductPictures: async function ({ commit }, payload) {
     await updateProductPictures(payload)
+  },
+  updateAlgolia: async function () {
+    await updateAlgolia()
+  },
+  searchProduct: function ({ commit }, payload) {
+    console.log(payload)
+    searchProduct(payload)
   }
 }
 

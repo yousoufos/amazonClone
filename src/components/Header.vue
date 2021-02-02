@@ -32,35 +32,8 @@
                 </div>
                 <!-- hamburger -->
                 <!-- search -->
-                <div
-                    class="flex relative w-full py-2 justify-center lg:py-0 lg:w-full"
-                >
-                    <input
-                        class="rounded-lg px-12 w-full"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Search for a product"
-                    />
-
-                    <div
-                        class="absolute pl-3 flex items-center inset-y-0 left-0"
-                    >
-                        <button class="h-6 w-6">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                class="text-gray-500"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                <div class="w-full relative">
+                    <Search></Search>
                 </div>
                 <!-- search -->
                 <!-- mobile cart -->
@@ -168,22 +141,6 @@
                             </transition>
                         </div>
                     </div>
-                    <!-- <div class="flex flex-col px-4 text-sm">
-                        <span class="text-white font-thin">See</span
-                        ><router-link :to="{ name: 'Orders' }">
-                            <span class="text-white font-bold whitespace-nowrap"
-                                >Your Orders</span
-                            >
-                        </router-link>
-                    </div> -->
-                    <!-- <div v-if="isAdmin" class="flex flex-col px-4 text-sm">
-                        <span class="text-white font-thin">Go to</span
-                        ><router-link to="/admin">
-                            <span class="text-white font-bold whitespace-nowrap"
-                                >Admin Section</span
-                            >
-                        </router-link>
-                    </div> -->
 
                     <div class="flex relative">
                         <div
@@ -246,7 +203,11 @@
 import { useStore } from 'vuex'
 import { reactive, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Search from '../components/Search'
 export default {
+    components: {
+        Search,
+    },
     name: 'navBar',
     setup() {
         const router = useRouter()
