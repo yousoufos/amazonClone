@@ -11,6 +11,7 @@ import test1 from '../views/test1.vue'
 import ProductDetails from '../views/ProductDetails.vue'
 import slider from '../components/slider.vue'
 import notFound from '../views/404.vue'
+import searchResult from '../views/SearchResult.vue'
 import userProfile from '../views/userProfile.vue'
 import createProduct from '../views/admin/product/newProduct.vue'
 import UserOrderDetails from '../views/UserOrderDetails.vue'
@@ -112,6 +113,12 @@ const routes = [
     path: '/productdetails',
     name: 'ProductDetails',
     component: ProductDetails
+  },
+  {
+    path: '/searchresult',
+    name: 'searchResult',
+    component: searchResult,
+    props: true
   },
   {
     path: '/userorderdetails',

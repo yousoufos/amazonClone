@@ -66,7 +66,7 @@
                     <div class="flex items-center">
                         <div class="flex flex-col px-4 text-base">
                             <span
-                                class="text-white font-thin whitespace-nowrap"
+                                class="text-white font-semibold whitespace-nowrap"
                                 >{{
                                     user != null ? user.email : 'Hello Guest'
                                 }}</span

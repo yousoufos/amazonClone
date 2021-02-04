@@ -9,10 +9,11 @@
                 placeholder="Search for a product"
                 v-model="search"
                 @input="find"
+                @keyup.enter="showDetails"
             />
             <span
                 v-if="toggleSearch"
-                @click="toggleSearch = !toggleSearch"
+                @click="close"
                 class="material-icons -ml-8 text-gray-500 cursor-pointer"
             >
                 clear
@@ -38,27 +39,67 @@
     </div>
     <div
         v-if="toggleSearch"
-        class="absolute origin-bottom-left left-0 z-30 bg-white shadow-md font-semibold text-sm w-full rounded-b-md p-2"
+        class="absolute origin-bottom-left left-0 z-30 bg-white shadow-md font-semibold text-sm w-full rounded-b-md py-2 px-4"
     >
-        Hello
+        <ul>
+            <li
+                class="cursor-pointer py-2"
+                v-for="item in product"
+                :key="item.objectID"
+                @click="showDetails(item)"
+            >
+                {{ item.title }}
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 export default {
     setup() {
         const store = useStore()
-        const toggleSearch = ref(true)
+        const route = useRoute()
+        const router = useRouter()
+        const toggleSearch = ref(false)
         const search = ref('')
-        const find = (params) => {
-            store.dispatch('product/searchProduct', search.value)
+        const close = (params) => {
+            toggleSearch.value = !toggleSearch.value
+            search.value = ''
         }
+        const find = (params) => {
+            if (search.value === '' && route.name !== 'searchResult') {
+                store.dispatch('product/resetSearch')
+                toggleSearch.value = false
+            } else {
+                if (search.value.length > 2 && route.name !== 'searchResult') {
+                    store.dispatch('product/searchProduct', search.value)
+                    toggleSearch.value = true
+                }
+            }
+        }
+        const product = ref(
+            computed(() => {
+                return store.state.product.resultSearch
+            })
+        )
+        const showDetails = (item) => {
+            router.push({
+                name: 'searchResult',
+                query: { search: search.value },
+            })
+            toggleSearch.value = false
+        }
+
         return {
             toggleSearch,
             search,
             find,
+            product,
+            close,
+            showDetails,
         }
     },
 }

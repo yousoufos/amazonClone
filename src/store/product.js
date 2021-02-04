@@ -14,7 +14,8 @@ import store from '@/store'
 const state = () => ({
   product: null,
   tab: [],
-  productCategories: null
+  productCategories: null,
+  resultSearch: null
 })
 
 // getters
@@ -130,14 +131,21 @@ const actions = {
   updateAlgolia: async function () {
     await updateAlgolia()
   },
-  searchProduct: function ({ commit }, payload) {
-    console.log(payload)
-    searchProduct(payload)
+  searchProduct: async function ({ commit }, payload) {
+    const search = await searchProduct(payload)
+
+    commit('setResultSearch', search)
+  },
+  resetSearch: function ({ commit }) {
+    commit('setResultSearch', null)
   }
 }
 
 // mutations
 const mutations = {
+  setResultSearch: function (state, payload) {
+    state.resultSearch = payload
+  },
   setProductPictures: function (state, payload) {
     state.product.pictures = payload.pictures
     state.product.defaultPicture = payload.defaultPicture
