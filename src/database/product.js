@@ -109,11 +109,13 @@ const updateAlgolia = async function () {
   const tab = []
 
   const result = await getProducts()
-  result.forEach((doc) => {
+  for (const doc of result.docs) {
     const product = doc.data()
     product.objectID = doc.id
+    product.categories = await getProductCategories(doc.id)
     tab.push(product)
-  })
+  }
+
   const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
   const index = client.initIndex(ALGOLIA_INDEX_NAME)
 

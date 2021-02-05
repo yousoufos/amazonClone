@@ -31,19 +31,6 @@
                                             :category="category"
                                             types="new"
                                         ></MultiSelect>
-                                        <!-- <select
-                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                @change="onSelected(selected)"
-                                v-model="selected"
-                            >
-                                <option
-                                    v-for="option in category"
-                                    :key="option.id"
-                                    v-bind:value="option.id"
-                                >
-                                    {{ option.name }}
-                                </option>
-                            </select> -->
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
@@ -123,12 +110,7 @@
                                             class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                             id="file"
                                         />
-                                        <!-- <button
-                                class="mt-2 font-semibold bg-yellow-500 w-20"
-                                @click="onUpload"
-                            >
-                                Upload
-                            </button> -->
+
                                         <div v-if="loading" class="w-1/5">
                                             <div
                                                 class="shadow w-full bg-grey-light"
@@ -152,27 +134,14 @@
                                                 <div
                                                     class="flex justify-between items-center"
                                                 >
-                                                    <span class=""
-                                                        ><button
-                                                            @click="
-                                                                removePicture(
-                                                                    img
-                                                                )
-                                                            "
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                viewBox="0 0 20 20"
-                                                                fill="currentColor"
-                                                                class="h-4 w-4"
-                                                            >
-                                                                <path
-                                                                    fill-rule="evenodd"
-                                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                                    clip-rule="evenodd"
-                                                                />
-                                                            </svg></button
-                                                    ></span>
+                                                    <span
+                                                        @click="
+                                                            removePicture(img)
+                                                        "
+                                                        class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                    >
+                                                        clear
+                                                    </span>
                                                     <span>
                                                         <label
                                                             class="text-xs px-1"
@@ -203,14 +172,22 @@
                                 class="px-4 py-3 bg-gray-50 text-right sm:px-6"
                             >
                                 <button
+                                    :disabled="disableOnSubmit"
                                     @click="onSubmit"
                                     class="font-semibold bg-yellow-500 w-20"
+                                    :class="{
+                                        'disabled:opacity-50': disableOnSubmit,
+                                    }"
                                 >
                                     Save
                                 </button>
                                 <button
+                                    :disabled="disableOnSubmit"
                                     @click="cancel"
                                     class="ml-4 font-semibold bg-yellow-500 w-20"
+                                    :class="{
+                                        'disabled:opacity-50': disableOnSubmit,
+                                    }"
                                 >
                                     Cancel
                                 </button>
@@ -267,6 +244,7 @@ export default {
         const refi = db.collection('product').doc()
         const id = refi.id
         const children = ref(null)
+        const disableOnSubmit = ref(false)
         const onChange = (e) => {
             file.value = e.target.files[0]
             onUpload()
@@ -341,7 +319,7 @@ export default {
                     console.log(error)
                 })
         }
-        const onSubmit = () => {
+        const onSubmit = async () => {
             /* if ((typeof form.price && typeof form.stock) !== 'number') {
                 alert('Price or stock must be a number')
                 return
@@ -351,6 +329,7 @@ export default {
                 (form.title && form.description && form.price && form.stock) !==
                 ''
             ) {
+                disableOnSubmit.value = true
                 let product = {
                     title: form.title,
                     description: form.description,
@@ -360,7 +339,7 @@ export default {
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
                 }
-                store.dispatch('product/createProduct', {
+                await store.dispatch('product/createProduct', {
                     ref: refi,
                     product: product,
                     productCategory: {
@@ -369,6 +348,7 @@ export default {
                     },
                 })
                 resetForm()
+                disableOnSubmit.value = false
             } else {
                 alert('All fields must be entred')
             }
@@ -441,6 +421,7 @@ export default {
             children,
             cancel,
             notification,
+            disableOnSubmit,
         }
     },
     data() {

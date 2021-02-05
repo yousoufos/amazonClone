@@ -1,12 +1,12 @@
 <template>
     <div
-        class="fixed bottom-4 left-10 rounded-lg z-50"
+        class="fixed bottom-10 left-10 rounded-lg z-50 flex items-center space-x-1"
         :class="[
             { 'bg-green-400': notification.type === 'success' },
             { 'bg-red-500': notification.type === 'error' },
         ]"
     >
-        <div class="w-full flex justify-end">
+        <!-- <div class="w-full flex justify-end">
             <button @click="hide">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -21,8 +21,16 @@
                     />
                 </svg>
             </button>
-        </div>
-        <p class="text-white p-4">{{ notification.message }}</p>
+        </div> -->
+        <p class="text-gray-100 font-semibold p-4">
+            {{ notification.message }}
+        </p>
+        <span
+            @click="hide"
+            class="material-icons -ml-8 cursor-pointer text-white font-semibold"
+        >
+            clear
+        </span>
     </div>
 </template>
 

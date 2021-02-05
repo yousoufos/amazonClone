@@ -9,7 +9,7 @@
                 Search Result ({{ products === null ? '0' : products.length }})
             </p>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col lg:w-1/2 lg:mx-auto">
             <Product
                 class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
                 v-for="product in products"

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded">
+    <div class="bg-gray-200 rounded">
         <div class="px-2 xl:px-2 text-left">
             <p class="font-bold text-l">
                 {{ product.title }}
@@ -33,7 +33,7 @@
 import { useStore } from 'vuex'
 import { ref } from 'vue'
 import notif from '../components/notif'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
     props: {
@@ -46,6 +46,7 @@ export default {
     setup(props, { emit }) {
         const store = useStore()
         const router = useRouter()
+        const route = useRoute()
 
         const add = () => {
             store.dispatch('cart/addToCart', props.product)
@@ -54,7 +55,10 @@ export default {
             router.push({
                 name: 'ProductDetails',
                 query: {
-                    productId: props.product.productId,
+                    productId:
+                        route.name === 'searchResult'
+                            ? props.product.objectID
+                            : props.product.productId,
                 },
             })
         }

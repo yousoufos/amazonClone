@@ -1,29 +1,27 @@
 <template>
-    <InputPassword
-        placeholder="New Password"
-        type="password"
-        v-model="password"
-    ></InputPassword>
-    <div>{{ password }}</div>
+    <div>
+        <Notification :notification="notif"></Notification>
+    </div>
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
-import InputPassword from '../components/InputPassword'
+import Notification from '../components/notif'
+
 export default {
-    components: { InputPassword },
+    components: { Notification },
 
     setup() {
-        const password = ref('')
         const store = useStore()
-        const change = (e) => {
-            password.value = e
-        }
+        const notif = reactive({
+            type: 'error',
+            message: 'Product Added',
+            show: true,
+        })
 
         return {
-            change,
-            password,
+            notif,
         }
     },
 }
