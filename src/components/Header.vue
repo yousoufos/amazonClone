@@ -169,25 +169,53 @@
             </div>
             <!-- menu sm -->
             <transition
-                enter-active-class="animate__animated animate__fadeInDown"
-                leave-active-class="animate__animated animate__fadeOutUp"
+                enter-active-class="transition ease-out duration-100 transform"
+                enter-from-class="opacity-0 scale-95"
+                enter-to-class="opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-75 transform"
+                leave-from-class="opacity-100 scale-100"
+                leave-to-class="opacity-0 scale-95"
             >
-                <div v-if="menu" class="text-white flex flex-col">
-                    <router-link :to="{ name: 'Home' }">
-                        <div class="px-2 py-2">Home</div>
-                    </router-link>
+                <div
+                    v-if="menu"
+                    class="text-white font-semibold flex flex-col h-screen lg:hidden"
+                >
                     <ul class="p-4">
-                        <li class="py-2">
-                            {{ user != null ? user.email : 'Guest' }}
+                        <li class="hover:bg-red-400 py-2">
+                            <router-link :to="{ name: 'Home' }">
+                                <div class="">Home</div>
+                            </router-link>
                         </li>
+                        <router-link
+                            :to="{
+                                name: user !== null ? 'userProfile' : '/',
+                                query: {
+                                    userId: user !== null ? user.userId : '',
+                                },
+                            }"
+                        >
+                            <li class="py-2 hover:bg-red-400">
+                                {{ user != null ? user.email : 'Guest' }}
+                            </li>
+                        </router-link>
                         <router-link to="/admin">
-                            <li v-if="user.role === 'admin'">Admin Section</li>
+                            <li
+                                class="py-2 hover:bg-red-400"
+                                v-if="user.role === 'admin'"
+                            >
+                                Admin Section
+                            </li>
                         </router-link>
                         <router-link :to="{ name: 'Orders' }">
-                            <li v-if="user != null" class="py-2">Orders</li>
+                            <li
+                                class="py-2 hover:bg-red-400"
+                                v-if="user != null"
+                            >
+                                Your Orders
+                            </li>
                         </router-link>
                         <router-link :to="user != null ? '/logout' : '/login'">
-                            <li class="py-2">
+                            <li class="py-2 hover:bg-red-400">
                                 {{ user != null ? 'Logout' : 'Sign In' }}
                             </li>
                         </router-link>

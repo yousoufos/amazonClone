@@ -14,14 +14,14 @@
 
         <span
             v-if="prop.type === 'password'"
-            class="-ml-8 material-icons text-gray-500 cursor-pointer"
+            class="-ml-8 material-icons text-gray-500 cursor-pointer z-20"
             @click="toggleType"
         >
             visibility
         </span>
         <span
             v-else
-            class="-ml-8 material-icons text-gray-500 cursor-pointer"
+            class="-ml-8 material-icons text-gray-500 cursor-pointer z-20"
             @click="toggleType"
         >
             visibility_off

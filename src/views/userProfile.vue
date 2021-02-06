@@ -185,7 +185,7 @@ import Notif from '../components/notif.vue'
 import InputPassword from '../components/InputPassword'
 import { ref, computed, onMounted, reactive, watchEffect } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import passwordStrength from 'check-password-strength'
 export default {
     components: {
@@ -196,6 +196,7 @@ export default {
     setup() {
         const store = useStore()
         const route = useRoute()
+        const router = useRouter()
         const toggleEdit = ref(true)
         const login = reactive({
             currentPwd: '',
@@ -247,7 +248,10 @@ export default {
             login.currentPwd = ''
             login.newPwd = ''
             login.verifyPwd = ''
-            toggleUpdate.value = false
+            toggleUpdate.value = true
+            router.push({
+                name: 'Home',
+            })
         }
 
         const updateLogin = async (params) => {
