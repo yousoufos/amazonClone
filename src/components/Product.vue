@@ -8,7 +8,7 @@
                 <small>$ </small><strong>{{ product.price }}</strong>
             </p>
             <p
-                class="font-semibold"
+                class="font-semibold text-sm"
                 :class="[
                     { 'text-green-500': product.stock > 0 },
                     { 'text-red-500': product.stock === 0 },
