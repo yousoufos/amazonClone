@@ -77,25 +77,38 @@ const getProductCategories = async function (productId) {
   }
 }
 const updateProduct = async function (productId, productCategory, product) {
-  console.log(product.pictures)
   try {
     await deleteProductCategoryById(productId)
-    await db.collection('product').doc(productId).update({
-      title: product.title,
-      description: product.description,
-      defaultPicture: product.defaultPicture,
-      price: product.price,
-      stock: product.stock,
-      pictures: product.pictures
-    })
+    await db
+      .collection('product')
+      .doc(productId)
+      .update({
+        title: product.title,
+        description: product.description,
+        defaultPicture: product.defaultPicture,
+        price: Number(product.price),
+        stock: Number(product.stock),
+        pictures: product.pictures
+      })
 
     await addProductCategory(productCategory)
   } catch (error) {
     console.log(error)
   }
 }
+const updateProductStock = async function (payload) {
+  try {
+    await db
+      .collection('product')
+      .doc(payload.productId)
+      .update({
+        stock: Number(payload.stock)
+      })
+  } catch (error) {
+    console.log(error)
+  }
+}
 const updateProductPictures = async function (payload) {
-  console.log(payload)
   try {
     await db.collection('product').doc(payload.productId).update({
       defaultPicture: payload.defaultPicture,
@@ -140,5 +153,6 @@ export {
   updateProduct,
   updateProductPictures,
   updateAlgolia,
-  searchProduct
+  searchProduct,
+  updateProductStock
 }

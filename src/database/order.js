@@ -4,17 +4,20 @@ import moment from 'moment'
 
 const addOrder = async function (order) {
   try {
-    await db.collection('orders').doc().set({
-      userId: order.userId,
-      items: order.items,
-      date: order.date,
-      total: order.total,
-      paymentMethod: order.paymentMethod,
-      deliveryStatus: order.deliveryStatus,
-      paymentStatus: order.paymentStatus,
-      deliveryDate: null,
-      paymentDate: null
-    })
+    await db
+      .collection('orders')
+      .doc()
+      .set({
+        userId: order.userId,
+        items: order.items,
+        date: order.date,
+        total: Number(order.total),
+        paymentMethod: order.paymentMethod,
+        deliveryStatus: order.deliveryStatus,
+        paymentStatus: order.paymentStatus,
+        deliveryDate: null,
+        paymentDate: null
+      })
   } catch (error) {
     console.log(error)
   }
@@ -34,7 +37,7 @@ const getOrder = async function (userId) {
         userId: doc.data().userId,
         date: moment(doc.data().date).format('LL'),
         paymentMethod: doc.data().paymentMethod,
-        total: doc.data().total,
+        total: Number(doc.data().total),
         items: doc.data().items,
         deliveryStatus: doc.data().deliveryStatus,
         paymentStatus: doc.data().paymentStatus,
@@ -76,7 +79,7 @@ const getOrders = async function () {
         user: { id: user.id, data: user.data() },
         date: moment(order.data().date).format('LL'),
         paymentMethod: order.data().paymentMethod,
-        total: order.data().total,
+        total: Number(order.data().total),
         items: order.data().items,
         deliveryStatus: order.data().deliveryStatus,
         paymentStatus: order.data().paymentStatus,

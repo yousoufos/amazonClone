@@ -7,7 +7,8 @@ import {
   updateProduct,
   updateProductPictures,
   updateAlgolia,
-  searchProduct
+  searchProduct,
+  updateProductStock
 } from '../database/product'
 import store from '@/store'
 // initial state
@@ -112,6 +113,7 @@ const actions = {
       payload.productCategory,
       payload.product
     )
+    await updateAlgolia()
     store.dispatch('notification/setNotification', {
       message: 'Product Updated',
       type: 'success',
@@ -138,11 +140,20 @@ const actions = {
   },
   resetSearch: function ({ commit }) {
     commit('setResultSearch', null)
+  },
+  updateProductStock: async function ({ commit }, payload) {
+    await updateProductStock(payload)
+    commit('setProductStock', payload)
   }
 }
 
 // mutations
 const mutations = {
+  setProductStock: function (state, payload) {
+    state.tab.find((product) => {
+      return product.productId === payload.productId
+    }).stock = payload.stock
+  },
   setResultSearch: function (state, payload) {
     state.resultSearch = payload
   },

@@ -7,6 +7,15 @@
             <p>
                 <small>$ </small><strong>{{ product.price }}</strong>
             </p>
+            <p
+                class="font-semibold"
+                :class="[
+                    { 'text-green-500': product.stock > 0 },
+                    { 'text-red-500': product.stock === 0 },
+                ]"
+            >
+                {{ product.stock > 0 ? 'En Stock' : 'Rupture de Stock' }}
+            </p>
             <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
             <div class="flex justify-center">
                 <p class="" v-for="n in product.rating">⭐</p>
@@ -18,7 +27,14 @@
             />
         </div>
         <div class="text-center my-5 flex">
-            <button @click="add" class="btnOrange mr-2">Add to cart</button>
+            <button
+                :disabled="product.stock === 0"
+                :class="{ 'disabled:opacity-50': product.stock === 0 }"
+                @click="add"
+                class="btnOrange mr-2"
+            >
+                Add to cart
+            </button>
             <button
                 @click="detail"
                 class="bg-green-500 w-36 font-semibold rounded-sm"
@@ -49,7 +65,9 @@ export default {
         const route = useRoute()
 
         const add = () => {
-            store.dispatch('cart/addToCart', props.product)
+            if (props.product.stock > 0) {
+                store.dispatch('cart/addToCart', props.product)
+            }
         }
         const detail = () => {
             router.push({

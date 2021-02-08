@@ -74,7 +74,7 @@ const actions = {
         }
         commit('addItemsToCart', product)
         store.dispatch('notification/setNotification', {
-          message: 'Produit ajouté avec succeée',
+          message: 'Product Added',
           type: 'success',
           show: true
         })

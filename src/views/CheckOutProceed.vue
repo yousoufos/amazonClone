@@ -105,12 +105,16 @@ export default {
         })
         const user = ref(computed(() => store.state.auth.user))
         const cart = ref(computed(() => store.state.cart.cart))
+        const stock = computed(() => {
+            return store.state.product.product
+        })
         const payment = ref('')
         const paymentFromEvent = function (event) {
             payment.value = event
         }
 
-        const valider = ref(() => {
+        const valider = ref(async () => {
+            let tab = []
             if (payment.value === '') {
                 return alert('Veuillez indiquer un moyen de paiment')
             }
@@ -130,6 +134,24 @@ export default {
                 total: cart.value.total,
                 deliveryStatus: 'pending',
                 paymentStatus: 'pending',
+            }
+            for (const item of cart.value.items) {
+                await store.dispatch('product/getProductById', item.productId)
+                if (stock.value.data.stock >= item.qte) {
+                    tab.push({
+                        productId: item.productId,
+                        stock: stock.value.data.stock - item.qte,
+                    })
+                } else {
+                    return alert(`La quantité du produit ${item.title} n'est pas disponible,
+                    veuillez la rectifier`)
+                }
+            }
+            for (const item of tab) {
+                await store.dispatch('product/updateProductStock', {
+                    productId: item.productId,
+                    stock: item.stock,
+                })
             }
             store.dispatch('order/addOrder', order)
         })

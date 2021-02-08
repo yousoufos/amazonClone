@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-col lg:mb-10 border-b">
+    <div v-if="loading">Loding...</div>
+    <div v-else class="flex flex-col lg:mb-10 border-b">
         <div class="flex p-2 border-b">
             <div class="lg:w-1/5">
                 <img
@@ -9,6 +10,17 @@
                 />
             </div>
             <div class="lg:w-3/5 p-4">
+                <p
+                    class="font-semibold text-sm"
+                    :class="[
+                        { 'text-green-500': stock.data.stock > 0 },
+                        { 'text-red-500': stock.data.stock === 0 },
+                    ]"
+                >
+                    {{
+                        stock.data.stock === 0 ? 'Rupture de stock' : 'En Stock'
+                    }}
+                </p>
                 <p class="text-base lg:text-base lg:font-bold">
                     {{ product.title }}
                 </p>
@@ -43,6 +55,7 @@
                 <quantity-component
                     @qteChanged="update"
                     :product="product"
+                    :stock="stock.data.stock"
                 ></quantity-component>
             </div>
         </div>
@@ -76,9 +89,8 @@
 
 <script>
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import quantityComponent from '../components/Quantity'
-import Quantity from './Quantity.vue'
 export default {
     props: {
         product: Object,
@@ -87,17 +99,37 @@ export default {
     components: { 'quantity-component': quantityComponent },
     setup(props, { emit }) {
         const store = useStore()
-        const test = () => console.log()
+        const loading = ref(true)
         const remove = (productId) => {
             store.dispatch('cart/removeFromCart', {
                 productId,
                 total: props.total,
             })
         }
-        const update = ref((productId) => {
-            emit('qteUpdated', { qte: props.product.qte, productId: productId })
+        const stock = ref(
+            computed(() => {
+                return store.state.product.product
+            })
+        )
+        const update = ref(async (productId) => {
+            await store.dispatch('product/getProductById', productId)
+            if (stock.value.data.stock >= props.product.qte) {
+                emit('qteUpdated', {
+                    qte: props.product.qte,
+                    productId: productId,
+                })
+            } else {
+                return
+            }
         })
-        return { remove, update }
+        onMounted(async (params) => {
+            await store.dispatch(
+                'product/getProductById',
+                props.product.productId
+            )
+            loading.value = false
+        })
+        return { remove, update, stock, loading }
     },
 }
 </script>

@@ -27,13 +27,20 @@
             />
         </div>
         <div>
-            <button :disabled="product.qte >= 10" @click="plus" class="flex">
+            <button
+                :disabled="product.qte >= 10 && stock >= product.qte"
+                @click="plus"
+                class="flex"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     class="w-6 h-6 text-yellow-500"
-                    :class="{ 'disabled:opacity-50': product.qte >= 10 }"
+                    :class="{
+                        'disabled:opacity-50':
+                            product.qte >= 10 && stock >= product.qte,
+                    }"
                 >
                     <path
                         fill-rule="evenodd"
@@ -48,13 +55,13 @@
 
 <script>
 export default {
-    props: { product: Object },
+    props: { product: Object, stock: Number },
     data() {
         return {}
     },
     methods: {
         plus() {
-            if (this.product.qte <= 10) {
+            if (this.product.qte <= 10 && this.stock > this.product.qte) {
                 this.product.qte++
                 this.$emit('qteChanged', this.product.productId)
             }

@@ -333,8 +333,8 @@ export default {
                 let product = {
                     title: form.title,
                     description: form.description,
-                    price: form.price,
-                    stock: form.stock,
+                    price: Number(form.price),
+                    stock: Number(form.stock),
                     rating: 4,
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
