@@ -180,6 +180,30 @@ const mutations = {
       }),
       1
     )
+  },
+  sortByStock: function (state, payload) {
+    if (payload === 'DESC') {
+      state.tab.sort((a, b) => {
+        return b.stock - a.stock
+      })
+    }
+    if (payload === 'ASC') {
+      state.tab.sort((a, b) => {
+        return a.stock - b.stock
+      })
+    }
+  },
+  sortByPrice: function (state, payload) {
+    if (payload === 'DESC') {
+      state.tab.sort((a, b) => {
+        return b.price - a.price
+      })
+    }
+    if (payload === 'ASC') {
+      state.tab.sort((a, b) => {
+        return a.price - b.price
+      })
+    }
   }
 }
 

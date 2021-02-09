@@ -45,16 +45,30 @@
                                                 Title
                                             </th>
                                             <th
+                                                @click="sortByPrice"
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                                             >
-                                                Price
+                                                <div
+                                                    class="flex items-center space-x-1"
+                                                >
+                                                    <span>Price</span>
+                                                    <span
+                                                        class="material-icons"
+                                                    >
+                                                        sort
+                                                    </span>
+                                                </div>
                                             </th>
                                             <th
+                                                @click="sortByStock"
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="flex items-center space-x-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                                             >
-                                                Stock
+                                                <span>Stock</span>
+                                                <span class="material-icons">
+                                                    sort
+                                                </span>
                                             </th>
                                             <th
                                                 scope="col"
@@ -101,7 +115,13 @@
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                             >
-                                                {{ product.stock }}
+                                                <span
+                                                    :class="{
+                                                        'bg-red-500 rounded-lg px-4 text-white ':
+                                                            product.stock === 0,
+                                                    }"
+                                                    >{{ product.stock }}</span
+                                                >
                                             </td>
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-500 flex space-x-1 w-56 overflow-auto"
@@ -181,17 +201,14 @@ export default {
         const toggle = ref(true)
         const selected = ref('Product')
         const loading = ref(true)
+        const sortByStockValue = ref('DESC')
+        const sortByPriceValue = ref('DESC')
         const products = ref(
             computed(() => {
                 return store.state.product.tab
             })
         )
-        onMounted(() => {
-            /* setTimeout(function () {
-                toggle.value = false
-                loading.value = false
-            }, 3000) */
-        })
+        onMounted(() => {})
 
         const removePicture = (item) => {
             var httpsReference = storage.refFromURL(item)
@@ -226,13 +243,48 @@ export default {
                 query: { productId: product.productId },
             })
         }
+        const sortByStock = (params) => {
+            if (sortByStockValue.value === 'DESC') {
+                store.commit('product/sortByStock', 'DESC')
+                sortByStockValue.value = 'ASC'
+                return
+            }
+            if (sortByStockValue.value === 'ASC') {
+                store.commit('product/sortByStock', 'ASC')
+                sortByStockValue.value = 'DESC'
+                return
+            }
+        }
+        const sortByPrice = (params) => {
+            if (sortByPriceValue.value === 'DESC') {
+                store.commit('product/sortByPrice', 'DESC')
+                sortByPriceValue.value = 'ASC'
+                return
+            }
+            if (sortByPriceValue.value === 'ASC') {
+                store.commit('product/sortByPrice', 'ASC')
+                sortByPriceValue.value = 'DESC'
+                return
+            }
+        }
 
         onMounted(async () => {
             await store.dispatch('product/getProducts')
             loading.value = false
         })
 
-        return { products, toggle, selected, loading, remove, edit }
+        return {
+            products,
+            toggle,
+            selected,
+            loading,
+            remove,
+            edit,
+            sortByStock,
+            sortByStockValue,
+            sortByPriceValue,
+            sortByPrice,
+        }
     },
 }
 </script>
