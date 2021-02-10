@@ -335,7 +335,8 @@ export default {
                     description: form.description,
                     price: Number(form.price),
                     stock: Number(form.stock),
-                    rating: 4,
+                    rating: 0,
+                    reviewNumber: 0,
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
                 }

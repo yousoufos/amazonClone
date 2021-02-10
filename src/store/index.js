@@ -5,6 +5,7 @@ import cart from './cart'
 import order from './order'
 import category from './category'
 import notification from './notification'
+import review from './review'
 
 export default createStore({
   state: {},
@@ -15,6 +16,7 @@ export default createStore({
     auth,
     cart,
     order,
+    review,
     notification,
     category
   }

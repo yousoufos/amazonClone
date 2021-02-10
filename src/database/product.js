@@ -1,4 +1,5 @@
 import { db } from '../firebase'
+import firebase from 'firebase/app'
 import { deleteProductCategoryById } from '../database/category'
 import algoliasearch from 'algoliasearch'
 
@@ -108,6 +109,19 @@ const updateProductStock = async function (payload) {
     console.log(error)
   }
 }
+const updateProductRating = async function (payload) {
+  try {
+    await db
+      .collection('product')
+      .doc(payload.productId)
+      .update({
+        rating: Number(payload.rating),
+        reviewNumber: firebase.firestore.FieldValue.increment(1)
+      })
+  } catch (error) {
+    console.log(error)
+  }
+}
 const updateProductPictures = async function (payload) {
   try {
     await db.collection('product').doc(payload.productId).update({
@@ -154,5 +168,6 @@ export {
   updateProductPictures,
   updateAlgolia,
   searchProduct,
-  updateProductStock
+  updateProductStock,
+  updateProductRating
 }

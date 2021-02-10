@@ -8,7 +8,8 @@ import {
   updateProductPictures,
   updateAlgolia,
   searchProduct,
-  updateProductStock
+  updateProductStock,
+  updateProductRating
 } from '../database/product'
 import store from '@/store'
 // initial state
@@ -39,6 +40,7 @@ const actions = {
           description: doc.data().description,
           price: doc.data().price,
           rating: doc.data().rating,
+          reviewNumber: doc.data().reviewNumber,
           pictures: doc.data().pictures,
           stock: doc.data().stock,
           defaultPicture: doc.data().defaultPicture,
@@ -144,11 +146,23 @@ const actions = {
   updateProductStock: async function ({ commit }, payload) {
     await updateProductStock(payload)
     commit('setProductStock', payload)
+  },
+  updateProductRating: async function ({ commit }, payload) {
+    await updateProductRating(payload)
+    commit('setProductRating', payload)
   }
 }
 
 // mutations
 const mutations = {
+  setProductRating: function (state, payload) {
+    state.tab.find((product) => {
+      return product.productId === payload.productId
+    }).rating = payload.rating
+    state.tab.find((product) => {
+      return product.productId === payload.productId
+    }).reviewNumber++
+  },
   setProductStock: function (state, payload) {
     state.tab.find((product) => {
       return product.productId === payload.productId
