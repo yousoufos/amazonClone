@@ -29,7 +29,12 @@
                             fill="currentColor"
                             class="h-4 w-4"
                             :class="{
-                                'text-yellow-500': item <= product.data.rating,
+                                'text-yellow-500':
+                                    item <=
+                                    Math.round(
+                                        product.data.rating /
+                                            product.data.reviewNumber
+                                    ),
                             }"
                         >
                             <path
@@ -38,7 +43,9 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="px-4 text-xs">24 Notes</p>
+                        <p class="px-4 text-xs">
+                            {{ product.data.reviewNumber + ' Notes' }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -56,9 +63,74 @@
                 <span class="" v-html="product.data.description"></span>
             </div>
         </div>
-        <div class="p-2 text-gray-600 text-sm lg:hidden">
+        <div class="p-2 text-gray-600 text-sm lg:w-10/12 lg:mx-auto">
             AVIS DES UTILISATEURS
         </div>
+        <div
+            v-if="product.data.reviewNumber !== 0"
+            class="bg-white lg:w-10/12 lg:mx-auto"
+        >
+            <div class="flex space-x-4 text-xs p-4 border-b">
+                <div class="">
+                    <p class="text-yellow-500 font-semibold">
+                        {{
+                            Math.round(
+                                product.data.rating / product.data.reviewNumber
+                            ) + '/5'
+                        }}
+                    </p>
+                </div>
+                <div>
+                    <p class="">{{ product.data.reviewNumber + ' Notes' }}</p>
+                </div>
+            </div>
+            <!--  a repeter -->
+            <div
+                class="border-b"
+                v-for="item in productReviews"
+                :key="item.reviewId"
+            >
+                <div class="p-2 flex justify-between">
+                    <div>
+                        <span
+                            v-for="(n, index) in 5"
+                            :key="index"
+                            class="material-icons text-sm text-gray-500"
+                            :class="{ 'text-yellow-500': index <= item.rating }"
+                            >grade</span
+                        >
+                    </div>
+                    <div>
+                        <p class="text-sm">{{ item.date }}</p>
+                    </div>
+                </div>
+                <div class="p-2 text-sm">
+                    <p class="font-semibold">{{ item.title }}</p>
+                    <p class="text-gray-900">
+                        {{ item.message }}
+                    </p>
+                </div>
+                <div class="flex justify-between p-2 text-sm">
+                    <div>
+                        <p class="text-gray-700">
+                            Posté par {{ item.user.prenom }}
+                        </p>
+                    </div>
+                    <div class="flex space-x-1 text-green-500">
+                        <span class="material-icons text-sm">
+                            verified_user
+                        </span>
+                        <p class="">Achat verifié</p>
+                    </div>
+                </div>
+            </div>
+            <div v-if="product.data.reviewNumber === 0">
+                <p>Pad d'avis pour ce produit</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -66,23 +138,32 @@
 import Header from '../components/Header.vue'
 import spin from '../components/Spin'
 import slider from '../components/slider'
+import Footer from '../components/bas.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 
 export default {
-    components: { Header, spin, slider },
+    components: { Header, spin, slider, Footer },
     setup() {
         const store = useStore()
         const router = useRouter()
         const route = useRoute()
         const loading = ref(true)
+        const productReviews = ref(
+            computed(() => {
+                return store.state.review.productReviews
+            })
+        )
 
         onMounted(async () => {
             await store.dispatch(
                 'product/getProductById',
                 route.query.productId
             )
+            await store.dispatch('review/getProductReviews', {
+                productId: route.query.productId,
+            })
             loading.value = false
         })
 
@@ -103,7 +184,7 @@ export default {
             })
         )
 
-        return { product, loading }
+        return { product, loading, productReviews }
     },
 }
 </script>

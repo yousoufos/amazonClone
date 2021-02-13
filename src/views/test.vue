@@ -32,6 +32,7 @@
             <div>
                 <span
                     @click="showIndex(index)"
+                    @mouseenter="showIndex(index)"
                     v-for="(n, index) in 5"
                     :key="index"
                     class="material-icons text-gray-500 cursor-pointer"

@@ -6,7 +6,9 @@ const addReview = async function (payload) {
       productId: payload.productId,
       userId: payload.userId,
       message: payload.message,
-      rating: payload.rating
+      title: payload.title,
+      rating: payload.rating,
+      date: new Date()
     })
   } catch (error) {
     console.log(error)

@@ -156,12 +156,14 @@ const actions = {
 // mutations
 const mutations = {
   setProductRating: function (state, payload) {
-    state.tab.find((product) => {
-      return product.productId === payload.productId
-    }).rating = payload.rating
-    state.tab.find((product) => {
-      return product.productId === payload.productId
-    }).reviewNumber++
+    if (state.tab !== null) {
+      state.tab.find((product) => {
+        return product.productId === payload.productId
+      }).rating = payload.rating
+      state.tab.find((product) => {
+        return product.productId === payload.productId
+      }).reviewNumber++
+    }
   },
   setProductStock: function (state, payload) {
     state.tab.find((product) => {
