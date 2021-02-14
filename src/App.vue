@@ -3,7 +3,21 @@
 </template>
 <script>
 import { auth } from './firebase'
+import { provideI18n } from '../src/plugins/i18nPlugin'
 export default {
+    setup() {
+        provideI18n({
+            locale: 'en',
+            messages: {
+                en: {
+                    hello_world: 'Hello world',
+                },
+                es: {
+                    hello_world: 'Hola mundo',
+                },
+            },
+        })
+    },
     mounted: function () {
         /* auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
