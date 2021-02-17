@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col">
-        <div class="relative carousel overflow-hidden mx-auto">
+        <div class="relative overflow-hidden mx-autow h-80 lg:h-96 w-full">
             <slot></slot>
             <div class="absolute inset-0 flex">
                 <div class="flex items-center justify-start w-1/2">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto subCarousel overflow-y-auto mt-3">
+        <div class="mx-auto w-full overflow-y-auto mt-3">
             <div class="flex space-x-1 w-14 h-14">
                 <img
                     class="opacity-40 cursor-pointer"

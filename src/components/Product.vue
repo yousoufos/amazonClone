@@ -18,10 +18,24 @@
             </p>
             <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
             <div class="flex justify-center">
-                <p class="" v-for="n in product.rating">⭐</p>
+                <div class="flex text-gray-400 space-x-1">
+                    <span
+                        v-for="item in 5"
+                        class="h-4 w-4 material-icons"
+                        :class="{
+                            'text-yellow-500':
+                                item <=
+                                Math.round(
+                                    product.rating / product.reviewNumber
+                                ),
+                        }"
+                    >
+                        grade
+                    </span>
+                </div>
             </div>
             <img
-                class="xl:w-56 xl:h-56 mx-auto my-auto"
+                class="xl:w-56 xl:h-56 mt-4 mx-auto my-auto"
                 :src="product.defaultPicture"
                 alt=""
             />

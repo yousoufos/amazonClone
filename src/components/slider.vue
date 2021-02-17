@@ -4,17 +4,19 @@
             @next="next"
             @previous="previous"
             @show="showPicture"
-            :slides="slides"
+            :slides="pictures"
             :selectedPicture="selectedPicture"
         >
             <CarouselSlide
-                v-for="(slide, index) in slides"
+                v-for="(slide, index) in pictures"
                 :key="index"
                 :index="index"
                 :visibleSlide="visibleSlide"
                 :direction="direction"
                 @picture="activePicture"
-                ><img :src="slide"
+                ><img
+                    class="object-fill h-80 lg:h-96 w-full mx-auto"
+                    :src="slide"
             /></CarouselSlide>
         </Carousel>
     </div>
@@ -25,8 +27,9 @@ import { ref, computed } from 'vue'
 import Carousel from '../components/Carousel'
 import CarouselSlide from '../components/CarouselSlide'
 export default {
+    props: { pictures: Array },
     components: { Carousel, CarouselSlide },
-    setup() {
+    setup(props) {
         const slides = ref([
             'https://picsum.photos/id/237/600/350',
             'https://picsum.photos/id/238/600/350',
@@ -41,7 +44,7 @@ export default {
         const visibleSlide = ref(0)
         const selectedPicture = ref(0)
         const slidesLen = computed(() => {
-            return slides.value.length
+            return props.pictures.length
         })
         const previous = (params) => {
             if (visibleSlide.value <= 0) {
