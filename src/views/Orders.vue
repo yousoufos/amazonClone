@@ -63,7 +63,7 @@
                                 <td
                                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                 >
-                                    {{ item.total }}
+                                    {{ currency.$t(item.total) }}
                                 </td>
                                 <td
                                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -118,11 +118,13 @@ import store from '@/store'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCurrency } from '../plugins/currencyPlugin'
 export default {
     components: { 'nav-bar': navBar },
     setup(props) {
         const router = useRouter()
         const store = useStore()
+        const currency = useCurrency()
         const orders = ref(computed(() => store.state.order.orders))
 
         const detail = (id) => {
@@ -137,6 +139,7 @@ export default {
         return {
             orders,
             detail,
+            currency,
         }
     },
 

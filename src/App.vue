@@ -3,18 +3,14 @@
 </template>
 <script>
 import { auth } from './firebase'
-import { provideI18n } from '../src/plugins/i18nPlugin'
+import { provideCurrency } from '../src/plugins/currencyPlugin'
 export default {
     setup() {
-        provideI18n({
-            locale: 'en',
-            messages: {
-                en: {
-                    hello_world: 'Hello world',
-                },
-                es: {
-                    hello_world: 'Hola mundo',
-                },
+        provideCurrency({
+            locale: 'USD',
+            options: {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
             },
         })
     },

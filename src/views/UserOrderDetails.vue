@@ -25,7 +25,7 @@
                                 Created At: {{ order.date }}
                             </p>
                             <p class="text-gray-800">
-                                Total: {{ order.total }} TND
+                                Total: {{ currency.$t(order.total) }}
                             </p>
                             <p
                                 v-if="order.paymentDate != null"
@@ -75,7 +75,7 @@
                                             <p>{{ item.title }}</p>
                                             <p>Qte: {{ item.qte }}</p>
                                             <p class="font-semibold">
-                                                4500 TND
+                                                {{ currency.$t(item.price) }}
                                             </p>
                                         </div>
                                     </div>
@@ -207,23 +207,25 @@
                                         <span class="text-xs text-gray-500"
                                             >Total articles :
                                         </span>
-                                        <span class="text-xs ml-2"
-                                            >{{ order.total }} TND</span
-                                        >
+                                        <span class="text-xs ml-2">{{
+                                            currency.$t(order.total)
+                                        }}</span>
                                     </div>
                                     <div class="flex">
                                         <span class="text-xs text-gray-500"
                                             >Delevery :
                                         </span>
-                                        <span class="text-xs ml-2">8 TND</span>
+                                        <span class="text-xs ml-2">{{
+                                            currency.$t(8)
+                                        }}</span>
                                     </div>
                                     <div class="flex py-2">
                                         <span class="text-xs text-gray-500"
                                             >Total :
                                         </span>
-                                        <span class="text-xs ml-2"
-                                            >4508 TND</span
-                                        >
+                                        <span class="text-xs ml-2">{{
+                                            currency.$t(order.total)
+                                        }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -240,11 +242,13 @@ import navBar from '../components/Header'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import { useCurrency } from '../plugins/currencyPlugin'
 export default {
     components: { navBar },
     setup() {
         const store = useStore()
         const route = useRoute()
+        const currency = useCurrency()
         const loading = ref(true)
         const toggleReviewForm = ref(true)
         const clickedIndex = ref()
@@ -318,6 +322,7 @@ export default {
             message,
             title,
             product,
+            currency,
         }
     },
 }

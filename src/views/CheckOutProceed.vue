@@ -54,19 +54,19 @@
                         class="flex justify-between text-sm font-medium text-black"
                     >
                         <span class="px-4">Sous-total : </span>
-                        <span class="px-4">{{ cart.total }}</span>
+                        <span class="px-4">{{ currency.$t(cart.total) }}</span>
                     </div>
                     <div
                         class="flex justify-between text-sm font-medium text-black"
                     >
                         <span class="px-4">Frais de livraison : </span>
-                        <span class="px-4">5</span>
+                        <span class="px-4">{{ currency.$t(5) }}</span>
                     </div>
                 </div>
                 <div class="flex justify-between p-4">
                     <span class="font-semibold text-lg">Total : </span>
                     <span class="font-bold text-lg text-yellow-500">{{
-                        Number(cart.total) + 5
+                        currency.$t(Number(cart.total) + 5)
                     }}</span>
                 </div>
                 <div class="p-6">
@@ -88,6 +88,7 @@ import cardUser from '../components/CardUserForm'
 import ordersummary from '../components/OrderSummary'
 import paymentmethod from '../components/PaymentMethods'
 import userorderdetails from '../components/UserOrderDetails'
+import { useCurrency } from '../plugins/currencyPlugin'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import store from '@/store'
@@ -96,6 +97,7 @@ export default {
         const store = useStore()
         const order = ref(null)
         const show = ref(false)
+        const currency = useCurrency()
         const modifier = ref(() => {
             show.value = !show.value
         })
@@ -164,6 +166,7 @@ export default {
             cart,
             valider,
             paymentFromEvent,
+            currency,
         }
     },
     components: {

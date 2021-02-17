@@ -25,7 +25,7 @@
                     {{ product.title }}
                 </p>
 
-                <p class="font-bold">$ {{ product.price }}</p>
+                <p class="font-bold">$ {{ currency.$t(product.price) }}</p>
             </div>
         </div>
         <div class="flex p-2 w-10/12 mx-auto justify-between content-center">
@@ -91,6 +91,7 @@
 import { useStore } from 'vuex'
 import { ref, computed, onMounted } from 'vue'
 import quantityComponent from '../components/Quantity'
+import { useCurrency } from '../plugins/currencyPlugin'
 export default {
     props: {
         product: Object,
@@ -100,6 +101,7 @@ export default {
     setup(props, { emit }) {
         const store = useStore()
         const loading = ref(true)
+        const currency = useCurrency()
         const remove = (productId) => {
             store.dispatch('cart/removeFromCart', {
                 productId,
@@ -129,7 +131,7 @@ export default {
             )
             loading.value = false
         })
-        return { remove, update, stock, loading }
+        return { remove, update, stock, loading, currency }
     },
 }
 </script>

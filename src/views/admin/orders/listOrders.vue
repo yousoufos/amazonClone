@@ -91,7 +91,7 @@
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                             >
-                                                {{ order.total }}
+                                                {{ currency.$t(order.total) }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -148,6 +148,7 @@
 <script>
 import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
+import { useCurrency } from '../../../plugins/currencyPlugin'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -160,6 +161,7 @@ export default {
     setup() {
         const router = useRouter()
         const store = useStore()
+        const currency = useCurrency()
         const sortByPriceValue = ref('DESC')
         const sortByDateValue = ref('DESC')
         const orders = ref(
@@ -202,7 +204,14 @@ export default {
         onMounted(async (params) => {
             await store.dispatch('order/getOrders')
         })
-        return { orders, details, sortByPrice, sortByDate, sortByDateValue }
+        return {
+            orders,
+            details,
+            sortByPrice,
+            sortByDate,
+            sortByDateValue,
+            currency,
+        }
     },
 }
 </script>

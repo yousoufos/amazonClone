@@ -5,7 +5,7 @@
                 {{ product.title }}
             </p>
             <p>
-                <small>$ </small><strong>{{ product.price }}</strong>
+                <strong> {{ currency.$t(product.price) }} </strong>
             </p>
             <p
                 class="font-semibold text-sm"
@@ -50,6 +50,7 @@ import { useStore } from 'vuex'
 import { ref } from 'vue'
 import notif from '../components/notif'
 import { useRouter, useRoute } from 'vue-router'
+import { useCurrency } from '../plugins/currencyPlugin'
 
 export default {
     props: {
@@ -63,6 +64,7 @@ export default {
         const store = useStore()
         const router = useRouter()
         const route = useRoute()
+        const currency = useCurrency()
 
         const add = () => {
             if (props.product.stock > 0) {
@@ -80,7 +82,7 @@ export default {
                 },
             })
         }
-        return { add, detail }
+        return { add, detail, currency }
     },
 }
 </script>

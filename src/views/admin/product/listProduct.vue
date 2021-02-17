@@ -110,7 +110,7 @@
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                             >
-                                                {{ product.price }}
+                                                {{ currency.$t(product.price) }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -189,6 +189,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { storage } from '../../../firebase'
 import { useRouter } from 'vue-router'
+import { useCurrency } from '../../../plugins/currencyPlugin'
 export default {
     components: {
         navbar,
@@ -198,6 +199,7 @@ export default {
     setup() {
         const store = useStore()
         const router = useRouter()
+        const currency = useCurrency()
         const toggle = ref(true)
         const selected = ref('Product')
         const loading = ref(true)
@@ -284,6 +286,7 @@ export default {
             sortByStockValue,
             sortByPriceValue,
             sortByPrice,
+            currency,
         }
     },
 }

@@ -20,7 +20,7 @@
         <div class="flex flex-col bg-gray-200 w-4/12 h-40 ml-10">
             <p class="p-10 text-lg font-semibold">
                 Subtotal ({{ count }} items ) :
-                <span class="font-bold">{{ total }}</span>
+                <span class="font-bold">{{ currency.$t(total) }}</span>
             </p>
             <button
                 @click="proceed"
@@ -82,7 +82,7 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import store from '@/store'
 import { useRouter } from 'vue-router'
-
+import { useCurrency } from '../plugins/currencyPlugin.js'
 export default {
     components: { navBar, product },
     setup(props) {
@@ -91,6 +91,7 @@ export default {
         const cart = ref(computed(() => store.state.cart.cart))
         const total = ref(computed(() => store.getters['cart/total']))
         const count = ref(computed(() => store.state.cart.cart.items.length))
+        const currency = useCurrency()
         const update = ref(({ qte, productId }) => {
             store.dispatch('cart/updateQuantity', {
                 total: total.value,
@@ -100,7 +101,7 @@ export default {
         })
         const proceed = ref(() => router.push({ name: 'CheckOutProceed' }))
         const back = ref(() => router.push('/'))
-        return { cart, total, count, update, proceed, back }
+        return { cart, total, count, update, proceed, back, currency }
     },
     async beforeRouteEnter(to, from, next) {
         await store.dispatch(

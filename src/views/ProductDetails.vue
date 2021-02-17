@@ -18,7 +18,7 @@
                     {{ product.data.title }}
                 </p>
                 <p class="font-bold py-2 text-lg lg:text-4xl">
-                    {{ product.data.price }} TND
+                    {{ currency.$t(product.data.price) }}
                 </p>
                 <div>
                     <div class="flex text-gray-400">
@@ -142,6 +142,7 @@ import Footer from '../components/bas.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
+import { useCurrency } from '../plugins/currencyPlugin'
 
 export default {
     components: { Header, spin, slider, Footer },
@@ -150,6 +151,7 @@ export default {
         const router = useRouter()
         const route = useRoute()
         const loading = ref(true)
+        const currency = useCurrency()
         const productReviews = ref(
             computed(() => {
                 return store.state.review.productReviews
@@ -184,7 +186,7 @@ export default {
             })
         )
 
-        return { product, loading, productReviews }
+        return { product, loading, productReviews, currency }
     },
 }
 </script>

@@ -11,7 +11,7 @@
                 <div class="py-4">
                     <p class="text-sm">{{ item.title }}</p>
                     <p class="text-sm text-yellow-500 font-medium">
-                        $ {{ item.price }}
+                        $ {{ currency.$t(item.price) }}
                     </p>
                     <p class="text-sm font-medium">Qte : {{ item.qte }}</p>
                 </div>
@@ -20,17 +20,17 @@
         <div class="flex flex-col border-t border-b border-gray-400 py-2">
             <div class="flex justify-between text-sm font-medium text-black">
                 <span class="px-4">Sous-total : </span>
-                <span class="px-4">{{ cart.total }}</span>
+                <span class="px-4">{{ currency.$t(cart.total) }}</span>
             </div>
             <div class="flex justify-between text-sm font-medium text-black">
                 <span class="px-4">Frais de livraison : </span>
-                <span class="px-4">5</span>
+                <span class="px-4">{{ currency.$t(5) }}</span>
             </div>
         </div>
         <div class="flex justify-between p-4">
             <span class="font-semibold text-lg">Total : </span>
             <span class="font-bold text-lg text-yellow-500">{{
-                Number(cart.total) + 5
+                currency.$t(Number(cart.total) + 5)
             }}</span>
         </div>
         <div class="p-6">
@@ -43,11 +43,13 @@
 
 <script>
 import { ref } from 'vue'
+import { useCurrency } from '../plugins/currencyPlugin'
 export default {
     props: { cart: Object },
     setup(props, { emit }) {
+        const currency = useCurrency()
         const valider = ref(() => emit('valider'))
-        return { valider }
+        return { valider, currency }
     },
 }
 </script>

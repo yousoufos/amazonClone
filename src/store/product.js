@@ -166,9 +166,7 @@ const mutations = {
     }
   },
   setProductStock: function (state, payload) {
-    state.tab.find((product) => {
-      return product.productId === payload.productId
-    }).stock = payload.stock
+    state.product.stock = payload.stock
   },
   setResultSearch: function (state, payload) {
     state.resultSearch = payload
