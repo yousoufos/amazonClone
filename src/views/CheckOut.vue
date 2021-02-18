@@ -2,6 +2,13 @@
     <navBar></navBar>
     <div class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4">
         <div class="lg:w-8/12">
+            <div v-if="from !== ''">
+                <router-link :to="{ name: from }"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <p class="lg:mb-10 lg:py-3 lg:text-2xl lg:font-bold lg:border-b-2">
                 Your Shopping Cart :
             </p>
@@ -33,6 +40,13 @@
         </div>
     </div>
     <div class="flex flex-col lg:hidden">
+        <div v-if="from !== ''">
+            <router-link :to="{ name: from.name }"
+                ><span class="material-icons text-4xl">
+                    keyboard_backspace
+                </span></router-link
+            >
+        </div>
         <div v-if="count === 0">
             <img src="../assets/empty-cart.png" alt="" />
         </div>
@@ -101,7 +115,16 @@ export default {
         })
         const proceed = ref(() => router.push({ name: 'CheckOutProceed' }))
         const back = ref(() => router.push('/'))
-        return { cart, total, count, update, proceed, back, currency }
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return ''
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
+        return { cart, total, count, update, proceed, back, currency, from }
     },
     async beforeRouteEnter(to, from, next) {
         await store.dispatch(

@@ -1,5 +1,12 @@
 <template>
     <nav-bar></nav-bar>
+    <div v-if="from !== ''">
+        <router-link :to="{ name: from.name }"
+            ><span class="material-icons text-4xl">
+                keyboard_backspace
+            </span></router-link
+        >
+    </div>
     <div class="py-4 w-11/12 mx-auto flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div
@@ -126,6 +133,15 @@ export default {
         const store = useStore()
         const currency = useCurrency()
         const orders = ref(computed(() => store.state.order.orders))
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return ''
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
 
         const detail = (id) => {
             router.push({
@@ -140,6 +156,7 @@ export default {
             orders,
             detail,
             currency,
+            from,
         }
     },
 

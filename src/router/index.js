@@ -199,7 +199,8 @@ const router = createRouter({
     routes,
 })
 router.beforeEach((to, from, next) => {
-    store.commit('navigation/setFrom', from.name)
+    console.log(from)
+    store.commit('navigation/setFrom', from)
     auth.onAuthStateChanged(async (authUser) => {
         if (authUser) {
             await store.dispatch('auth/getUserById', authUser.uid)

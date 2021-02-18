@@ -10,6 +10,13 @@
             class="absolute top-0 left-0 right-0 bottom-0"
         ></cardUser>
         <div class="flex w-full">
+            <div class="p-2" v-if="from !== ''">
+                <router-link :to="{ name: from.name, query: {} }"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <div class="w-2/3">
                 <p class="py-3 text-2xl font-bold border-b-2">
                     Finalize your order
@@ -37,6 +44,13 @@
         ></cardUser>
 
         <div class="w-full" v-else>
+            <div class="p-2" v-if="from !== ''">
+                <router-link :to="{ name: from }"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <user-order-details
                 @modifier="modifier"
                 :user="user"
@@ -157,6 +171,15 @@ export default {
             }
             store.dispatch('order/addOrder', order)
         })
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return ''
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
 
         return {
             show,
@@ -167,6 +190,7 @@ export default {
             valider,
             paymentFromEvent,
             currency,
+            from,
         }
     },
     components: {

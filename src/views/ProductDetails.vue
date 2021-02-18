@@ -11,7 +11,7 @@
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
             <div v-if="from !== ''">
-                <router-link :to="{ name: from }"
+                <router-link :to="{ name: from.name }"
                     ><span class="material-icons text-4xl">
                         keyboard_backspace
                     </span></router-link
