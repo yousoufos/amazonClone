@@ -10,7 +10,7 @@
         <div
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
-            <div class="py-2 lg:w-4/5 lg:m-0 lg:px-1">
+            <div class="lg:w-4/5 lg:m-0 lg:px-1">
                 <slider :pictures="product.data.pictures"></slider>
             </div>
             <div class="bg-white p-4 lg:w-full lg:py-14">

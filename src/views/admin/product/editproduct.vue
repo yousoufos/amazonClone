@@ -218,12 +218,14 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import MultiSelect from '../../../components/MultiSelect.vue'
 import notif from '../../../components/notif.vue'
+import Spin from '../../../components/Spin'
 export default {
     components: {
         navbar,
         sidebar,
         MultiSelect,
         notif,
+        Spin,
     },
     setup() {
         const form = reactive({
