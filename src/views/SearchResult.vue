@@ -1,6 +1,16 @@
 <template>
     <div>
         <Navbar></Navbar>
+        <transition
+            enter-active-class="animate__animated animate__fadeInLeft"
+            leave-active-class="animate__animated animate__fadeOutLeft"
+        >
+            <notif
+                v-if="notification.show"
+                :notification="notification"
+                :show="notification.show"
+            ></notif>
+        </transition>
     </div>
     <div v-if="loading">Loading...</div>
     <div v-else>
@@ -23,6 +33,7 @@
 <script>
 import Navbar from '../components/Header'
 import Product from '../components/Product'
+import notif from '../components/notif'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -30,6 +41,7 @@ export default {
     components: {
         Navbar,
         Product,
+        notif,
     },
 
     setup() {
@@ -41,13 +53,30 @@ export default {
                 return store.state.product.resultSearch
             })
         )
+        const notification = ref(
+            computed(() => {
+                if (store.state.notification.notification) {
+                    return store.state.notification.notification
+                } else {
+                    return { message: '', type: '', show: false }
+                }
+            })
+        )
         onMounted(async (params) => {
             await store.dispatch('product/searchProduct', route.query.search)
+            if (store.getters['auth/user']) {
+                await store.dispatch(
+                    'cart/getUserCart',
+                    store.getters['auth/user'].userId
+                )
+            }
             loading.value = false
         })
+
         return {
             products,
             loading,
+            notification,
         }
     },
 }

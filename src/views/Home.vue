@@ -90,16 +90,6 @@ export default {
             loading,
         }
     },
-    /* async beforeRouteEnter(to, from, next) {
-        await store.dispatch('product/getProducts')
-        if (store.getters['auth/user']) {
-            await store.dispatch(
-                'cart/getUserCart',
-                store.getters['auth/user'].uid
-            )
-        }
-        next()
-    }, */
 }
 </script>
 <style scoped>

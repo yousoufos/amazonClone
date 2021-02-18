@@ -90,7 +90,11 @@
                                         <div
                                             class="mx-2 p-4 bg-white rounded-md"
                                         >
-                                            <div v-if="review === null">
+                                            <div
+                                                v-if="
+                                                    reviewProduct(item) === null
+                                                "
+                                            >
                                                 <div class="flex flex-col">
                                                     <div
                                                         class="flex flex-col space-y-2"
@@ -264,16 +268,24 @@ export default {
                 return store.state.product.product
             })
         )
-        const review = ref(
-            computed(() => {
-                if (store.state.review.userReviews.length > 0) {
-                    var r = store.state.review.userReviews.find((user) => {
-                        return user.userId === order.value.userId
-                    })
+        const review = ref()
+        const reviewProduct = (item) => {
+            if (
+                store.state.review.userReviews.length > 0 &&
+                typeof item !== 'undefined'
+            ) {
+                var r = store.state.review.userReviews.find((product) => {
+                    return product.productId === item.productId
+                })
+
+                review.value = r
+                if (typeof r !== 'undefined') {
                     return r
-                } else return null
-            })
-        )
+                } else {
+                    return null
+                }
+            } else return null
+        }
 
         const addReview = async (item) => {
             if (title.value[item.id] !== '' && clickedIndex !== 'undefined') {
@@ -323,6 +335,7 @@ export default {
             title,
             product,
             currency,
+            reviewProduct,
         }
     },
 }
