@@ -10,6 +10,13 @@
         <div
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
+            <div v-if="from !== ''">
+                <router-link :to="{ name: from }"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <div class="lg:w-4/5 lg:m-0 lg:px-1">
                 <slider :pictures="product.data.pictures"></slider>
             </div>
@@ -147,6 +154,15 @@ export default {
         const route = useRoute()
         const loading = ref(true)
         const currency = useCurrency()
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return ''
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
         const productReviews = ref(
             computed(() => {
                 return store.state.review.productReviews
@@ -181,7 +197,7 @@ export default {
             })
         )
 
-        return { product, loading, productReviews, currency }
+        return { product, loading, productReviews, currency, from }
     },
 }
 </script>
