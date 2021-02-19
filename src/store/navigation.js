@@ -1,5 +1,5 @@
 const state = () => ({
-    from: null,
+  from: []
 })
 
 // getters
@@ -10,15 +10,22 @@ const actions = {}
 
 // mutations
 const mutations = {
-    setFrom(state, payload) {
-        state.from = payload
-    },
+  reset (state) {
+    state.form = []
+  },
+  setFrom (state, payload) {
+    state.from.push(payload)
+  },
+  removeFrom (state) {
+    state.from.pop()
+    console.log('deleted')
+  }
 }
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 }

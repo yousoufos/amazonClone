@@ -12,6 +12,13 @@
                         v-else
                         class="bg-gray-200 flex flex-col lg:w-1/2 lg:mx-auto lg:mt-2"
                     >
+                        <div @click="deleting" v-if="from.length > 0">
+                            <router-link :to="from[from.length - 1]"
+                                ><span class="material-icons text-4xl">
+                                    keyboard_backspace
+                                </span></router-link
+                            >
+                        </div>
                         <div
                             class="hidden lg:flex lg:text-base lg:font-semibold lg:p-2"
                         >
@@ -314,6 +321,18 @@ export default {
         const showIndex = (index) => {
             clickedIndex.value = index
         }
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return []
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
         onMounted(async (params) => {
             await store.dispatch('order/getOrderById', route.query.orderId)
             await store.dispatch('review/getUserReviews', {
@@ -336,6 +355,8 @@ export default {
             product,
             currency,
             reviewProduct,
+            from,
+            deleting,
         }
     },
 }

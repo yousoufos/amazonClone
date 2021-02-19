@@ -1,7 +1,7 @@
 <template>
     <nav-bar></nav-bar>
-    <div v-if="from !== ''">
-        <router-link :to="{ name: from.name }"
+    <div @click="deleting" v-if="from.length > 0">
+        <router-link :to="from[from.length - 1]"
             ><span class="material-icons text-4xl">
                 keyboard_backspace
             </span></router-link
@@ -136,7 +136,7 @@ export default {
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {
-                    return ''
+                    return []
                 } else {
                     return store.state.navigation.from
                 }
@@ -151,12 +151,15 @@ export default {
                 },
             })
         }
-
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
         return {
             orders,
             detail,
             currency,
             from,
+            deleting,
         }
     },
 

@@ -14,6 +14,13 @@
             </transition>
         </div>
         <div class="p-4 space-y-2 lg:w-1/2 lg:mx-auto">
+            <div @click="deleting" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <div class="bg-gray-100 flex items-center">
                 <span class="material-icons text-gray-700">
                     account_circle
@@ -322,6 +329,18 @@ export default {
                 alert('All field must be entred')
             }
         }
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return []
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
         onMounted(async (params) => {
             await store.dispatch('auth/getUserById', route.query.userId)
         })
@@ -340,6 +359,8 @@ export default {
             passwordStrength,
             checkUpdateButton,
             toggleUpdate,
+            from,
+            deleting,
         }
     },
 }

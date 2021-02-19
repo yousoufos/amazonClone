@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import Cookies from 'js-cookie'
 import product from './product'
 import auth from './auth'
 import cart from './cart'
@@ -9,17 +11,28 @@ import review from './review'
 import navigation from './navigation'
 
 export default createStore({
-    state: {},
-    mutations: {},
-    actions: {},
-    modules: {
-        product,
-        auth,
-        cart,
-        order,
-        review,
-        notification,
-        category,
-        navigation,
-    },
+  plugins: [
+    createPersistedState({
+      paths: ['navigation.from'],
+      storage: {
+        getItem: (key) => Cookies.get(key),
+        setItem: (key, value) =>
+          Cookies.set(key, value, { expires: 3, secure: true }),
+        removeItem: (key) => Cookies.remove(key)
+      }
+    })
+  ],
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {
+    product,
+    auth,
+    cart,
+    order,
+    review,
+    notification,
+    category,
+    navigation
+  }
 })

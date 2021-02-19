@@ -19,6 +19,13 @@
                 Search Result ({{ products === null ? '0' : products.length }})
             </p>
         </div>
+        <div @click="deleting" v-if="from.length > 0">
+            <router-link :to="from[from.length - 1]"
+                ><span class="material-icons text-4xl">
+                    keyboard_backspace
+                </span></router-link
+            >
+        </div>
         <div class="flex flex-col lg:w-1/2 lg:mx-auto">
             <Product
                 class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
@@ -62,6 +69,18 @@ export default {
                 }
             })
         )
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return []
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
         onMounted(async (params) => {
             await store.dispatch('product/searchProduct', route.query.search)
             if (store.getters['auth/user']) {
@@ -77,6 +96,8 @@ export default {
             products,
             loading,
             notification,
+            from,
+            deleting,
         }
     },
 }

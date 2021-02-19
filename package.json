@@ -18,6 +18,7 @@
         "cors": "^2.8.5",
         "emailjs-com": "^2.6.4",
         "firebase": "^8.2.3",
+        "js-cookie": "^2.2.1",
         "moment": "^2.29.1",
         "nodemailer": "^6.4.17",
         "postcss": "^7.0.35",
@@ -25,7 +26,8 @@
         "vue": "^3.0.5",
         "vue-currency-input": "^2.0.0-beta.2",
         "vue-router": "^4.0.3",
-        "vuex": "^4.0.0-0"
+        "vuex": "^4.0.0-0",
+        "vuex-persistedstate": "^4.0.0-beta.3"
     },
     "devDependencies": {
         "@vue/cli-plugin-router": "^4.5.10",

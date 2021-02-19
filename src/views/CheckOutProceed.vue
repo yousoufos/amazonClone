@@ -10,8 +10,8 @@
             class="absolute top-0 left-0 right-0 bottom-0"
         ></cardUser>
         <div class="flex w-full">
-            <div class="p-2" v-if="from !== ''">
-                <router-link :to="{ name: from.name, query: {} }"
+            <div @click="deleting" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
                     ><span class="material-icons text-4xl">
                         keyboard_backspace
                     </span></router-link
@@ -44,8 +44,8 @@
         ></cardUser>
 
         <div class="w-full" v-else>
-            <div class="p-2" v-if="from !== ''">
-                <router-link :to="{ name: from }"
+            <div @click="deleting" class="p-2" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
                     ><span class="material-icons text-4xl">
                         keyboard_backspace
                     </span></router-link
@@ -104,6 +104,7 @@ import paymentmethod from '../components/PaymentMethods'
 import userorderdetails from '../components/UserOrderDetails'
 import { useCurrency } from '../plugins/currencyPlugin'
 import { ref, computed } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import store from '@/store'
 export default {
@@ -174,12 +175,15 @@ export default {
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {
-                    return ''
+                    return []
                 } else {
                     return store.state.navigation.from
                 }
             })
         )
+        const deleting = () => {
+            store.commit('navigation/removeFrom')
+        }
 
         return {
             show,
@@ -191,6 +195,7 @@ export default {
             paymentFromEvent,
             currency,
             from,
+            deleting,
         }
     },
     components: {

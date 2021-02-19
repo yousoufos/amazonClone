@@ -117,25 +117,25 @@
                                         </div></router-link
                                     >
 
-                                    <a
-                                        href="/orders"
+                                    <router-link
+                                        :to="{ name: 'Orders' }"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         role="menuitem"
-                                        >Orders</a
+                                        >Orders</router-link
                                     >
-                                    <a
-                                        href="/admin"
+                                    <router-link
+                                        :to="{ name: 'adminHome' }"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         role="menuitem"
                                         v-if="isAdmin"
-                                        >Admin Section</a
+                                        >Admin Section</router-link
                                     >
 
-                                    <a
-                                        href="/logout"
+                                    <router-link
+                                        :to="{ name: 'Logout' }"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         role="menuitem"
-                                        >Sign out</a
+                                        >Sign out</router-link
                                     >
                                 </div>
                             </transition>

@@ -10,8 +10,8 @@
         <div
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
-            <div v-if="from !== ''">
-                <router-link :to="{ name: from.name }"
+            <div @click="deleting" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
                     ><span class="material-icons text-4xl">
                         keyboard_backspace
                     </span></router-link
@@ -141,7 +141,7 @@ import Header from '../components/Header.vue'
 import spin from '../components/Spin'
 import slider from '../components/slider'
 import Footer from '../components/bas.vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 import { useCurrency } from '../plugins/currencyPlugin'
@@ -157,7 +157,7 @@ export default {
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {
-                    return ''
+                    return []
                 } else {
                     return store.state.navigation.from
                 }
@@ -196,8 +196,11 @@ export default {
                 }
             })
         )
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
 
-        return { product, loading, productReviews, currency, from }
+        return { product, loading, productReviews, currency, from, deleting }
     },
 }
 </script>

@@ -2,8 +2,8 @@
     <navBar></navBar>
     <div class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4">
         <div class="lg:w-8/12">
-            <div v-if="from !== ''">
-                <router-link :to="{ name: from }"
+            <div @click="deleting" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
                     ><span class="material-icons text-4xl">
                         keyboard_backspace
                     </span></router-link
@@ -95,7 +95,7 @@ import product from '../components/ProductCheckOut'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import store from '@/store'
-import { useRouter } from 'vue-router'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin.js'
 export default {
     components: { navBar, product },
@@ -118,13 +118,27 @@ export default {
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {
-                    return ''
+                    return []
                 } else {
                     return store.state.navigation.from
                 }
             })
         )
-        return { cart, total, count, update, proceed, back, currency, from }
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
+
+        return {
+            cart,
+            total,
+            count,
+            update,
+            proceed,
+            back,
+            currency,
+            from,
+            deleting,
+        }
     },
     async beforeRouteEnter(to, from, next) {
         await store.dispatch(
