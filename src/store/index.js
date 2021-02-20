@@ -13,11 +13,11 @@ import navigation from './navigation'
 export default createStore({
   plugins: [
     createPersistedState({
-      paths: ['navigation.from'],
+      paths: ['navigation.test'],
       storage: {
         getItem: (key) => Cookies.get(key),
         setItem: (key, value) =>
-          Cookies.set(key, value, { expires: 3, secure: true }),
+          Cookies.set(key, value, { expires: 3, secure: false }),
         removeItem: (key) => Cookies.remove(key)
       }
     })

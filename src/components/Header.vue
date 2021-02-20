@@ -186,9 +186,16 @@
                                 <div class="">Home</div>
                             </router-link>
                         </li>
+                        <router-link :to="user != null ? '/logout' : '/login'">
+                            <li class="py-2 hover:bg-red-400">
+                                {{ user != null ? 'Logout' : 'Sign In' }}
+                            </li>
+                        </router-link>
+                    </ul>
+                    <ul class="p-4" v-if="user != null">
                         <router-link
                             :to="{
-                                name: user !== null ? 'userProfile' : '/',
+                                name: user !== null ? 'userProfile' : 'Home',
                                 query: {
                                     userId: user !== null ? user.userId : '',
                                 },
@@ -212,11 +219,6 @@
                                 v-if="user != null"
                             >
                                 Your Orders
-                            </li>
-                        </router-link>
-                        <router-link :to="user != null ? '/logout' : '/login'">
-                            <li class="py-2 hover:bg-red-400">
-                                {{ user != null ? 'Logout' : 'Sign In' }}
                             </li>
                         </router-link>
                     </ul>

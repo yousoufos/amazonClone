@@ -203,13 +203,11 @@ router.beforeEach((to, from, next) => {
     store.commit('navigation/reset')
   } else {
     if (store.state.navigation.from.length === 0) {
-      console.log('ok')
       store.commit('navigation/setFrom', from)
     } else if (
       store.state.navigation.from[store.state.navigation.from.length - 1]
         .name !== to.name
     ) {
-      console.log('ok1')
       store.commit('navigation/setFrom', from)
     }
   }

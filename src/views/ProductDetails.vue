@@ -7,16 +7,26 @@
     </div>
 
     <div v-else class="bg-gray-200">
+        <transition
+            enter-active-class="animate__animated animate__fadeInLeft"
+            leave-active-class="animate__animated animate__fadeOutLeft"
+        >
+            <notif
+                v-if="notification.show"
+                :notification="notification"
+                :show="notification.show"
+            ></notif>
+        </transition>
+        <div class="px-10" @click="deleting" v-if="from.length > 0">
+            <router-link :to="from[from.length - 1]"
+                ><span class="material-icons text-4xl">
+                    keyboard_backspace
+                </span></router-link
+            >
+        </div>
         <div
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
-            <div @click="deleting" v-if="from.length > 0">
-                <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
-                        keyboard_backspace
-                    </span></router-link
-                >
-            </div>
             <div class="lg:w-4/5 lg:m-0 lg:px-1">
                 <slider :pictures="product.data.pictures"></slider>
             </div>
@@ -48,6 +58,18 @@
                         <p class="px-4 mt-2 text-xs">
                             {{ product.data.reviewNumber + ' Notes' }}
                         </p>
+                    </div>
+                    <div class="mt-10">
+                        <button
+                            :disabled="product.data.stock === 0"
+                            :class="{
+                                'disabled:opacity-50': product.data.stock === 0,
+                            }"
+                            @click="add"
+                            class="btnOrange mr-2"
+                        >
+                            Add to cart
+                        </button>
                     </div>
                 </div>
             </div>
@@ -145,9 +167,10 @@ import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 import { useCurrency } from '../plugins/currencyPlugin'
+import notif from '../components/notif'
 
 export default {
-    components: { Header, spin, slider, Footer },
+    components: { Header, spin, slider, Footer, notif },
     setup() {
         const store = useStore()
         const router = useRouter()
@@ -168,8 +191,36 @@ export default {
                 return store.state.review.productReviews
             })
         )
-
+        const notification = ref(
+            computed(() => {
+                if (store.state.notification.notification) {
+                    return store.state.notification.notification
+                } else {
+                    return { message: '', type: '', show: false }
+                }
+            })
+        )
+        const add = () => {
+            if (product.value.data.stock > 0) {
+                store.dispatch('cart/addToCart', {
+                    productId: product.value.productId,
+                    title: product.value.data.title,
+                    description: product.value.data.description,
+                    price: product.value.data.price,
+                    defaultPicture: product.value.data.defaultPicture,
+                    rating: product.value.data.rating,
+                    qte: 1,
+                })
+            }
+        }
         onMounted(async () => {
+            if (store.getters['auth/user']) {
+                await store.dispatch(
+                    'cart/getUserCart',
+                    store.getters['auth/user'].userId
+                )
+            }
+
             await store.dispatch(
                 'product/getProductById',
                 route.query.productId
@@ -200,7 +251,16 @@ export default {
             store.commit('navigation/removeFrom')
         }
 
-        return { product, loading, productReviews, currency, from, deleting }
+        return {
+            product,
+            loading,
+            productReviews,
+            currency,
+            from,
+            deleting,
+            add,
+            notification,
+        }
     },
 }
 </script>
