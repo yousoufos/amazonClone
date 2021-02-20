@@ -14,9 +14,7 @@
                 :visibleSlide="visibleSlide"
                 :direction="direction"
                 @picture="activePicture"
-                ><img
-                    class="object-fill h-80 lg:h-96 w-full mx-auto"
-                    :src="slide"
+                ><img class="h-80 lg:h-96 mx-auto" :src="slide"
             /></CarouselSlide>
         </Carousel>
     </div>

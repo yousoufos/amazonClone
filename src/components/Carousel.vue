@@ -29,11 +29,15 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto w-full overflow-y-auto mt-3">
+        <div class="mx-auto p-2 w-full overflow-y-auto mt-3">
             <div class="flex space-x-1 w-14 h-14">
                 <img
-                    class="opacity-40 cursor-pointer"
-                    :class="{ 'opacity-100': index === selectedPicture }"
+                    class="opacity-40 cursor-pointer w-14 h-14"
+                    :class="{
+                        'opacity-100': index === selectedPicture,
+                        'border-red-600': index === selectedPicture,
+                        'border-2': index === selectedPicture,
+                    }"
                     v-for="(slide, index) in slides"
                     :key="index"
                     :src="slide"

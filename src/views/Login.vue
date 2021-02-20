@@ -2,6 +2,16 @@
     <div
         class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
     >
+        <transition
+            enter-active-class="animate__animated animate__fadeInLeft"
+            leave-active-class="animate__animated animate__fadeOutLeft"
+        >
+            <notif
+                v-if="notification.show"
+                :notification="notification"
+                :show="notification.show"
+            ></notif>
+        </transition>
         <div class="max-w-md w-full space-y-8">
             <div>
                 <router-link to="/">
@@ -96,11 +106,13 @@
 
 <script>
 import { useStore } from 'vuex'
-import { reactive } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import InputPassword from '../components/InputPassword'
+import notif from '../components/notif'
 export default {
     components: {
         InputPassword,
+        notif,
     },
     setup() {
         const user = reactive({ email: '', password: '' })
@@ -112,7 +124,16 @@ export default {
         const login = function () {
             store.dispatch('auth/login', user)
         }
-        return { user, register, login }
+        const notification = ref(
+            computed(() => {
+                if (store.state.notification.notification) {
+                    return store.state.notification.notification
+                } else {
+                    return { message: '', type: '', show: false }
+                }
+            })
+        )
+        return { user, register, login, notification }
     },
 }
 </script>
