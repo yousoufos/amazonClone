@@ -5,7 +5,7 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Product"></sidebar></div>
-            <div class="width568">
+            <div class="width568 w-full">
                 <div class="">
                     <form @submit.prevent class="">
                         <div class="shadow overflow-hidden sm:rounded-md">

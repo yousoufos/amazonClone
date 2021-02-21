@@ -52,6 +52,16 @@ const updatePassword = async function (payload) {
         console.log(error)
     }
 }
+const resetPassword = async function (payload) {
+    var emailAddress = payload
+    try {
+        const result = await auth.sendPasswordResetEmail(emailAddress)
+        return result
+    } catch (error) {
+        console.log(error)
+        return 'error'
+    }
+}
 
 const updateUser = async function (userId, payload) {
     const entries = Object.entries(payload)
@@ -102,4 +112,5 @@ export {
     getUsers,
     reLogin,
     updatePassword,
+    resetPassword,
 }

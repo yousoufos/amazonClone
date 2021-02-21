@@ -53,7 +53,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>Joined : {{ user.createdAt }}</div>
+                            <div>
+                                Joined :
+                                {{ moment(user.createdAt).format('LL') }}
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -128,7 +131,11 @@
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                                                     >
-                                                        {{ item.total }}
+                                                        {{
+                                                            currency.$t(
+                                                                item.total
+                                                            )
+                                                        }}
                                                     </td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -191,7 +198,9 @@ import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useCurrency } from '../../../plugins/currencyPlugin'
+import moment from 'moment'
 export default {
     components: {
         navbar,
@@ -201,7 +210,10 @@ export default {
     setup() {
         const route = useRoute()
         const store = useStore()
+        const router = useRouter()
+        const currency = useCurrency()
         const loading = ref(true)
+
         const selectedRole = ref('')
         const toggleRole = ref(true)
         const changeRole = (params) => {
@@ -227,7 +239,14 @@ export default {
                 return store.state.order.orders
             })
         )
-
+        const detail = (id) => {
+            router.push({
+                name: 'UserOrderDetails',
+                query: {
+                    orderId: id,
+                },
+            })
+        }
         onMounted(async (params) => {
             await store.dispatch('auth/getUserById', route.query.userId)
             await store.dispatch('order/getUserOrders', route.query.userId)
@@ -242,6 +261,9 @@ export default {
             toggleRole,
             cancelRole,
             editRole,
+            currency,
+            moment,
+            detail,
         }
     },
 }

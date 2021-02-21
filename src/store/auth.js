@@ -10,6 +10,7 @@ import {
     getUserById,
     reLogin,
     updatePassword,
+    resetPassword,
 } from '../database/user'
 import { getUser } from '../database/cart'
 import moment from 'moment'
@@ -82,6 +83,30 @@ const actions = {
 
         commit('reLogin', result)
     },
+    resetPassword: async function ({}, payload) {
+        const result = await resetPassword(payload)
+        if (result === 'error') {
+            store.dispatch('notification/setNotification', {
+                message: 'Email not exist',
+                type: 'error',
+                show: true,
+            })
+        } else {
+            store.dispatch('notification/setNotification', {
+                message: 'Reset Email sent',
+                type: 'success',
+                show: true,
+            })
+        }
+        setTimeout(function () {
+            store.dispatch('notification/setNotification', {
+                message: '',
+                type: '',
+                show: false,
+            })
+        }, 3000)
+    },
+
     updatePassword: async function ({ commit }, payload) {
         await updatePassword(payload)
         store.dispatch('notification/setNotification', {

@@ -40,8 +40,8 @@
         </div>
     </div>
     <div class="flex flex-col lg:hidden">
-        <div v-if="from !== ''">
-            <router-link :to="{ name: from.name }"
+        <div @click="deleting" v-if="from.length > 0">
+            <router-link :to="from[from.length - 1]"
                 ><span class="material-icons text-4xl">
                     keyboard_backspace
                 </span></router-link

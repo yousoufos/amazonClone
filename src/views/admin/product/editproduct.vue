@@ -5,9 +5,9 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Product"></sidebar></div>
-            <div class="width568">
+            <div class="w-full">
                 <div v-if="loading">Loading</div>
-                <div v-else class="">
+                <div v-else :class="{ 'opacity-60': updating }">
                     <form @submit.prevent class="">
                         <div class="shadow overflow-hidden sm:rounded-md">
                             <div class="px-4 py-5 bg-white sm:p-6">
@@ -179,10 +179,13 @@
                                     type="button"
                                     @click="onSubmit"
                                     class="font-semibold bg-yellow-500 w-20"
+                                    :disabled="updating"
+                                    :class="{}"
                                 >
                                     Save
                                 </button>
                                 <button
+                                    :disabled="updating"
                                     type="button"
                                     @click="cancel"
                                     class="ml-4 font-semibold bg-yellow-500 w-20"
@@ -219,6 +222,7 @@ import { useRouter, useRoute } from 'vue-router'
 import MultiSelect from '../../../components/MultiSelect.vue'
 import notif from '../../../components/notif.vue'
 import Spin from '../../../components/Spin'
+import { isNumber } from '../../../mixin'
 export default {
     components: {
         navbar,
@@ -243,6 +247,7 @@ export default {
         const loading = ref(true)
         const progressBar = ref(0)
         const loadingBar = ref(false)
+        const updating = ref(false)
         const refi = db.collection('product').doc()
         const id = refi.id
         const children = ref(null)
@@ -329,11 +334,15 @@ export default {
                     console.log(error)
                 })
         }
-        const onSubmit = () => {
-            /* if ((typeof form.price && typeof form.stock) !== 'number') {
+
+        const onSubmit = async () => {
+            if (
+                isNumber(form.stock) === false ||
+                isNumber(form.price) === false
+            ) {
                 alert('Price or stock must be a number')
                 return
-            } */
+            }
             if (
                 (form.title && form.description && form.price && form.stock) !==
                 ''
@@ -343,29 +352,19 @@ export default {
                     description: form.description,
                     price: Number(form.price),
                     stock: Number(form.stock),
-                    rating: 4,
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
                 }
-                store.dispatch(
-                    'product/updateProduct',
-                    {
+                updating.value = true
+                await store.dispatch('product/updateProduct', {
+                    productId: product.value.productId,
+                    productCategory: {
                         productId: product.value.productId,
-                        productCategory: {
-                            productId: product.value.productId,
-                            categories: children.value.selectedOptions,
-                        },
-                        product: prod,
-                    }
-                    /* product.value.productId,
-                    {
-                        productCategory: {
-                            productId: product.value.productId,
-                            categories: children.value.selectedOptions,
-                        },
+                        categories: children.value.selectedOptions,
                     },
-                    prod */
-                )
+                    product: prod,
+                })
+                updating.value = false
             } else {
                 alert('All fields must be entred')
             }
@@ -455,6 +454,7 @@ export default {
             notification,
             product,
             loadingBar,
+            updating,
         }
     },
     data() {
