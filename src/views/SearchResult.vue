@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Navbar></Navbar>
         <transition
             enter-active-class="animate__animated animate__fadeInLeft"
             leave-active-class="animate__animated animate__fadeOutLeft"
@@ -38,7 +37,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Header'
 import Product from '../components/Product'
 import notif from '../components/notif'
 import { ref, computed, onMounted } from 'vue'
@@ -46,7 +44,6 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 export default {
     components: {
-        Navbar,
         Product,
         notif,
     },

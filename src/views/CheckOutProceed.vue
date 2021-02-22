@@ -1,5 +1,4 @@
 <template>
-    <navBar></navBar>
     <div
         class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4 lg:relative"
     >
@@ -97,7 +96,6 @@
 </template>
 
 <script>
-import navbar from '../components/Header'
 import cardUser from '../components/CardUserForm'
 import ordersummary from '../components/OrderSummary'
 import paymentmethod from '../components/PaymentMethods'
@@ -199,7 +197,6 @@ export default {
         }
     },
     components: {
-        navBar: navbar,
         cardUser,
         'order-summary': ordersummary,
         'payment-methods': paymentmethod,

@@ -1,7 +1,6 @@
 <template>
     <div>
         <div>
-            <Header></Header>
             <transition
                 enter-active-class="animate__animated animate__fadeInLeft"
                 leave-active-class="animate__animated animate__fadeOutLeft"
@@ -187,7 +186,6 @@
 </template>
 
 <script>
-import Header from '../components/Header.vue'
 import Notif from '../components/notif.vue'
 import InputPassword from '../components/InputPassword'
 import { ref, computed, onMounted, reactive, watchEffect } from 'vue'
@@ -196,7 +194,6 @@ import { useRoute, useRouter } from 'vue-router'
 import passwordStrength from 'check-password-strength'
 export default {
     components: {
-        Header,
         Notif,
         InputPassword,
     },

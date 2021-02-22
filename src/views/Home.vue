@@ -3,7 +3,6 @@
         <spin></spin>
     </div>
     <div v-else>
-        <navBar></navBar>
         <transition
             enter-active-class="animate__animated animate__fadeInLeft"
             leave-active-class="animate__animated animate__fadeOutLeft"
@@ -33,13 +32,10 @@
                 ></product>
             </div>
         </div>
-        <bas></bas>
     </div>
 </template>
 <script>
-import navBar from '../components/Header'
 import spin from '../components/Spin'
-import bas from '../components/bas'
 import product from '../components/Product'
 import notif from '../components/notif'
 import { reactive, computed, ref, onMounted } from 'vue'
@@ -47,28 +43,18 @@ import { useStore } from 'vuex'
 import store from '@/store'
 export default {
     components: {
-        navBar,
         product,
-        bas,
         notif,
         spin,
     },
     setup() {
         const store = useStore()
-        const loading = ref(true)
-        onMounted(async () => {
-            console.log('loading')
-            await store.dispatch('product/getProducts')
+        const loading = ref(
+            computed(() => {
+                return store.state.navigation.loading
+            })
+        )
 
-            if (store.getters['auth/user']) {
-                await store.dispatch(
-                    'cart/getUserCart',
-                    store.getters['auth/user'].userId
-                )
-            }
-
-            loading.value = false
-        })
         const test = async () => {}
         const data = reactive({
             tab: computed(() => store.state.product.tab),

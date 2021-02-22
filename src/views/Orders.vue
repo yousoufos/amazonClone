@@ -1,5 +1,4 @@
 <template>
-    <nav-bar></nav-bar>
     <div @click="deleting" v-if="from.length > 0">
         <router-link :to="from[from.length - 1]"
             ><span class="material-icons text-4xl">
@@ -120,14 +119,12 @@
 </template>
 
 <script>
-import navBar from '../components/Header'
 import store from '@/store'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 export default {
-    components: { 'nav-bar': navBar },
     setup(props) {
         const router = useRouter()
         const store = useStore()

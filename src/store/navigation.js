@@ -1,5 +1,6 @@
 const state = () => ({
-    from: [],
+  from: [],
+  loading: true
 })
 
 // getters
@@ -10,21 +11,24 @@ const actions = {}
 
 // mutations
 const mutations = {
-    reset(state) {
-        state.form = []
-    },
-    setFrom(state, payload) {
-        state.from.push(payload)
-    },
-    removeFrom(state) {
-        state.from.pop()
-    },
+  reset (state) {
+    state.form = []
+  },
+  setFrom (state, payload) {
+    state.from.push(payload)
+  },
+  removeFrom (state) {
+    state.from.pop()
+  },
+  setLoading (state, payload) {
+    state.loading = payload
+  }
 }
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 }

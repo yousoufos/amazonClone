@@ -1,7 +1,4 @@
 <template>
-    <div>
-        <Header></Header>
-    </div>
     <div v-if="loading">
         <spin></spin>
     </div>
@@ -153,16 +150,12 @@
             </div>
         </div>
     </div>
-    <div>
-        <Footer></Footer>
-    </div>
 </template>
 
 <script>
-import Header from '../components/Header.vue'
 import spin from '../components/Spin'
 import slider from '../components/slider'
-import Footer from '../components/bas.vue'
+
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
@@ -170,7 +163,7 @@ import { useCurrency } from '../plugins/currencyPlugin'
 import notif from '../components/notif'
 
 export default {
-    components: { Header, spin, slider, Footer, notif },
+    components: { spin, slider, notif },
     setup() {
         const store = useStore()
         const router = useRouter()

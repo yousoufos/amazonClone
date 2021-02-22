@@ -17,7 +17,7 @@
                 <router-link to="/">
                     <img
                         class="mx-auto h-36 w-auto"
-                        src="../assets/logo1.png"
+                        src="../assets/logo1.jpg"
                         alt="Workflow"
                     />
                 </router-link>

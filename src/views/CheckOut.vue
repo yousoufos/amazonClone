@@ -1,5 +1,4 @@
 <template>
-    <navBar></navBar>
     <div class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4">
         <div class="lg:w-8/12">
             <div @click="deleting" v-if="from.length > 0">
@@ -90,7 +89,6 @@
 </template>
 
 <script>
-import navBar from '../components/Header'
 import product from '../components/ProductCheckOut'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
@@ -98,7 +96,7 @@ import store from '@/store'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin.js'
 export default {
-    components: { navBar, product },
+    components: { product },
     setup(props) {
         const store = useStore()
         const router = useRouter()

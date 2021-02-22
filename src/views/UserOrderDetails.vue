@@ -1,6 +1,5 @@
 <template>
     <div>
-        <navBar></navBar>
         <div v-if="loading">Loading...</div>
         <div v-else>
             <transition name="slide-fade">
@@ -249,13 +248,12 @@
 </template>
 
 <script>
-import navBar from '../components/Header'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 export default {
-    components: { navBar },
+    components: {},
     setup() {
         const store = useStore()
         const route = useRoute()

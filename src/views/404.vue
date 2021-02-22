@@ -1,6 +1,5 @@
 <template>
     <div>
-        <navigation></navigation>
         <div
             class="flex bg-gray-200 w-full h-screen items-center justify-center"
         >
@@ -12,12 +11,7 @@
 </template>
 
 <script>
-import navigation from '../components/Header'
-export default {
-    components: {
-        navigation,
-    },
-}
+export default {}
 </script>
 
 <style></style>
