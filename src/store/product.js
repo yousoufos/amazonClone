@@ -31,6 +31,7 @@ const getters = {
 const actions = {
   getProducts: async function ({ commit }) {
     commit('emptyProductArray')
+    store.commit('navigation/setLoading', true)
     try {
       const snapshot = await getProducts()
       for (const doc of snapshot.docs) {
@@ -49,6 +50,7 @@ const actions = {
 
         commit('addProducts', obj)
       }
+      store.commit('navigation/setLoading', false)
     } catch (error) {
       console.log(error)
     }

@@ -26,6 +26,7 @@
         "vue": "^3.0.5",
         "vue-currency-input": "^2.0.0-beta.2",
         "vue-router": "^4.0.3",
+        "vue3-chart-v2": "^0.8.1",
         "vuex": "^4.0.0-0",
         "vuex-persistedstate": "^4.0.0-beta.3"
     },
