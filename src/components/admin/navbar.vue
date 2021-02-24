@@ -2,7 +2,14 @@
     <div
         class="bg-gray-700 text-gray-100 font-semibold tracking-wider h-14 width768px widthpx flex"
     >
-        <div class="bg-pink-400 h-full w-48">Logo</div>
+        <router-link to="/admin"
+            ><div class="bg-pink-400 h-full w-48">
+                <img
+                    class="w-48 max-h-16"
+                    src="../../assets/logo1.jpg"
+                    alt=""
+                /></div
+        ></router-link>
         <div class="flex justify-between items-center flex-grow px-2">
             <div>{{ title }}</div>
             <div>

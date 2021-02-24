@@ -69,8 +69,10 @@ const actions = {
     }
   },
   getOrders: async function ({ commit }) {
+    store.commit('navigation/setLoading', true)
     const orders = await getOrders()
     commit('setOrders', orders)
+    store.commit('navigation/setLoading', false)
   },
   updateOrderDeliveryStatus: async function ({ commit }, payload) {
     console.log(payload)

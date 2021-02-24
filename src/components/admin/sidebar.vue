@@ -1,5 +1,5 @@
 <template>
-    <div class="text-gray-700 w-48">
+    <div class="text-gray-700 w-48 border-r h-screen">
         <ul class="space-y-4">
             <router-link to="/admin/product/listproduct">
                 <li

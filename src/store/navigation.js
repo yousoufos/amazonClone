@@ -21,7 +21,6 @@ const mutations = {
         state.from.pop()
     },
     setLoading(state, payload) {
-        console.log(payload)
         state.loading = payload
     },
 }

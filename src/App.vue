@@ -1,7 +1,11 @@
 <template>
-    <Header v-if="route.name !== 'Login'"></Header>
+    <Header
+        v-if="route.name !== 'Login' && !route.path.includes('/admin')"
+    ></Header>
     <router-view />
-    <Footer v-if="route.name !== 'Login'"></Footer>
+    <Footer
+        v-if="route.name !== 'Login' && !route.path.includes('/admin')"
+    ></Footer>
 </template>
 <script>
 import { provideCurrency } from '../src/plugins/currencyPlugin'
@@ -9,12 +13,13 @@ import Header from '../src/components/Header'
 import Footer from '../src/components/bas'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watchEffect } from 'vue'
 export default {
     components: { Header, Footer },
     setup() {
         const route = useRoute()
         const store = useStore()
+
         provideCurrency({
             locale: 'USD',
             options: {

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Chart from '../components/charts/Chart'
+import Chart from './Chart'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 export default {
@@ -44,6 +44,7 @@ export default {
         })
 
         const options = ref({
+            legend: { display: true, labels: { boxWidth: 0 } },
             scales: {
                 yAxes: [
                     {
@@ -58,16 +59,14 @@ export default {
             return store.state.product.tab
         })
 
-        const loading = computed(() => {
-            return store.state.navigation.loading
-        })
+        const loading = ref(true)
         const labels = computed(() => {
             return products.value.map((product) => {
                 return product.title
             })
         })
         onMounted(async (params) => {
-            //await store.dispatch('product/getProducts')
+            loading.value = false
         })
         return { labels, datasets, options, products, loading }
     },
