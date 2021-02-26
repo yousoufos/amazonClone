@@ -6,7 +6,7 @@
         :labels="labels"
         :datasets="datasets"
         :options="options"
-        chartType="line"
+        chartType="bar"
     ></Chart>
 </template>
 
@@ -14,7 +14,7 @@
 import Chart from './Chart'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
-import moment from 'moment'
+import _ from 'lodash'
 export default {
     components: {
         Chart,
@@ -24,10 +24,14 @@ export default {
         const datasets = computed(() => {
             return [
                 {
-                    label: 'Total Income',
-                    data: groupByDate.value.map((order) => order.total),
-                    backgroundColor: 'rgba(255, 99, 71, 0)',
-                    borderColor: '#FF0000',
+                    label: 'Best Seller',
+                    data: bestSeller.value
+                        .sort((a, b) => {
+                            return b.total - a.total
+                        })
+                        .map((items) => items.total),
+                    backgroundColor: 'rgba(0, 255, 255)',
+
                     borderWidth: 2,
                 },
             ]
@@ -44,21 +48,9 @@ export default {
                         },
                         ticks: {
                             beginAtZero: true,
+                            //stepSize: 1,
                             callback: function (value, index, values) {
                                 return '$' + value
-                            },
-                        },
-                    },
-                ],
-                xAxes: [
-                    {
-                        scaleLabel: {
-                            display: true,
-                            //labelString: 'USD',
-                        },
-                        ticks: {
-                            callback: function (value, index, values) {
-                                return moment(value).format('l')
                             },
                         },
                     },
@@ -72,39 +64,42 @@ export default {
         const loading = ref(true)
         const findElem = (array, elem) => {
             return array.find((params) => {
-                return params.date === elem.date
+                return params.productId === elem.productId
             })
         }
-        const groupByDate = computed(() => {
+        const bestSeller = computed(() => {
             const result = []
-            orders.value.forEach((element) => {
-                if (typeof findElem(result, element) !== 'undefined') {
-                    findElem(result, element).total + element.total
-                } else {
-                    result.push(element)
-                }
+            //c'est ici que ca se passe si on veut limiter la recherche à deux dates
+            var items = orders.value.map((order) => {
+                return order.items
+            })
+
+            items.forEach((element) => {
+                element.forEach((params) => {
+                    if (typeof findElem(result, params) != 'undefined') {
+                        findElem(result, params).qte += params.qte
+                        findElem(result, params).total +=
+                            params.price * params.qte
+                    } else {
+                        result.push({ ...params, total: params.price })
+                    }
+                })
             })
 
             return result
         })
         const labels = computed(() => {
-            return groupByDate.value
+            return bestSeller.value
                 .sort((a, b) => {
-                    if (moment(a.date) > moment(b.date)) {
-                        return 1
-                    } else {
-                        return -1
-                    }
+                    return b.total - a.total
                 })
-                .map((order) => {
-                    return order.date
-                })
+                .map((items) => items.title)
         })
         onMounted(async (params) => {
             //await store.dispatch('order/getOrders')
             loading.value = false
         })
-        return { labels, datasets, options, orders, loading }
+        return { labels, datasets, options, orders, loading, bestSeller }
     },
 }
 </script>

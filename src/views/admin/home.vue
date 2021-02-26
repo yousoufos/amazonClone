@@ -1,16 +1,28 @@
 <template>
     <div class="">
         <div>
-            <navbar title="Admin Page"></navbar>
+            <navbar title="Borad"></navbar>
         </div>
         <div class="flex">
             <div><sidebar></sidebar></div>
-            <div class="w-full flex">
-                <div class="w-1/2">
-                    <StockChart></StockChart>
-                </div>
-                <div class="w-1/2">
-                    <IncomeChart></IncomeChart>
+            <div class="w-full">
+                <div v-if="loading">Loading...</div>
+                <div
+                    v-else
+                    class="w-full p-2 grid grid-cols-2 gap-2 bg-gray-200"
+                >
+                    <div class="bg-white rounded-lg">
+                        <StockChart></StockChart>
+                    </div>
+                    <div class="bg-white rounded-lg">
+                        <IncomeChart></IncomeChart>
+                    </div>
+                    <div class="bg-white rounded-lg">
+                        <BestSellerChart></BestSellerChart>
+                    </div>
+                    <div class="bg-white rounded-lg grid grid-cols-2 gap-2">
+                        <Resume></Resume>
+                    </div>
                 </div>
             </div>
         </div>
@@ -22,7 +34,9 @@ import navbar from '../../components/admin/navbar'
 import sidebar from '../../components/admin/sidebar'
 import StockChart from '../../components/charts/StockChart'
 import IncomeChart from '../../components/charts/IncomeChart'
-import { computed, onMounted } from 'vue'
+import BestSellerChart from '../../components/charts/BestSellerChart'
+import Resume from '../../components/admin/Resume'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
     components: {
@@ -30,13 +44,16 @@ export default {
         sidebar,
         StockChart,
         IncomeChart,
+        BestSellerChart,
+        Resume,
     },
     setup() {
         const store = useStore()
-        const loading = computed(() => {
-            return store.state.navigation.loading
+        const loading = ref(true)
+        onMounted(async () => {
+            await store.dispatch('order/getOrders')
+            loading.value = false
         })
-        onMounted(() => {})
         return {
             loading,
         }

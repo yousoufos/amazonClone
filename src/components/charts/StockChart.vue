@@ -61,9 +61,11 @@ export default {
 
         const loading = ref(true)
         const labels = computed(() => {
-            return products.value.map((product) => {
-                return product.title
-            })
+            return products.value
+                .sort((a, b) => {
+                    return b.stock - a.stock
+                })
+                .map((product) => product.title)
         })
         onMounted(async (params) => {
             loading.value = false

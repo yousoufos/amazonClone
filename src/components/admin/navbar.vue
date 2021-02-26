@@ -10,7 +10,7 @@
                     alt=""
                 /></div
         ></router-link>
-        <div class="flex justify-between items-center flex-grow px-2">
+        <div class="flex justify-between items-center flex-grow px-4">
             <div>{{ title }}</div>
             <div>
                 <ul class="flex space-x-2 text-sm">

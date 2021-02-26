@@ -107,7 +107,7 @@
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                             role="menuitem"
                                         >
-                                            Your Profile
+                                            My Profile
                                         </div></router-link
                                     >
 
@@ -115,7 +115,7 @@
                                         :to="{ name: 'Orders' }"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         role="menuitem"
-                                        >Orders</router-link
+                                        >My Orders</router-link
                                     >
                                     <router-link
                                         :to="{ name: 'adminHome' }"

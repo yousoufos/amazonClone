@@ -1,7 +1,5 @@
 <template>
-    <div v-if="loading">
-        <spin></spin>
-    </div>
+    <div v-if="loading"></div>
     <div v-else>
         <transition
             enter-active-class="animate__animated animate__fadeInLeft"
