@@ -94,7 +94,7 @@
                                         class="bg-white divide-y divide-gray-200"
                                     >
                                         <tr
-                                            v-for="product in products"
+                                            v-for="product in tab"
                                             :key="product.productId"
                                         >
                                             <td
@@ -172,6 +172,19 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="flex justify-center">
+                                    <div
+                                        @click="next(index + 1)"
+                                        class="border p-1 mx-1 mt-4 border-indigo-600 cursor-pointer"
+                                        :class="{
+                                            'bg-yellow-500': item === start,
+                                        }"
+                                        v-for="(item, index) in numberRecords"
+                                        :key="index"
+                                    >
+                                        {{ item }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,7 +223,6 @@ export default {
                 return store.state.product.tab
             })
         )
-        onMounted(() => {})
 
         const removePicture = (item) => {
             var httpsReference = storage.refFromURL(item)
@@ -270,8 +282,33 @@ export default {
             }
         }
 
+        const pas = ref(6)
+        const productsLength = computed(() => {
+            return products.value.length
+        })
+        const numberRecords = computed(() => {
+            return Math.ceil(productsLength.value / pas.value)
+        })
+        var start = ref(1)
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
+
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof products.value[i] !== 'undefined') {
+                    tableau.push(products.value[i])
+                }
+            }
+
+            return tableau
+        })
+        const next = (params) => {
+            start.value = params
+        }
+
         onMounted(async () => {
-            await store.dispatch('product/getProducts')
+            //await store.dispatch('product/getProducts')
             loading.value = false
         })
 
@@ -287,6 +324,10 @@ export default {
             sortByPriceValue,
             sortByPrice,
             currency,
+            numberRecords,
+            tab,
+            next,
+            start,
         }
     },
 }

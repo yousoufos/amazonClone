@@ -1,13 +1,22 @@
 <template>
-    <div v-if="loading">loading....</div>
-
-    <Chart
-        v-else
-        :labels="labels"
-        :datasets="datasets"
-        :options="options"
-        chartType="bar"
-    ></Chart>
+    <div>
+        <ul>
+            <li v-for="product in tab" :key="product.productId">
+                {{ product.title }}
+            </li>
+        </ul>
+        <div class="flex">
+            <div
+                @click="next(index + 1)"
+                class="border p-2 border-indigo-600 cursor-pointer"
+                :class="{ 'bg-yellow-500': item === start }"
+                v-for="(item, index) in numberRecords"
+                :key="index"
+            >
+                {{ item }}
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -21,82 +30,38 @@ export default {
     },
     setup() {
         const store = useStore()
-        const datasets = computed(() => {
-            return [
-                {
-                    label: 'Best Seller',
-                    data: bestSeller.value
-                        .sort((a, b) => {
-                            return b.price - a.price
-                        })
-                        .map((items) => items.price),
-                    backgroundColor: 'rgba(0, 255, 255)',
-
-                    borderWidth: 2,
-                },
-            ]
+        const products = computed(() => {
+            return store.state.product.tab
         })
-
-        const options = ref({
-            legend: { display: true, labels: { boxWidth: 0 } },
-            scales: {
-                yAxes: [
-                    {
-                        scaleLabel: {
-                            display: true,
-                            //labelString: 'USD',
-                        },
-                        ticks: {
-                            beginAtZero: true,
-                            //stepSize: 1,
-                            callback: function (value, index, values) {
-                                return '$' + value
-                            },
-                        },
-                    },
-                ],
-            },
+        const pas = ref(4)
+        const productsLength = computed(() => {
+            return products.value.length
         })
-        const orders = computed(() => {
-            return store.state.order.orders
+        const numberRecords = computed(() => {
+            return Math.ceil(productsLength.value / pas.value)
         })
-
+        var start = ref(1)
         const loading = ref(true)
-        const findElem = (array, elem) => {
-            return array.find((params) => {
-                return params.productId === elem.productId
-            })
-        }
-        const bestSeller = computed(() => {
-            const result = []
-            //c'est ici que ca se passe si on veut limiter la recherche à deux dates
-            var items = orders.value.map((order) => {
-                return order.items
-            })
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
 
-            items.forEach((element) => {
-                element.forEach((params) => {
-                    if (typeof findElem(result, params) != 'undefined') {
-                        findElem(result, params).qte + params.qte
-                        findElem(result, params).price + params.price
-                    } else {
-                        result.push(params)
-                    }
-                })
-            })
-            console.log(result)
-            return result
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof products.value[i] !== 'undefined') {
+                    tableau.push(products.value[i])
+                }
+            }
+
+            return tableau
         })
-        const labels = computed(() => {
-            return bestSeller.value.map((item) => {
-                return item.title
-            })
-        })
+        const next = (params) => {
+            start.value = params
+        }
         onMounted(async (params) => {
-            await store.dispatch('order/getOrders')
             loading.value = false
         })
-        return { labels, datasets, options, orders, loading, bestSeller }
+        return { loading, products, numberRecords, tab, next, start }
     },
 }
 </script>
