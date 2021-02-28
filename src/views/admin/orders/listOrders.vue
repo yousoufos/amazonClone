@@ -5,8 +5,22 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Orders"></sidebar></div>
-            <div class="width568 w-full">
-                <div class="py-4 mx-auto flex flex-col w-11/12">
+            <div class="width568 w-full h-screen overflow-y-auto">
+                <div v-if="loading">Loading...</div>
+                <div v-else class="py-4 mx-auto flex flex-col w-11/12">
+                    <div class="flex justify-center">
+                        <div
+                            @click="next(index + 1)"
+                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
+                            :class="{
+                                'bg-yellow-500': item === start,
+                            }"
+                            v-for="(item, index) in numberRecords"
+                            :key="index"
+                        >
+                            {{ item }}
+                        </div>
+                    </div>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -69,7 +83,7 @@
                                         class="bg-white divide-y divide-gray-200 cursor-pointer"
                                     >
                                         <tr
-                                            v-for="order in orders"
+                                            v-for="order in tab"
                                             :key="order.orderId"
                                             @click="details(order)"
                                         >
@@ -162,13 +176,13 @@ export default {
         const router = useRouter()
         const store = useStore()
         const currency = useCurrency()
+        const loading = ref(true)
         const sortByPriceValue = ref('DESC')
         const sortByDateValue = ref('DESC')
-        const orders = ref(
-            computed(() => {
-                return store.state.order.orders
-            })
-        )
+        const orders = computed(() => {
+            return store.state.order.orders
+        })
+
         const details = ref((params) => {
             router.push({
                 name: 'adminOrderDetails',
@@ -201,8 +215,34 @@ export default {
                 return
             }
         }
+        const pas = ref(10)
+        const ordersLength = computed(() => {
+            return orders.value.length
+        })
+        const numberRecords = computed(() => {
+            return Math.ceil(ordersLength.value / pas.value)
+        })
+        const start = ref(1)
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
+
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof orders.value[i] !== 'undefined') {
+                    tableau.push(orders.value[i])
+                }
+            }
+
+            return tableau
+        })
+        const next = (params) => {
+            start.value = params
+        }
+
         onMounted(async (params) => {
             await store.dispatch('order/getOrders')
+            loading.value = false
         })
         return {
             orders,
@@ -211,6 +251,11 @@ export default {
             sortByDate,
             sortByDateValue,
             currency,
+            tab,
+            start,
+            next,
+            numberRecords,
+            loading,
         }
     },
 }

@@ -6,7 +6,7 @@
         <div class="flex">
             <div><sidebar :selected="selected"></sidebar></div>
 
-            <div class="width568 w-full">
+            <div class="width568 w-full h-screen overflow-y-auto">
                 <div v-if="loading">Loading...</div>
                 <div v-else class="py-4 mx-auto flex flex-col w-11/12">
                     <router-link to="/admin/product/newProduct">
@@ -19,6 +19,19 @@
                             <span>New Product</span>
                         </div>
                     </router-link>
+                    <div class="flex justify-center">
+                        <div
+                            @click="next(index + 1)"
+                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
+                            :class="{
+                                'bg-yellow-500': item === start,
+                            }"
+                            v-for="(item, index) in numberRecords"
+                            :key="index"
+                        >
+                            {{ item }}
+                        </div>
+                    </div>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -172,19 +185,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="flex justify-center">
-                                    <div
-                                        @click="next(index + 1)"
-                                        class="border p-1 mx-1 mt-4 border-indigo-600 cursor-pointer"
-                                        :class="{
-                                            'bg-yellow-500': item === start,
-                                        }"
-                                        v-for="(item, index) in numberRecords"
-                                        :key="index"
-                                    >
-                                        {{ item }}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -203,6 +203,7 @@ import { useStore } from 'vuex'
 import { storage } from '../../../firebase'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
+import { tab, start } from '../../../mixin'
 export default {
     components: {
         navbar,
@@ -289,7 +290,7 @@ export default {
         const numberRecords = computed(() => {
             return Math.ceil(productsLength.value / pas.value)
         })
-        var start = ref(1)
+        const start = ref(1)
         const tab = computed(() => {
             var indexStart = (start.value - 1) * pas.value
 

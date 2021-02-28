@@ -5,7 +5,7 @@
         </div>
         <div class="flex">
             <div><sidebar></sidebar></div>
-            <div class="w-full">
+            <div class="w-full h-sc overflow-y-auto">
                 <div v-if="loading">
                     <svg
                         class="animate-spin h-10 w-10 text-white"

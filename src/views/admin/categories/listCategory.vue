@@ -5,8 +5,9 @@
         </div>
         <div class="flex">
             <div><sidebar selected="Categories"></sidebar></div>
-            <div class="width568 w-full">
-                <div class="py-4 mx-auto flex flex-col w-11/12">
+            <div class="width568 w-full h-screen overflow-y-auto">
+                <div v-if="loading">loading....</div>
+                <div v-else class="py-4 mx-auto flex flex-col w-11/12">
                     <div
                         class="flex mb-4 space-x-2 justify-center items-center rounded-md py-2 bg-gray-300 cursor-pointer"
                         :class="[add === false ? 'w-48' : 'w-80']"
@@ -35,6 +36,19 @@
                             >
                                 Add
                             </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div
+                            @click="next(index + 1)"
+                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
+                            :class="{
+                                'bg-yellow-500': item === start,
+                            }"
+                            v-for="(item, index) in numberRecords"
+                            :key="index"
+                        >
+                            {{ item }}
                         </div>
                     </div>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -67,7 +81,7 @@
                                         class="bg-white divide-y divide-gray-200"
                                     >
                                         <tr
-                                            v-for="(cat, i) in categories"
+                                            v-for="(cat, i) in tab"
                                             :key="cat.id"
                                         >
                                             <td
@@ -144,6 +158,7 @@ export default {
         const store = useStore()
         const editable = ref(false)
         let oldValue = []
+        const loading = ref(true)
         const categories = ref(
             computed(() => {
                 return store.state.category.categories
@@ -213,8 +228,35 @@ export default {
             newCategory.value = ''
             add.value = false
         }
+
+        const pas = ref(4)
+        const categoriesLength = computed(() => {
+            return categories.value.length
+        })
+        const numberRecords = computed(() => {
+            return Math.ceil(categoriesLength.value / pas.value)
+        })
+        const start = ref(1)
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
+
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof categories.value[i] !== 'undefined') {
+                    tableau.push(categories.value[i])
+                }
+            }
+
+            return tableau
+        })
+        const next = (params) => {
+            start.value = params
+        }
+
         onMounted(async (params) => {
             await store.dispatch('category/getCategories')
+            loading.value = false
         })
         onBeforeUpdate(() => {
             divs.value = []
@@ -232,6 +274,11 @@ export default {
             cancelAdd,
             test,
             divs,
+            next,
+            tab,
+            start,
+            numberRecords,
+            loading,
         }
     },
 }
