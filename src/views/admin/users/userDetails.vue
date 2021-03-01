@@ -1,10 +1,7 @@
 <template>
-    <div class="">
-        <div>
-            <navbar :title="user === null ? 'User' : user.email"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Users"></sidebar></div>
+    <div class="flex">
+        <div><sidebar selected="Users"></sidebar></div>
+        <div class="flex w-full">
             <div class="width568 w-full">
                 <div v-if="loading">Loading...</div>
                 <div v-else class="py-4 w-11/12 mx-auto flex flex-col">

@@ -2,11 +2,12 @@
     <div v-if="loading">
         <spin></spin>
     </div>
-    <div v-else>
+    <div class="flex flex-col h-screen" v-else>
         <Header
             v-if="route.name !== 'Login' && !route.path.includes('/admin')"
         ></Header>
-        <router-view />
+        <div class="flex-grow"><router-view /></div>
+
         <Footer
             v-if="route.name !== 'Login' && !route.path.includes('/admin')"
         ></Footer>

@@ -1,10 +1,7 @@
 <template>
-    <div class="">
-        <div>
-            <navbar title="List Orders"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Orders"></sidebar></div>
+    <div class="flex">
+        <div><sidebar selected="Orders"></sidebar></div>
+        <div class="flex w-full">
             <div class="width568 w-full h-screen overflow-y-auto">
                 <div v-if="loading">Loading...</div>
                 <div v-else class="py-4 mx-auto flex flex-col w-11/12">

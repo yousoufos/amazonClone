@@ -1,16 +1,13 @@
 <template>
-    <div class="">
-        <div>
-            <navbar title="List Categories"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Categories"></sidebar></div>
+    <div class="flex">
+        <div><sidebar selected="Categories"></sidebar></div>
+        <div class="flex w-full">
             <div class="width568 w-full h-screen overflow-y-auto">
-                <div v-if="loading">loading....</div>
+                <div v-if="loadingPage">loading....</div>
                 <div v-else class="py-4 mx-auto flex flex-col w-11/12">
                     <div
                         class="flex mb-4 space-x-2 justify-center items-center rounded-md py-2 bg-gray-300 cursor-pointer"
-                        :class="[add === false ? 'w-48' : 'w-80']"
+                        :class="[add === false ? 'w-48' : 'w-96']"
                     >
                         <div
                             @click="addCategory"
@@ -22,20 +19,96 @@
                             </span>
                             <span>New Category</span>
                         </div>
-                        <div v-else class="px-2 space-x-2">
-                            <input
-                                v-model="newCategory"
-                                class="rounded-md"
-                                type="text"
-                                ref="addInput"
-                                @keyup.esc="cancelAdd($event)"
-                            />
-                            <button
-                                @click="submit"
-                                class="bg-white w-16 rounded-md"
-                            >
-                                Add
-                            </button>
+                        <div v-else class="flex flex-col">
+                            <div class="px-2 space-x-2">
+                                <input
+                                    v-model="newCategory"
+                                    class="rounded-md"
+                                    type="text"
+                                    ref="addInput"
+                                    @keyup.esc="cancelAdd($event)"
+                                />
+                                <button
+                                    @click="submit"
+                                    class="bg-white w-16 rounded-md"
+                                >
+                                    Add
+                                </button>
+                                <button
+                                    @click="cancelAdd"
+                                    class="bg-white w-16 rounded-md"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                            <div>
+                                <div class="p-2">
+                                    <div v-if="alaune === ''">
+                                        <div class="cursor-pointer">
+                                            <label
+                                                for="file"
+                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
+                                                >Upload picture<span
+                                                    class="px-2"
+                                                    ><span
+                                                        class="material-icons"
+                                                    >
+                                                        add_photo_alternate
+                                                    </span></span
+                                                >
+                                            </label>
+                                        </div>
+                                        <input
+                                            @change="onChange"
+                                            type="file"
+                                            name="file"
+                                            accept="image/x-png,image/gif,image/jpeg"
+                                            required
+                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            id="file"
+                                        />
+                                    </div>
+
+                                    <div v-if="loading" class="w-1/5">
+                                        <div
+                                            class="shadow w-full bg-grey-light"
+                                        >
+                                            <div
+                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
+                                                :style="{
+                                                    width: progressBar + '%',
+                                                }"
+                                            >
+                                                {{ progressBar + '%' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        v-if="alaune !== ''"
+                                        class="flex flex-wrap"
+                                    >
+                                        <div class="mt-2 mx-2">
+                                            <div
+                                                class="flex justify-between items-center"
+                                            >
+                                                <span
+                                                    @click="
+                                                        removePicture(alaune)
+                                                    "
+                                                    class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                >
+                                                    clear
+                                                </span>
+                                            </div>
+                                            <img
+                                                class="w-20 h-20"
+                                                :src="alaune"
+                                                alt=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex justify-center">
@@ -68,6 +141,12 @@
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                             >
                                                 Name
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Picture
                                             </th>
                                             <th
                                                 scope="col"
@@ -107,7 +186,107 @@
                                                     cat.name
                                                 }}</span>
                                             </td>
-
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                <div
+                                                    class="flex flex-wrap"
+                                                    v-if="cat.editable"
+                                                >
+                                                    <div
+                                                        v-if="
+                                                            cat.picture !== ''
+                                                        "
+                                                        class="mt-2 mx-2"
+                                                    >
+                                                        <div
+                                                            class="flex justify-between items-center"
+                                                        >
+                                                            <span
+                                                                @click="
+                                                                    removePicture(
+                                                                        cat,
+                                                                        true
+                                                                    )
+                                                                "
+                                                                class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                            >
+                                                                clear
+                                                            </span>
+                                                        </div>
+                                                        <img
+                                                            class="w-14 h-14"
+                                                            :src="cat.picture"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div v-else>
+                                                        <div
+                                                            class="cursor-pointer"
+                                                        >
+                                                            <label
+                                                                for="file"
+                                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
+                                                                >Upload
+                                                                picture<span
+                                                                    class="px-2"
+                                                                    ><span
+                                                                        class="material-icons"
+                                                                    >
+                                                                        add_photo_alternate
+                                                                    </span></span
+                                                                >
+                                                            </label>
+                                                        </div>
+                                                        <input
+                                                            @change="
+                                                                onChangeEdit(
+                                                                    $event,
+                                                                    cat
+                                                                )
+                                                            "
+                                                            type="file"
+                                                            name="file"
+                                                            accept="image/x-png,image/gif,image/jpeg"
+                                                            required
+                                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                            id="file"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        v-if="loading"
+                                                        class="w-1/5"
+                                                    >
+                                                        <div
+                                                            class="shadow w-full bg-grey-light"
+                                                        >
+                                                            <div
+                                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
+                                                                :style="{
+                                                                    width:
+                                                                        progressBar +
+                                                                        '%',
+                                                                }"
+                                                            >
+                                                                {{
+                                                                    progressBar +
+                                                                    '%'
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div v-else>
+                                                    <img
+                                                        class="w-14 h-14"
+                                                        :src="
+                                                            cat.picture === ''
+                                                                ? require('../../../assets/no-image.jpg')
+                                                                : cat.picture
+                                                        "
+                                                    />
+                                                </div>
+                                            </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2"
                                             >
@@ -143,6 +322,7 @@ import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
+import { storage, firebaseApp, db } from '../../../firebase'
 export default {
     components: {
         navbar,
@@ -158,7 +338,7 @@ export default {
         const store = useStore()
         const editable = ref(false)
         let oldValue = []
-        const loading = ref(true)
+        const loadingPage = ref(true)
         const categories = ref(
             computed(() => {
                 return store.state.category.categories
@@ -174,12 +354,14 @@ export default {
                 params.editable = true
                 oldValue = JSON.parse(JSON.stringify(categories.value))
                 setTimeout(() => {
-                    console.log(divs.value[i])
                     divs.value[i].focus()
                 }, 0.5)
             } else if (params.editable === true && event.key === 'Enter') {
                 let cat = categories.value.indexOf(params)
-                if (oldValue[cat].name === categories.value[cat].name) {
+                if (
+                    oldValue[cat].name === categories.value[cat].name &&
+                    oldValue[cat].picture === categories.value[cat].picture
+                ) {
                     console.log('No changes')
                     params.editable = false
                     return
@@ -187,6 +369,7 @@ export default {
                 store.dispatch('category/updateCategory', {
                     categoryId: params.id,
                     name: params.name,
+                    picture: params.picture,
                     categories: categories.value,
                 })
                 console.log('enter pressed')
@@ -220,12 +403,19 @@ export default {
             if (newCategory.value === '') {
                 alert('Category field must be not empty')
             } else {
-                store.dispatch('category/addCategory', newCategory.value)
+                store.dispatch('category/addCategory', {
+                    ref: refi,
+                    name: newCategory.value,
+                    picture: alaune.value,
+                })
                 add.value = false
             }
         }
         const cancelAdd = (params) => {
             newCategory.value = ''
+            if (alaune.value !== '') {
+                removePicture(alaune.value)
+            }
             add.value = false
         }
 
@@ -254,9 +444,118 @@ export default {
             start.value = params
         }
 
+        const onChange = (e) => {
+            file.value = e.target.files[0]
+            onUpload()
+        }
+        const onChangeEdit = (e, item) => {
+            file.value = e.target.files[0]
+            onUpload(true, item)
+        }
+        const refi = db.collection('category').doc()
+        const id = refi.id
+        const file = ref(null)
+        const fileTab = ref([])
+        const alaune = ref('')
+        const loading = ref(false)
+        const progressBar = ref(0)
+        const loadingEdit = ref(false)
+        const onUpload = (edit, item) => {
+            loading.value = true
+            progressBar.value = 0
+
+            var storageRef = storage.ref(
+                'categories/' + edit ? id : item.id + '/' + file.value.name
+            )
+            let uploadedFile = storageRef.put(file.value)
+            // Listen for state changes, errors, and completion of the upload.
+            uploadedFile.on(
+                'state_changed', // or 'state_changed'
+                function (snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    progressBar.value = progress.toFixed(0)
+                    console.log('Upload is ' + progress.toFixed(0) + '% done')
+                    switch (snapshot.state) {
+                        case 'paused': // or 'paused'
+                            console.log('Upload is paused')
+                            break
+                        case 'running': // or 'running'
+                            console.log('Upload is running')
+                            break
+                    }
+                },
+                function (error) {
+                    // A full list of error codes is available at
+                    // https://google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break
+
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break
+                    }
+                },
+                function () {
+                    // Upload completed successfully, now we can get the download URL
+                    uploadedFile.snapshot.ref
+                        .getDownloadURL()
+                        .then(function (downloadURL) {
+                            if (edit) {
+                                console.log(item.id)
+                                categories.value.find((params) => {
+                                    return params.id === item.id
+                                }).picture = downloadURL
+
+                                store.dispatch('category/updateCategory', {
+                                    categoryId: item.id,
+                                    picture: downloadURL,
+                                    name: item.name,
+                                    categories: categories.value,
+                                })
+                            } else {
+                                alaune.value = downloadURL
+                            }
+
+                            loading.value = false
+                        })
+                }
+            )
+        }
+        const removePicture = (item, edit) => {
+            var httpsReference = storage.refFromURL(item.picture)
+            httpsReference
+                .delete()
+                .then(function () {
+                    alaune.value = ''
+                    if (edit) {
+                        categories.value.find((params) => {
+                            return params.id === item.id
+                        }).picture = ''
+                        console.log(categories.value)
+                        store.dispatch('category/updateCategory', {
+                            categoryId: item.id,
+                            picture: '',
+                            name: item.name,
+                            categories: categories.value,
+                        })
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+
         onMounted(async (params) => {
             await store.dispatch('category/getCategories')
-            loading.value = false
+            loadingPage.value = false
         })
         onBeforeUpdate(() => {
             divs.value = []
@@ -278,7 +577,17 @@ export default {
             tab,
             start,
             numberRecords,
+            loadingPage,
+            fileTab,
+            onChange,
+            file,
+            onUpload,
             loading,
+            progressBar,
+            removePicture,
+            alaune,
+            loadingEdit,
+            onChangeEdit,
         }
     },
 }

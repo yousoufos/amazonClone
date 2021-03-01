@@ -1,10 +1,7 @@
 <template>
-    <div class="">
-        <div>
-            <navbar title="Edit Product"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Product"></sidebar></div>
+    <div class="flex">
+        <div><sidebar selected="Product"></sidebar></div>
+        <div class="flex w-full">
             <div class="w-full">
                 <div v-if="loading">Loading</div>
                 <div v-else :class="{ 'opacity-60': updating }">

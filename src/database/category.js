@@ -4,7 +4,12 @@ const getCategories = async () => {
   const category = []
   const querySnapshot = await db.collection('category').get()
   querySnapshot.forEach(function (doc) {
-    category.push({ id: doc.id, name: doc.data().name, editable: false })
+    category.push({
+      id: doc.id,
+      name: doc.data().name,
+      editable: false,
+      picture: doc.data().picture
+    })
   })
 
   return category
@@ -41,7 +46,8 @@ const deleteCategoryProductById = async function (categoryId) {
 const updateCategory = async function (payload) {
   try {
     await db.collection('category').doc(payload.categoryId).update({
-      name: payload.name
+      name: payload.name,
+      picture: payload.picture
     })
   } catch (error) {
     console.log(error)
@@ -57,7 +63,10 @@ const deleteCategory = async function (payload) {
 }
 const addCategory = async function (payload) {
   try {
-    return await db.collection('category').add({ name: payload })
+    return await payload.ref.set({
+      name: payload.name,
+      picture: payload.picture
+    })
   } catch (error) {
     console.log(error)
   }

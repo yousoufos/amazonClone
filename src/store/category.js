@@ -32,9 +32,14 @@ const actions = {
     commit('deleteCategory', payload.categoryId)
   },
   addCategory: async function ({ commit }, payload) {
-    const cat = await addCategory(payload)
+    await addCategory(payload)
 
-    commit('addCategory', { id: cat.id, name: payload, editable: false })
+    commit('addCategory', {
+      id: payload.ref.id,
+      name: payload.name,
+      editable: false,
+      picture: payload.picture
+    })
   }
 }
 
@@ -51,6 +56,12 @@ const mutations = {
   },
   addCategory: function (state, payload) {
     state.categories.push(payload)
+  },
+  updatePicture: function (state, payload) {
+    console.log(payload)
+    state.categories.find((params) => {
+      return params.id === payload.id
+    }).picture = payload.picture
   }
 }
 

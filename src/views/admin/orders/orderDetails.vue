@@ -1,11 +1,8 @@
 <template>
-    <div class="">
-        <div>
-            <navbar :title="`Order N° ${route.query.orderId}`"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Orders"></sidebar></div>
-            <div class="width568 w-full">
+    <div class="flex">
+        <div><sidebar selected="Orders"></sidebar></div>
+        <div class="flex w-full">
+            <div class="width568 w-full h-screen overflow-y-auto">
                 <div v-if="loading">Loading...</div>
                 <div v-else>
                     <div v-if="order.error === 'forbiden'">

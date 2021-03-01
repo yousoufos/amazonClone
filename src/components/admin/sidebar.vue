@@ -1,7 +1,19 @@
 <template>
     <div class="text-gray-100 bg-gray-700 w-48 border-r h-screen flex flex-col">
-        <div class="flex-grow">
+        <div class="flex-grow mt-2 mx-auto">
             <ul class="space-y-4">
+                <router-link to="/admin/">
+                    <li
+                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        :class="[
+                            { 'bg-gray-100': selected === 'adminHome' },
+                            { 'text-yellow-500': selected === 'adminHome' },
+                        ]"
+                    >
+                        <span class="material-icons"> home </span>
+                        <p class="px-2">Home</p>
+                    </li>
+                </router-link>
                 <router-link to="/admin/product/listproduct">
                     <li
                         class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
@@ -52,7 +64,7 @@
                 </router-link>
             </ul>
         </div>
-        <div class="">
+        <div class="mx-auto">
             <ul>
                 <router-link to="/admin/settings">
                     <li
@@ -64,6 +76,22 @@
                     >
                         <span class="material-icons"> settings</span>
                         <p class="px-2">Settings</p>
+                    </li>
+                </router-link>
+                <router-link to="/">
+                    <li
+                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                    >
+                        <span class="material-icons"> important_devices</span>
+                        <p class="px-2">FrontEnd</p>
+                    </li>
+                </router-link>
+                <router-link to="/logout">
+                    <li
+                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                    >
+                        <span class="material-icons"> logout </span>
+                        <p class="px-2">LogOut</p>
                     </li>
                 </router-link>
             </ul>

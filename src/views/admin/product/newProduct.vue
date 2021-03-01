@@ -1,10 +1,7 @@
 <template>
-    <div class="">
-        <div>
-            <navbar title="New Product"></navbar>
-        </div>
-        <div class="flex">
-            <div><sidebar selected="Product"></sidebar></div>
+    <div class="flex">
+        <div><sidebar selected="Product"></sidebar></div>
+        <div class="flex w-full">
             <div class="width568 w-full">
                 <div class="">
                     <form @submit.prevent class="">

@@ -1,11 +1,11 @@
 <template>
-    <div class="">
+    <div class="flex">
         <div>
-            <navbar title="Borad"></navbar>
+            <sidebar selected="adminHome"></sidebar>
         </div>
-        <div class="flex">
-            <div><sidebar></sidebar></div>
-            <div class="w-full h-sc overflow-y-auto">
+        <div class="flex flex-col w-full">
+            <!-- <div><navbar title="Borad"></navbar></div> -->
+            <div class="w-full h-screen overflow-y-auto">
                 <div v-if="loading">
                     <svg
                         class="animate-spin h-10 w-10 text-white"
@@ -31,6 +31,7 @@
                     <div class="bg-white rounded-lg">
                         <BestSellerChart></BestSellerChart>
                     </div>
+
                     <div class="bg-white rounded-lg grid grid-cols-2 gap-2">
                         <Resume></Resume>
                     </div>

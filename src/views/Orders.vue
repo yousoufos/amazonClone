@@ -7,6 +7,19 @@
         >
     </div>
     <div class="py-4 w-11/12 mx-auto flex flex-col">
+        <div class="flex justify-center">
+            <div
+                @click="next(index + 1)"
+                class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
+                :class="{
+                    'bg-yellow-500': item === start,
+                }"
+                v-for="(item, index) in numberRecords"
+                :key="index"
+            >
+                {{ item }}
+            </div>
+        </div>
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div
                 class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -52,7 +65,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr
                                 @click="detail(item.orderId)"
-                                v-for="item in orders"
+                                v-for="item in tab"
                                 :key="item.orderId"
                                 class="cursor-pointer"
                             >
@@ -151,12 +164,41 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
+        const pas = ref(10)
+        const ordersLength = computed(() => {
+            return orders.value.length
+        })
+        const numberRecords = computed(() => {
+            return Math.ceil(ordersLength.value / pas.value)
+        })
+        const start = ref(1)
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
+
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof orders.value[i] !== 'undefined') {
+                    tableau.push(orders.value[i])
+                }
+            }
+
+            return tableau
+        })
+        const next = (params) => {
+            start.value = params
+        }
+
         return {
             orders,
             detail,
             currency,
             from,
             deleting,
+            next,
+            start,
+            numberRecords,
+            tab,
         }
     },
 

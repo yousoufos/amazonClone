@@ -2,14 +2,14 @@
     <div
         class="bg-gray-700 text-gray-100 font-semibold tracking-wider h-14 width768px widthpx flex"
     >
-        <router-link to="/admin"
+        <!-- <router-link to="/admin"
             ><div class="bg-pink-400 h-full w-48">
                 <img
                     class="w-48 max-h-16"
                     src="../../assets/logo1.jpg"
                     alt=""
                 /></div
-        ></router-link>
+        ></router-link> -->
         <div class="flex justify-between items-center flex-grow px-4">
             <div>{{ title }}</div>
             <div>
@@ -59,7 +59,7 @@ export default {
 }
 @media screen and (max-width: 768px) {
     .width768px {
-        width: 768px;
+        width: 960px;
     }
 }
 @media screen and (min-width: 768px) {
