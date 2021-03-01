@@ -1,67 +1,33 @@
 <template>
     <div>
-        <ul>
-            <li v-for="product in tab" :key="product.productId">
-                {{ product.title }}
-            </li>
-        </ul>
-        <div class="flex">
-            <div
-                @click="next(index + 1)"
-                class="border p-2 border-indigo-600 cursor-pointer"
-                :class="{ 'bg-yellow-500': item === start }"
-                v-for="(item, index) in numberRecords"
-                :key="index"
-            >
-                {{ item }}
+        <div v-if="loading">Loading....</div>
+        <div class="flex space-x-4 mt-10">
+            <div class="" v-for="cat in categories" :key="cat.id">
+                <img
+                    src="https://firebasestorage.googleapis.com/v0/b/amzonclone-7cf14.appspot.com/o/categories%2FD9eHDBy1RHWQcq1QKpGc%2FsmartphonesCategories.jpeg?alt=media&token=9b8a6312-892e-4fe2-b4b5-9e51283e407f"
+                    alt="..."
+                    class="shadow-lg rounded-full align-middle border-none"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Chart from '../components/charts/Chart'
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import _ from 'lodash'
 export default {
-    components: {
-        Chart,
-    },
     setup() {
         const store = useStore()
-        const products = computed(() => {
-            return store.state.product.tab
-        })
-        const pas = ref(4)
-        const productsLength = computed(() => {
-            return products.value.length
-        })
-        const numberRecords = computed(() => {
-            return Math.ceil(productsLength.value / pas.value)
-        })
-        var start = ref(1)
         const loading = ref(true)
-        const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof products.value[i] !== 'undefined') {
-                    tableau.push(products.value[i])
-                }
-            }
-
-            return tableau
+        const categories = computed((params) => {
+            return store.state.category.categories
         })
-        const next = (params) => {
-            start.value = params
-        }
         onMounted(async (params) => {
+            await store.dispatch('category/getCategories')
             loading.value = false
         })
-        return { loading, products, numberRecords, tab, next, start }
+        return { categories, loading }
     },
 }
 </script>
