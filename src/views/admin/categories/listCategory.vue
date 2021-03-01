@@ -93,7 +93,10 @@
                                             >
                                                 <span
                                                     @click="
-                                                        removePicture(alaune)
+                                                        removePicture(
+                                                            alaune,
+                                                            false
+                                                        )
                                                     "
                                                     class="material-icons cursor-pointer text-red-600 font-semibold"
                                                 >
@@ -414,7 +417,7 @@ export default {
         const cancelAdd = (params) => {
             newCategory.value = ''
             if (alaune.value !== '') {
-                removePicture(alaune.value)
+                removePicture(alaune.value, false)
             }
             add.value = false
         }
@@ -460,12 +463,13 @@ export default {
         const loading = ref(false)
         const progressBar = ref(0)
         const loadingEdit = ref(false)
-        const onUpload = (edit, item) => {
+        const onUpload = (edit = false, item) => {
             loading.value = true
             progressBar.value = 0
-
+            var catId = edit === true ? item.id : id
+            console.log(catId)
             var storageRef = storage.ref(
-                'categories/' + edit ? id : item.id + '/' + file.value.name
+                'categories/' + catId + '/' + file.value.name
             )
             let uploadedFile = storageRef.put(file.value)
             // Listen for state changes, errors, and completion of the upload.
@@ -530,7 +534,8 @@ export default {
             )
         }
         const removePicture = (item, edit) => {
-            var httpsReference = storage.refFromURL(item.picture)
+            var pictureRef = edit === true ? item.picture : item
+            var httpsReference = storage.refFromURL(pictureRef)
             httpsReference
                 .delete()
                 .then(function () {
@@ -539,7 +544,6 @@ export default {
                         categories.value.find((params) => {
                             return params.id === item.id
                         }).picture = ''
-                        console.log(categories.value)
                         store.dispatch('category/updateCategory', {
                             categoryId: item.id,
                             picture: '',
