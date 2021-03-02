@@ -11,16 +11,19 @@
                 :show="notification.show"
             ></notif>
         </transition>
-        <div class="mx-auto bg-gray-100">
-            <div class="hidden xl:flex">
+        <div class="flex flex-col mx-auto lg:w-11/12 space-y-4">
+            <div class="-mb-64 hidden lg:flex">
                 <img
-                    class="xl:w-full xl:z-0 xl:-mb-15 gradient"
-                    src="../assets/banniere.jpg"
+                    class="w-full"
+                    src="https://images-eu.ssl-images-amazon.com/images/G/08/kindle/journeys/YzkyZTQzZGQt/YzkyZTQzZGQt-OTVjNzIxZDIt-w1500._CB659208910_.jpg"
                     alt=""
                 />
             </div>
+            <div class="">
+                <HomeCategories></HomeCategories>
+            </div>
             <div
-                class="flex flex-col lg:w-11/12 lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
+                class="flex flex-col lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
             >
                 <product
                     class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
@@ -33,6 +36,7 @@
     </div>
 </template>
 <script>
+import HomeCategories from '../components/HomeCategories'
 import spin from '../components/Spin'
 import product from '../components/Product'
 import notif from '../components/notif'
@@ -44,6 +48,7 @@ export default {
         product,
         notif,
         spin,
+        HomeCategories,
     },
     setup() {
         const store = useStore()
