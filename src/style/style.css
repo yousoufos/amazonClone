@@ -25,3 +25,29 @@ body {
         min-width: 568px;
     }
 }
+@media screen and (min-width: 768px) {
+    .scrollbar {
+        overflow-x: auto;
+        visibility: hidden;
+    }
+    .scrollbar-content,
+    .scrollbar:hover,
+    .scrollbar:focus {
+        visibility: visible;
+    }
+    .scrollbar_delayed {
+        transition: visibility 0.2s;
+    }
+
+    .scrollbar_delayed:hover {
+        transition: visibility 0s 0.2s;
+    }
+    .scrollbar::-webkit-scrollbar {
+        height: 8px;
+        background-color: #d1d5db;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+        background-color: #9ca3af;
+        border-radius: 8px;
+    }
+}
