@@ -1,28 +1,24 @@
 <template>
-    <div class="bg-gray-100 lg:bg-white rounded">
-        <div class="flex flex-col px-2 xl:px-2 text-left h-56 lg:h-48">
-            <div class="flex-grow">
-                <img
-                    class="w-56 mx-auto"
-                    :src="product.defaultPicture"
-                    alt=""
-                />
-            </div>
-            <div class="">
-                <p
-                    class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
-                >
-                    {{ product.title }}
-                </p>
-                <p
-                    class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
-                >
-                    {{ currency.$t(product.price) }}
-                </p>
-            </div>
-
-            <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
+    <div
+        class="flex flex-col px-2 xl:px-2 text-left bg-gray-100 lg:bg-white rounded"
+    >
+        <div class="flex-grow">
+            <img
+                class="mx-auto w-36 h-36 lg:w-56 lg:h-56 object-cover"
+                :src="product.defaultPicture"
+                alt=""
+            />
         </div>
+        <div class="">
+            <p class="text-gray-700 text-xs font-light lg:font-bold lg:text-l">
+                {{ product.title }}
+            </p>
+            <p class="text-gray-700 text-xs font-light lg:font-bold lg:text-l">
+                {{ currency.$t(product.price) }}
+            </p>
+        </div>
+
+        <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
     </div>
 </template>
 

@@ -17,6 +17,7 @@ export default {
     },
     setup(props) {
         const store = useStore()
+
         const canevasId = ref(Math.random())
         const createChart = (params) => {
             var ctx = document.getElementById(canevasId.value).getContext('2d')

@@ -38,6 +38,7 @@ export default {
         onMounted(async (params) => {
             store.commit('navigation/setLoading', true)
             await store.dispatch('product/getProducts')
+            await store.dispatch('order/getOrders')
             if (store.getters['auth/user']) {
                 await store.dispatch(
                     'cart/getUserCart',

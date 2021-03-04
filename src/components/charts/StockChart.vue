@@ -5,7 +5,6 @@
             :labels="labels"
             :datasets="datasets"
             :options="options"
-            :products="products"
             chartType="bar"
         ></Chart>
     </div>
@@ -15,12 +14,14 @@
 import Chart from './Chart'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import useStock from '../../compositionFunctions/stock'
 export default {
     components: {
         Chart,
     },
     setup() {
         const store = useStore()
+        const { labels, products } = useStock()
         const datasets = computed(() => {
             return [
                 {
@@ -55,22 +56,22 @@ export default {
                 ],
             },
         })
-        const products = computed(() => {
+        const loading = ref(true)
+        /*  const products = computed(() => {
             return store.state.product.tab
         })
 
-        const loading = ref(true)
         const labels = computed(() => {
             return products.value
                 .sort((a, b) => {
                     return b.stock - a.stock
                 })
                 .map((product) => product.title)
-        })
+        }) */
         onMounted(async (params) => {
             loading.value = false
         })
-        return { labels, datasets, options, products, loading }
+        return { labels, datasets, options, loading, products }
     },
 }
 </script>

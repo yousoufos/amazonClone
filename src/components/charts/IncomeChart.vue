@@ -15,12 +15,14 @@ import Chart from './Chart'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
+import useIncome from '../../compositionFunctions/income'
 export default {
     components: {
         Chart,
     },
     setup() {
         const store = useStore()
+
         const datasets = computed(() => {
             return [
                 {
@@ -65,11 +67,10 @@ export default {
                 ],
             },
         })
-        const orders = computed(() => {
-            return store.state.order.orders
-        })
-
         const loading = ref(true)
+        const { labels, groupByDate } = useIncome()
+
+        /*
         const findElem = (array, elem) => {
             return array.find((params) => {
                 return params.date === elem.date
@@ -99,12 +100,12 @@ export default {
                 .map((order) => {
                     return order.date
                 })
-        })
+        }) */
         onMounted(async (params) => {
             //await store.dispatch('order/getOrders')
             loading.value = false
         })
-        return { labels, datasets, options, orders, loading }
+        return { labels, datasets, options, loading }
     },
 }
 </script>

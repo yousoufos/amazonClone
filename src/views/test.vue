@@ -1,29 +1,13 @@
 <template>
     <div>
         <div
-            class="px-2 py-2 mx-auto lg:w-4/5 text-gray-700 font-bold tracking-wider"
-        >
-            <p>Discover our Categories</p>
-        </div>
-        <div
             class="px-2 py-4 mx-auto flex flex-nowrap lg:w-4/5 space-x-5 overflow-x-auto"
         >
             <div
-                v-for="item in categories"
-                :key="item.id"
-                class="mx-auto flex-none flex flex-col"
-            >
-                <img
-                    class="rounded-full w-20 h-20 lg:w-44 lg:h-44 object-cover"
-                    :src="item.picture"
-                    alt=""
-                />
-                <p
-                    class="text-center text-xs lg:text-base bg-white -mt-6 lg:-mt-8 py-2 lg:font-bold text-gray-800"
-                >
-                    {{ item.name }}
-                </p>
-            </div>
+                v-for="(item, index) in 15"
+                :key="index"
+                class="flex-none w-56 h-56 bg-red-500"
+            ></div>
         </div>
     </div>
 </template>

@@ -10,9 +10,10 @@
                 class="px-2 py-4 mx-auto flex flex-nowrap space-x-5 overflow-x-auto scrollbar scrollbar_delayed"
             >
                 <div
+                    @click="show(item.id)"
                     v-for="item in categories"
                     :key="item.id"
-                    class="flex-none flex flex-col scrollbar-content"
+                    class="flex-none flex flex-col scrollbar-content cursor-pointer"
                 >
                     <img
                         class="rounded-full w-20 h-20 lg:w-44 lg:h-44 object-cover lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
@@ -34,17 +35,20 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 export default {
-    setup() {
+    setup(props, { emit }) {
         const store = useStore()
         const loading = ref(true)
         const categories = computed((params) => {
             return store.state.category.categories
         })
+        const show = (params) => {
+            emit('showCategorie', params)
+        }
         onMounted(async (params) => {
             await store.dispatch('category/getCategories')
             loading.value = false
         })
-        return { categories, loading }
+        return { categories, loading, show }
     },
 }
 </script>

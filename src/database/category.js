@@ -71,11 +71,20 @@ const addCategory = async function (payload) {
     console.log(error)
   }
 }
+const getCategorieById = async function (payload) {
+  try {
+    const result = await db.collection('category').doc(payload).get()
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
 export {
   getCategories,
   deleteProductCategoryById,
   updateCategory,
   deleteCategory,
   deleteCategoryProductById,
-  addCategory
+  addCategory,
+  getCategorieById
 }
