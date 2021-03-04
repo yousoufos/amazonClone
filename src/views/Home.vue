@@ -104,6 +104,7 @@ import ProductHome from '../components/ProductHome'
 import notif from '../components/notif'
 import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import store from '@/store'
 import useBreakpoints from '../compositionFunctions/useBreakpoints'
 import useBestSeller from '../compositionFunctions/bestSeller'
@@ -116,6 +117,7 @@ export default {
     },
     setup() {
         const store = useStore()
+        const router = useRouter()
         const { width } = useBreakpoints()
         const { bestSeller } = useBestSeller()
         const loading = computed(() => {
@@ -134,7 +136,7 @@ export default {
             }
         })
         const showCategorie = (params) => {
-            console.log(params)
+            router.push({ name: 'Categories', query: { id: params } })
         }
 
         return {
