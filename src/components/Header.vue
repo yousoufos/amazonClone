@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div class="bg-gray-700">
+        <div class="bg-gray-900">
             <div class="flex items-center space-x-2 w-full">
                 <!-- logo -->
                 <div class="hidden lg:px-6 lg:flex">
@@ -8,7 +8,7 @@
                         <img
                             src="../assets/logo.png"
                             alt=""
-                            class="w-56 h-16"
+                            class="w-56 h-12"
                         />
                     </router-link>
                 </div>
@@ -56,7 +56,7 @@
 
                 <!-- mobile cart -->
                 <!--  menu lg -->
-                <div class="hidden lg:flex lg:space-x-12 lg:py-4 lg:px-2">
+                <div class="hidden lg:flex lg:space-x-12 lg:px-2">
                     <div class="flex items-center">
                         <div class="flex flex-col px-4 text-base">
                             <span
