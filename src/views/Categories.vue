@@ -15,78 +15,185 @@
             <!-- <div class="bg-blue-700">
                 <img :src="require('../assets/informatiqueBanner.jpg')" alt="" />
             </div> -->
-            <div class="px-2 py-2">
+            <!-- <div class="px-2 py-2">
                 <p class="font-light text-gray-700 uppercase tracking-normal">
-                    {{ categorie.name }} -->
+                    {{ categorie.name }} 
                 </p>
-            </div>
+            </div> -->
             <div class="flex">
                 <div
                     class="hidden lg:flex lg:h-screen lg:bg-green-500 lg:w-1/3"
                 >
                     test
                 </div>
-                <div class="flex flex-col w-full space-y-2">
+                <div class="flex flex-col w-full">
                     <div
-                        @click="detail(product)"
-                        class="h-36 lg:h-48 cursor-pointer rounded-md flex lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md bg-white"
-                        v-for="product in products"
-                        :key="product.data.productId"
+                        class="bg-white flex justify-between mb-2 items-center"
                     >
-                        <div class="w-1/4 ml-6 my-auto">
-                            <img
-                                class="w-24 h-24 lg:w-36 lg:h-36 object-cover"
-                                :src="product.data.defaultPicture"
-                                alt=""
-                            />
+                        <div>
+                            <p
+                                class="px-2 font-light text-gray-700 uppercase tracking-normal"
+                            >
+                                {{ categorie.name }}>>
+                            </p>
                         </div>
-                        <div class="p-4 w-2/4">
-                            <p class="mt-4">{{ product.data.title }}</p>
-                            <div class="flex items-center">
-                                <div class="flex text-gray-400">
-                                    <span
-                                        v-for="(item, index) in 5"
-                                        :key="index"
-                                        class="material-icons text-xs lg:text-sm"
-                                        :class="{
-                                            'text-yellow-500':
-                                                item <=
-                                                Math.round(
-                                                    product.data.rating /
-                                                        product.data
-                                                            .reviewNumber
-                                                ),
-                                        }"
-                                    >
-                                        grade
-                                    </span>
-                                </div>
+                        <div class="p-2 text-gray-700">
+                            <span
+                                @click="toggleGrid"
+                                class="mr-4 material-icons cursor-pointer"
+                                :class="{ 'text-yellow-500': grid === true }"
+                            >
+                                grid_view
+                            </span>
+                            <span
+                                @click="toggleGrid"
+                                class="material-icons cursor-pointer"
+                                :class="{ 'text-yellow-500': grid === false }"
+                            >
+                                view_stream
+                            </span>
+                        </div>
+                    </div>
+                    <div v-if="!grid" class="flex flex-col w-full space-y-2">
+                        <div
+                            @click="detail(product)"
+                            class="h-36 lg:h-48 cursor-pointer rounded-md flex lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md bg-white"
+                            v-for="product in products"
+                            :key="product.data.productId"
+                        >
+                            <div class="w-1/4 ml-6 my-auto">
+                                <img
+                                    class="w-24 h-24 lg:w-36 lg:h-36 object-cover"
+                                    :src="product.data.defaultPicture"
+                                    alt=""
+                                />
+                            </div>
+                            <div class="p-4 w-2/4 flex flex-col">
                                 <div>
-                                    <p class="text-gray-400 px-2 text-sm">
-                                        {{
-                                            '(' +
-                                            product.data.reviewNumber +
-                                            ')'
-                                        }}
+                                    <p class="mt-4">{{ product.data.title }}</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-gray-400">
+                                        <span
+                                            v-for="(item, index) in 5"
+                                            :key="index"
+                                            class="material-icons text-xs lg:text-sm"
+                                            :class="{
+                                                'text-yellow-500':
+                                                    item <=
+                                                    Math.round(
+                                                        product.data.rating /
+                                                            product.data
+                                                                .reviewNumber
+                                                    ),
+                                            }"
+                                        >
+                                            grade
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-400 px-2 text-sm">
+                                            {{
+                                                '(' +
+                                                product.data.reviewNumber +
+                                                ')'
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="w-1/4 text-right flex flex-col">
+                                <div class="flex-grow">
+                                    <p
+                                        class="mt-12 px-2 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold text-gray-900"
+                                    >
+                                        {{ currency.$t(product.data.price) }}
                                     </p>
                                 </div>
+                                <div>
+                                    <button
+                                        @click="add(product)"
+                                        class="bg-yellow-500 w-full text-sm lg:px-8 lg:py-1 rounded-md mb-2 text-gray-50 lg:font-semibold"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="w-1/4 text-right flex flex-col">
-                            <div class="flex-grow">
-                                <p
-                                    class="mt-12 px-2 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold text-gray-900"
+                    </div>
+                    <div v-else class="">
+                        <div class="grid grid-cols-2 gap-2 lg:grid-cols-3">
+                            <div
+                                v-for="product in products"
+                                :key="product.productId"
+                                class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
+                            >
+                                <div
+                                    class="flex flex-col px-2 xl:px-2 text-left bg-gray-100 lg:bg-white rounded"
                                 >
-                                    {{ currency.$t(product.data.price) }}
-                                </p>
-                            </div>
-                            <div>
-                                <button
-                                    @click="add(product)"
-                                    class="bg-yellow-500 w-full text-sm lg:px-8 lg:py-1 rounded-md mb-2 text-gray-50 lg:font-semibold"
-                                >
-                                    Add
-                                </button>
+                                    <div class="flex-grow py-2">
+                                        <img
+                                            class="mx-auto w-36 h-36 lg:w-56 lg:h-56 object-cover"
+                                            :src="product.data.defaultPicture"
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div class="flex flex-col mt-2">
+                                        <p
+                                            class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
+                                        >
+                                            {{ product.data.title }}
+                                        </p>
+                                        <div class="flex items-center">
+                                            <div class="flex text-gray-400">
+                                                <span
+                                                    v-for="(item, index) in 5"
+                                                    :key="index"
+                                                    class="material-icons text-xs lg:text-sm"
+                                                    :class="{
+                                                        'text-yellow-500':
+                                                            item <=
+                                                            Math.round(
+                                                                product.data
+                                                                    .rating /
+                                                                    product.data
+                                                                        .reviewNumber
+                                                            ),
+                                                    }"
+                                                >
+                                                    grade
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <p
+                                                    class="text-gray-400 px-2 text-sm"
+                                                >
+                                                    {{
+                                                        '(' +
+                                                        product.data
+                                                            .reviewNumber +
+                                                        ')'
+                                                    }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p
+                                            class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
+                                        >
+                                            {{
+                                                currency.$t(product.data.price)
+                                            }}
+                                        </p>
+                                        <button
+                                            class="mt-2 mb-2 rounded-md w-full bg-yellow-500"
+                                        >
+                                            Add to cart
+                                        </button>
+                                    </div>
+
+                                    <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,14 +204,16 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
+import ProductHome from '../components/ProductHome'
 import notif from '../components/notif'
 export default {
     components: {
         notif,
+        ProductHome,
     },
     setup() {
         const store = useStore()
@@ -152,6 +261,12 @@ export default {
             loading.value = false
         })
 
+        const grid = ref(true)
+        const toggleGrid = (params) => {
+            grid.value = !grid.value
+        }
+        const showAdd = ref(false)
+
         return {
             categorie,
             products,
@@ -160,6 +275,9 @@ export default {
             add,
             notification,
             detail,
+            grid,
+            toggleGrid,
+            showAdd,
         }
     },
 }

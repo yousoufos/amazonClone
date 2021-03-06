@@ -37,7 +37,8 @@
                 <div>
                     <div class="flex text-gray-400 space-x-1">
                         <span
-                            v-for="item in 5"
+                            v-for="(item, index) in 5"
+                            :key="index"
                             class="h-4 w-4 material-icons"
                             :class="{
                                 'text-yellow-500':
