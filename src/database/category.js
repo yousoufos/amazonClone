@@ -8,7 +8,8 @@ const getCategories = async () => {
       id: doc.id,
       name: doc.data().name,
       editable: false,
-      picture: doc.data().picture
+      picture: doc.data().picture,
+      banniere: doc.data().banniere
     })
   })
 
@@ -47,7 +48,8 @@ const updateCategory = async function (payload) {
   try {
     await db.collection('category').doc(payload.categoryId).update({
       name: payload.name,
-      picture: payload.picture
+      picture: payload.picture,
+      banniere: payload.banniere
     })
   } catch (error) {
     console.log(error)
@@ -65,7 +67,8 @@ const addCategory = async function (payload) {
   try {
     return await payload.ref.set({
       name: payload.name,
-      picture: payload.picture
+      picture: payload.picture,
+      banniere: payload.banniere
     })
   } catch (error) {
     console.log(error)

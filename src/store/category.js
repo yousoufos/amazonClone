@@ -43,7 +43,8 @@ const actions = {
       id: payload.ref.id,
       name: payload.name,
       editable: false,
-      picture: payload.picture
+      picture: payload.picture,
+      banniere: payload.banniere
     })
   },
   getCategorieById: async function ({ commit }, payload) {
@@ -52,7 +53,8 @@ const actions = {
       commit('setCategorie', {
         id: result.id,
         name: result.data().name,
-        picture: result.data().picture
+        picture: result.data().picture,
+        banniere: result.data().banniere
       })
     }
   }

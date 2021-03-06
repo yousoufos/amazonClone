@@ -2,6 +2,13 @@
     <div class="bg-gray-200 lg:bg-gray-100">
         <div v-if="loading">Loading...</div>
         <div v-else class="flex flex-col lg:w-10/12 mx-auto">
+            <div class="px-10" @click="deleting" v-if="from.length > 0">
+                <router-link :to="from[from.length - 1]"
+                    ><span class="material-icons text-4xl">
+                        keyboard_backspace
+                    </span></router-link
+                >
+            </div>
             <transition
                 enter-active-class="animate__animated animate__fadeInLeft"
                 leave-active-class="animate__animated animate__fadeOutLeft"
@@ -20,11 +27,13 @@
                     {{ categorie.name }} 
                 </p>
             </div> -->
-            <div class="flex">
-                <div
-                    class="hidden lg:flex lg:h-screen lg:bg-green-500 lg:w-1/3"
-                >
-                    test
+            <div class="flex space-x-2">
+                <div class="hidden lg:flex lg:h-screen lg:w-1/3">
+                    <img
+                        class="object-fill"
+                        :src="require('../assets/categorie_pub.jpg')"
+                        alt=""
+                    />
                 </div>
                 <div class="flex flex-col w-full">
                     <div
@@ -114,7 +123,7 @@
                                 <div>
                                     <button
                                         @click="add(product)"
-                                        class="bg-yellow-500 w-full text-sm lg:px-8 lg:py-1 rounded-md mb-2 text-gray-50 lg:font-semibold"
+                                        class="bg-yellow-500 w-full text-sm lg:px-8 lg:py-1 rounded-sm mb-2 text-gray-50 lg:font-semibold"
                                     >
                                         Add
                                     </button>
@@ -123,8 +132,9 @@
                         </div>
                     </div>
                     <div v-else class="">
-                        <div class="grid grid-cols-2 gap-2 lg:grid-cols-3">
+                        <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
                             <div
+                                @click="detail(product)"
                                 v-for="product in products"
                                 :key="product.productId"
                                 class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
@@ -186,7 +196,8 @@
                                             }}
                                         </p>
                                         <button
-                                            class="mt-2 mb-2 rounded-md w-full bg-yellow-500"
+                                            @click="add(product)"
+                                            class="shadow-sm mt-2 mb-2 rounded-sm w-full bg-yellow-500 text-gray-50"
                                         >
                                             Add to cart
                                         </button>
@@ -265,7 +276,22 @@ export default {
         const toggleGrid = (params) => {
             grid.value = !grid.value
         }
-        const showAdd = ref(false)
+        const showAdd = (params) => {
+            console.log('rrrrr')
+        }
+
+        const from = ref(
+            computed((params) => {
+                if (typeof store.state.navigation.from === 'undefined') {
+                    return []
+                } else {
+                    return store.state.navigation.from
+                }
+            })
+        )
+        const deleting = (params) => {
+            store.commit('navigation/removeFrom')
+        }
 
         return {
             categorie,
@@ -278,6 +304,8 @@ export default {
             grid,
             toggleGrid,
             showAdd,
+            from,
+            deleting,
         }
     },
 }

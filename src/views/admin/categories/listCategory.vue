@@ -59,7 +59,9 @@
                                             </label>
                                         </div>
                                         <input
-                                            @change="onChange"
+                                            @change="
+                                                onChange($event, 'picture')
+                                            "
                                             type="file"
                                             name="file"
                                             accept="image/x-png,image/gif,image/jpeg"
@@ -245,7 +247,8 @@
                                                             @change="
                                                                 onChangeEdit(
                                                                     $event,
-                                                                    cat
+                                                                    cat,
+                                                                    'picture'
                                                                 )
                                                             "
                                                             type="file"
@@ -363,7 +366,8 @@ export default {
                 let cat = categories.value.indexOf(params)
                 if (
                     oldValue[cat].name === categories.value[cat].name &&
-                    oldValue[cat].picture === categories.value[cat].picture
+                    oldValue[cat].picture === categories.value[cat].picture &&
+                    oldValue[cat].banniere === categories.value[cat].banniere
                 ) {
                     console.log('No changes')
                     params.editable = false
@@ -374,6 +378,7 @@ export default {
                     name: params.name,
                     picture: params.picture,
                     categories: categories.value,
+                    banniere: params.banniere,
                 })
                 console.log('enter pressed')
                 params.editable = false
@@ -410,6 +415,7 @@ export default {
                     ref: refi,
                     name: newCategory.value,
                     picture: alaune.value,
+                    banniere: banniere.value,
                 })
                 add.value = false
             }
@@ -418,6 +424,8 @@ export default {
             newCategory.value = ''
             if (alaune.value !== '') {
                 removePicture(alaune.value, false)
+            }
+            if (banniere.value !== '') {
             }
             add.value = false
         }
@@ -447,19 +455,25 @@ export default {
             start.value = params
         }
 
-        const onChange = (e) => {
+        const onChange = (e, mode) => {
             file.value = e.target.files[0]
-            onUpload()
+            if (mode === 'picture') {
+                onUpload()
+            } else {
+            }
         }
-        const onChangeEdit = (e, item) => {
+        const onChangeEdit = (e, item, mode) => {
             file.value = e.target.files[0]
-            onUpload(true, item)
+            if (mode === 'picture') {
+                onUpload(true, item)
+            } else {
+            }
         }
         const refi = db.collection('category').doc()
         const id = refi.id
         const file = ref(null)
-        const fileTab = ref([])
         const alaune = ref('')
+        const banniere = ref('')
         const loading = ref(false)
         const progressBar = ref(0)
         const loadingEdit = ref(false)
@@ -523,6 +537,78 @@ export default {
                                     picture: downloadURL,
                                     name: item.name,
                                     categories: categories.value,
+                                    banniere: banniere.value,
+                                })
+                            } else {
+                                alaune.value = downloadURL
+                            }
+
+                            loading.value = false
+                        })
+                }
+            )
+        }
+        const onUploadBanniere = (edit = false, item) => {
+            loading.value = true
+            progressBar.value = 0
+            var catId = edit === true ? item.id : id
+            console.log(catId)
+            var storageRef = storage.ref(
+                'categories/' + catId + '/' + file.value.name
+            )
+            let uploadedFile = storageRef.put(file.value)
+            // Listen for state changes, errors, and completion of the upload.
+            uploadedFile.on(
+                'state_changed', // or 'state_changed'
+                function (snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    progressBar.value = progress.toFixed(0)
+                    console.log('Upload is ' + progress.toFixed(0) + '% done')
+                    switch (snapshot.state) {
+                        case 'paused': // or 'paused'
+                            console.log('Upload is paused')
+                            break
+                        case 'running': // or 'running'
+                            console.log('Upload is running')
+                            break
+                    }
+                },
+                function (error) {
+                    // A full list of error codes is available at
+                    // https://google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break
+
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break
+                    }
+                },
+                function () {
+                    // Upload completed successfully, now we can get the download URL
+                    uploadedFile.snapshot.ref
+                        .getDownloadURL()
+                        .then(function (downloadURL) {
+                            if (edit) {
+                                console.log(item.id)
+                                categories.value.find((params) => {
+                                    return params.id === item.id
+                                }).banniere = downloadURL
+
+                                store.dispatch('category/updateCategory', {
+                                    categoryId: item.id,
+                                    picture: alaune.value,
+                                    name: item.name,
+                                    categories: categories.value,
+                                    banniere: downloadURL,
                                 })
                             } else {
                                 alaune.value = downloadURL
@@ -549,6 +635,30 @@ export default {
                             picture: '',
                             name: item.name,
                             categories: categories.value,
+                        })
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+        const removeBanniere = (item, edit) => {
+            var pictureRef = edit === true ? item.banniere : item
+            var httpsReference = storage.refFromURL(pictureRef)
+            httpsReference
+                .delete()
+                .then(function () {
+                    banniere.value = ''
+                    if (edit) {
+                        categories.value.find((params) => {
+                            return params.id === item.id
+                        }).banniere = ''
+                        store.dispatch('category/updateCategory', {
+                            categoryId: item.id,
+                            picture: item.picture,
+                            name: item.name,
+                            categories: categories.value,
+                            banniere: '',
                         })
                     }
                 })
@@ -592,6 +702,8 @@ export default {
             alaune,
             loadingEdit,
             onChangeEdit,
+            banniere,
+            removeBanniere,
         }
     },
 }
