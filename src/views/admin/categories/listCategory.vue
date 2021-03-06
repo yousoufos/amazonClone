@@ -43,6 +43,76 @@
                             </div>
                             <div>
                                 <div class="p-2">
+                                    <div v-if="banniere === ''">
+                                        <div class="cursor-pointer">
+                                            <label
+                                                for="file"
+                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
+                                                >Upload Banner<span class="px-2"
+                                                    ><span
+                                                        class="material-icons"
+                                                    >
+                                                        add_photo_alternate
+                                                    </span></span
+                                                >
+                                            </label>
+                                        </div>
+                                        <input
+                                            @change="
+                                                onChange($event, 'banniere')
+                                            "
+                                            type="file"
+                                            name="file"
+                                            accept="image/x-png,image/gif,image/jpeg"
+                                            required
+                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            id="file"
+                                        />
+                                    </div>
+
+                                    <div v-if="loadingBanniere" class="w-1/5">
+                                        <div
+                                            class="shadow w-full bg-grey-light"
+                                        >
+                                            <div
+                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
+                                                :style="{
+                                                    width: progressBar + '%',
+                                                }"
+                                            >
+                                                {{ progressBar + '%' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        v-if="banniere !== ''"
+                                        class="flex flex-wrap"
+                                    >
+                                        <div class="mt-2 mx-2">
+                                            <div
+                                                class="flex justify-between items-center"
+                                            >
+                                                <span
+                                                    @click="
+                                                        removeBanniere(
+                                                            banniere,
+                                                            false
+                                                        )
+                                                    "
+                                                    class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                >
+                                                    clear
+                                                </span>
+                                            </div>
+                                            <img
+                                                class="w-20 h-20"
+                                                :src="banniere"
+                                                alt=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
                                     <div v-if="alaune === ''">
                                         <div class="cursor-pointer">
                                             <label
@@ -152,6 +222,12 @@
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                             >
                                                 Picture
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                Banner
                                             </th>
                                             <th
                                                 scope="col"
@@ -289,6 +365,108 @@
                                                             cat.picture === ''
                                                                 ? require('../../../assets/no-image.jpg')
                                                                 : cat.picture
+                                                        "
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            >
+                                                <div
+                                                    class="flex flex-wrap"
+                                                    v-if="cat.editable"
+                                                >
+                                                    <div
+                                                        v-if="
+                                                            cat.banniere !== ''
+                                                        "
+                                                        class="mt-2 mx-2"
+                                                    >
+                                                        <div
+                                                            class="flex justify-between items-center"
+                                                        >
+                                                            <span
+                                                                @click="
+                                                                    removeBanniere(
+                                                                        cat,
+                                                                        true
+                                                                    )
+                                                                "
+                                                                class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                            >
+                                                                clear
+                                                            </span>
+                                                        </div>
+                                                        <img
+                                                            class="w-14 h-14"
+                                                            :src="cat.banniere"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div v-else>
+                                                        <div
+                                                            class="cursor-pointer"
+                                                        >
+                                                            <label
+                                                                for="file"
+                                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
+                                                                >Upload
+                                                                Banner<span
+                                                                    class="px-2"
+                                                                    ><span
+                                                                        class="material-icons"
+                                                                    >
+                                                                        add_photo_alternate
+                                                                    </span></span
+                                                                >
+                                                            </label>
+                                                        </div>
+                                                        <input
+                                                            @change="
+                                                                onChangeEdit(
+                                                                    $event,
+                                                                    cat,
+                                                                    'banniere'
+                                                                )
+                                                            "
+                                                            type="file"
+                                                            name="file"
+                                                            accept="image/x-png,image/gif,image/jpeg"
+                                                            required
+                                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                            id="file"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        v-if="loadingBanniere"
+                                                        class="w-1/5"
+                                                    >
+                                                        <div
+                                                            class="shadow w-full bg-grey-light"
+                                                        >
+                                                            <div
+                                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
+                                                                :style="{
+                                                                    width:
+                                                                        progressBar +
+                                                                        '%',
+                                                                }"
+                                                            >
+                                                                {{
+                                                                    progressBar +
+                                                                    '%'
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div v-else>
+                                                    <img
+                                                        class="w-14 h-14"
+                                                        :src="
+                                                            cat.banniere === ''
+                                                                ? require('../../../assets/no-image.jpg')
+                                                                : cat.banniere
                                                         "
                                                     />
                                                 </div>
@@ -456,10 +634,13 @@ export default {
         }
 
         const onChange = (e, mode) => {
+            console.log(mode)
             file.value = e.target.files[0]
+
             if (mode === 'picture') {
                 onUpload()
             } else {
+                onUploadBanniere()
             }
         }
         const onChangeEdit = (e, item, mode) => {
@@ -467,6 +648,7 @@ export default {
             if (mode === 'picture') {
                 onUpload(true, item)
             } else {
+                onUploadBanniere()
             }
         }
         const refi = db.collection('category').doc()
@@ -474,6 +656,7 @@ export default {
         const file = ref(null)
         const alaune = ref('')
         const banniere = ref('')
+        const loadingBanniere = ref(false)
         const loading = ref(false)
         const progressBar = ref(0)
         const loadingEdit = ref(false)
@@ -481,7 +664,7 @@ export default {
             loading.value = true
             progressBar.value = 0
             var catId = edit === true ? item.id : id
-            console.log(catId)
+
             var storageRef = storage.ref(
                 'categories/' + catId + '/' + file.value.name
             )
@@ -549,10 +732,10 @@ export default {
             )
         }
         const onUploadBanniere = (edit = false, item) => {
-            loading.value = true
+            loadingBanniere.value = true
             progressBar.value = 0
             var catId = edit === true ? item.id : id
-            console.log(catId)
+
             var storageRef = storage.ref(
                 'categories/' + catId + '/' + file.value.name
             )
@@ -611,10 +794,10 @@ export default {
                                     banniere: downloadURL,
                                 })
                             } else {
-                                alaune.value = downloadURL
+                                banniere.value = downloadURL
                             }
 
-                            loading.value = false
+                            loadingBanniere.value = false
                         })
                 }
             )
@@ -692,7 +875,7 @@ export default {
             start,
             numberRecords,
             loadingPage,
-            fileTab,
+            loadingBanniere,
             onChange,
             file,
             onUpload,
