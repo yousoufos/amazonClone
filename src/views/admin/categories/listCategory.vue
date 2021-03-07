@@ -42,147 +42,22 @@
                                 </button>
                             </div>
                             <div>
-                                <div class="p-2">
-                                    <div v-if="banniere === ''">
-                                        <div class="cursor-pointer">
-                                            <label
-                                                for="file"
-                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
-                                                >Upload Banner<span class="px-2"
-                                                    ><span
-                                                        class="material-icons"
-                                                    >
-                                                        add_photo_alternate
-                                                    </span></span
-                                                >
-                                            </label>
-                                        </div>
-                                        <input
-                                            @change="
-                                                onChange($event, 'banniere')
-                                            "
-                                            type="file"
-                                            name="file"
-                                            accept="image/x-png,image/gif,image/jpeg"
-                                            required
-                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                            id="file"
-                                        />
-                                    </div>
-
-                                    <div v-if="loadingBanniere" class="w-1/5">
-                                        <div
-                                            class="shadow w-full bg-grey-light"
-                                        >
-                                            <div
-                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
-                                                :style="{
-                                                    width: progressBar + '%',
-                                                }"
-                                            >
-                                                {{ progressBar + '%' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        v-if="banniere !== ''"
-                                        class="flex flex-wrap"
-                                    >
-                                        <div class="mt-2 mx-2">
-                                            <div
-                                                class="flex justify-between items-center"
-                                            >
-                                                <span
-                                                    @click="
-                                                        removeBanniere(
-                                                            banniere,
-                                                            false
-                                                        )
-                                                    "
-                                                    class="material-icons cursor-pointer text-red-600 font-semibold"
-                                                >
-                                                    clear
-                                                </span>
-                                            </div>
-                                            <img
-                                                class="w-20 h-20"
-                                                :src="banniere"
-                                                alt=""
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-2">
-                                    <div v-if="alaune === ''">
-                                        <div class="cursor-pointer">
-                                            <label
-                                                for="file"
-                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
-                                                >Upload picture<span
-                                                    class="px-2"
-                                                    ><span
-                                                        class="material-icons"
-                                                    >
-                                                        add_photo_alternate
-                                                    </span></span
-                                                >
-                                            </label>
-                                        </div>
-                                        <input
-                                            @change="
-                                                onChange($event, 'picture')
-                                            "
-                                            type="file"
-                                            name="file"
-                                            accept="image/x-png,image/gif,image/jpeg"
-                                            required
-                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                            id="file"
-                                        />
-                                    </div>
-
-                                    <div v-if="loading" class="w-1/5">
-                                        <div
-                                            class="shadow w-full bg-grey-light"
-                                        >
-                                            <div
-                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
-                                                :style="{
-                                                    width: progressBar + '%',
-                                                }"
-                                            >
-                                                {{ progressBar + '%' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        v-if="alaune !== ''"
-                                        class="flex flex-wrap"
-                                    >
-                                        <div class="mt-2 mx-2">
-                                            <div
-                                                class="flex justify-between items-center"
-                                            >
-                                                <span
-                                                    @click="
-                                                        removePicture(
-                                                            alaune,
-                                                            false
-                                                        )
-                                                    "
-                                                    class="material-icons cursor-pointer text-red-600 font-semibold"
-                                                >
-                                                    clear
-                                                </span>
-                                            </div>
-                                            <img
-                                                class="w-20 h-20"
-                                                :src="alaune"
-                                                alt=""
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                <UploadFile
+                                    @pictureDeleted="pictureCategoryDeleted"
+                                    @uploadFinished="pictureCategoryUpload"
+                                    :picture="alaune"
+                                    collection="categories"
+                                    :id="id"
+                                    label="Upload Picture"
+                                ></UploadFile>
+                                <UploadFile
+                                    @pictureDeleted="banniereCategoryDeleted"
+                                    @uploadFinished="banniereCategoryUpload"
+                                    :picture="banniere"
+                                    collection="categories"
+                                    :id="id"
+                                    label="Upload Banner"
+                                ></UploadFile>
                             </div>
                         </div>
                     </div>
@@ -274,89 +149,21 @@
                                                     class="flex flex-wrap"
                                                     v-if="cat.editable"
                                                 >
-                                                    <div
-                                                        v-if="
-                                                            cat.picture !== ''
+                                                    <UploadFile
+                                                        @pictureDeleted="
+                                                            pictureCategoryDeletedEdit
                                                         "
-                                                        class="mt-2 mx-2"
-                                                    >
-                                                        <div
-                                                            class="flex justify-between items-center"
-                                                        >
-                                                            <span
-                                                                @click="
-                                                                    removePicture(
-                                                                        cat,
-                                                                        true
-                                                                    )
-                                                                "
-                                                                class="material-icons cursor-pointer text-red-600 font-semibold"
-                                                            >
-                                                                clear
-                                                            </span>
-                                                        </div>
-                                                        <img
-                                                            class="w-14 h-14"
-                                                            :src="cat.picture"
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <div v-else>
-                                                        <div
-                                                            class="cursor-pointer"
-                                                        >
-                                                            <label
-                                                                for="file"
-                                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
-                                                                >Upload
-                                                                picture<span
-                                                                    class="px-2"
-                                                                    ><span
-                                                                        class="material-icons"
-                                                                    >
-                                                                        add_photo_alternate
-                                                                    </span></span
-                                                                >
-                                                            </label>
-                                                        </div>
-                                                        <input
-                                                            @change="
-                                                                onChangeEdit(
-                                                                    $event,
-                                                                    cat,
-                                                                    'picture'
-                                                                )
-                                                            "
-                                                            type="file"
-                                                            name="file"
-                                                            accept="image/x-png,image/gif,image/jpeg"
-                                                            required
-                                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                                            id="file"
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        v-if="loading"
-                                                        class="w-1/5"
-                                                    >
-                                                        <div
-                                                            class="shadow w-full bg-grey-light"
-                                                        >
-                                                            <div
-                                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
-                                                                :style="{
-                                                                    width:
-                                                                        progressBar +
-                                                                        '%',
-                                                                }"
-                                                            >
-                                                                {{
-                                                                    progressBar +
-                                                                    '%'
-                                                                }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        @uploadFinished="
+                                                            pictureCategoryUploadEdit(
+                                                                $event,
+                                                                cat.id
+                                                            )
+                                                        "
+                                                        :picture="cat.picture"
+                                                        collection="categories"
+                                                        :id="cat.id"
+                                                        label="Upload Picture"
+                                                    ></UploadFile>
                                                 </div>
                                                 <div v-else>
                                                     <img
@@ -376,89 +183,21 @@
                                                     class="flex flex-wrap"
                                                     v-if="cat.editable"
                                                 >
-                                                    <div
-                                                        v-if="
-                                                            cat.banniere !== ''
+                                                    <UploadFile
+                                                        @pictureDeleted="
+                                                            banniereCategoryDeletedEdit
                                                         "
-                                                        class="mt-2 mx-2"
-                                                    >
-                                                        <div
-                                                            class="flex justify-between items-center"
-                                                        >
-                                                            <span
-                                                                @click="
-                                                                    removeBanniere(
-                                                                        cat,
-                                                                        true
-                                                                    )
-                                                                "
-                                                                class="material-icons cursor-pointer text-red-600 font-semibold"
-                                                            >
-                                                                clear
-                                                            </span>
-                                                        </div>
-                                                        <img
-                                                            class="w-14 h-14"
-                                                            :src="cat.banniere"
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <div v-else>
-                                                        <div
-                                                            class="cursor-pointer"
-                                                        >
-                                                            <label
-                                                                for="file"
-                                                                class="flex text-base font-medium text-blue-700 cursor-pointer"
-                                                                >Upload
-                                                                Banner<span
-                                                                    class="px-2"
-                                                                    ><span
-                                                                        class="material-icons"
-                                                                    >
-                                                                        add_photo_alternate
-                                                                    </span></span
-                                                                >
-                                                            </label>
-                                                        </div>
-                                                        <input
-                                                            @change="
-                                                                onChangeEdit(
-                                                                    $event,
-                                                                    cat,
-                                                                    'banniere'
-                                                                )
-                                                            "
-                                                            type="file"
-                                                            name="file"
-                                                            accept="image/x-png,image/gif,image/jpeg"
-                                                            required
-                                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                                            id="file"
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        v-if="loadingBanniere"
-                                                        class="w-1/5"
-                                                    >
-                                                        <div
-                                                            class="shadow w-full bg-grey-light"
-                                                        >
-                                                            <div
-                                                                class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
-                                                                :style="{
-                                                                    width:
-                                                                        progressBar +
-                                                                        '%',
-                                                                }"
-                                                            >
-                                                                {{
-                                                                    progressBar +
-                                                                    '%'
-                                                                }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        @uploadFinished="
+                                                            banniereCategoryUploadEdit(
+                                                                $event,
+                                                                cat.id
+                                                            )
+                                                        "
+                                                        :picture="cat.banniere"
+                                                        collection="categories"
+                                                        :id="cat.id"
+                                                        label="Upload Banner"
+                                                    ></UploadFile>
                                                 </div>
                                                 <div v-else>
                                                     <img
@@ -504,6 +243,7 @@
 <script>
 import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
+import UploadFile from '../../../components/UploadFile'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { storage, firebaseApp, db } from '../../../firebase'
@@ -511,6 +251,7 @@ export default {
     components: {
         navbar,
         sidebar,
+        UploadFile,
     },
     methods: {
         /* test() {
@@ -522,6 +263,8 @@ export default {
         const store = useStore()
         const editable = ref(false)
         let oldValue = []
+        const refi = db.collection('category').doc()
+        const id = ref(refi.id)
         const loadingPage = ref(true)
         const categories = ref(
             computed(() => {
@@ -552,7 +295,7 @@ export default {
                     return
                 }
                 store.dispatch('category/updateCategory', {
-                    categoryId: params.id,
+                    id: params.id,
                     name: params.name,
                     picture: params.picture,
                     categories: categories.value,
@@ -601,9 +344,12 @@ export default {
         const cancelAdd = (params) => {
             newCategory.value = ''
             if (alaune.value !== '') {
-                removePicture(alaune.value, false)
+                removePicture(alaune.value)
+                alaune.value = ''
             }
             if (banniere.value !== '') {
+                removePicture(banniere.value)
+                banniere.value = ''
             }
             add.value = false
         }
@@ -632,222 +378,92 @@ export default {
         const next = (params) => {
             start.value = params
         }
-
-        const onChange = (e, mode) => {
-            console.log(mode)
-            file.value = e.target.files[0]
-
-            if (mode === 'picture') {
-                onUpload()
-            } else {
-                onUploadBanniere()
-            }
-        }
-        const onChangeEdit = (e, item, mode) => {
-            file.value = e.target.files[0]
-            if (mode === 'picture') {
-                onUpload(true, item)
-            } else {
-                onUploadBanniere()
-            }
-        }
-        const refi = db.collection('category').doc()
-        const id = refi.id
-        const file = ref(null)
         const alaune = ref('')
         const banniere = ref('')
-        const loadingBanniere = ref(false)
-        const loading = ref(false)
-        const progressBar = ref(0)
-        const loadingEdit = ref(false)
-        const onUpload = (edit = false, item) => {
-            loading.value = true
-            progressBar.value = 0
-            var catId = edit === true ? item.id : id
-
-            var storageRef = storage.ref(
-                'categories/' + catId + '/' + file.value.name
-            )
-            let uploadedFile = storageRef.put(file.value)
-            // Listen for state changes, errors, and completion of the upload.
-            uploadedFile.on(
-                'state_changed', // or 'state_changed'
-                function (snapshot) {
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                    var progress =
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    progressBar.value = progress.toFixed(0)
-                    console.log('Upload is ' + progress.toFixed(0) + '% done')
-                    switch (snapshot.state) {
-                        case 'paused': // or 'paused'
-                            console.log('Upload is paused')
-                            break
-                        case 'running': // or 'running'
-                            console.log('Upload is running')
-                            break
-                    }
-                },
-                function (error) {
-                    // A full list of error codes is available at
-                    // https://google.com/docs/storage/web/handle-errors
-                    switch (error.code) {
-                        case 'storage/unauthorized':
-                            // User doesn't have permission to access the object
-                            break
-
-                        case 'storage/canceled':
-                            // User canceled the upload
-                            break
-
-                        case 'storage/unknown':
-                            // Unknown error occurred, inspect error.serverResponse
-                            break
-                    }
-                },
-                function () {
-                    // Upload completed successfully, now we can get the download URL
-                    uploadedFile.snapshot.ref
-                        .getDownloadURL()
-                        .then(function (downloadURL) {
-                            if (edit) {
-                                console.log(item.id)
-                                categories.value.find((params) => {
-                                    return params.id === item.id
-                                }).picture = downloadURL
-
-                                store.dispatch('category/updateCategory', {
-                                    categoryId: item.id,
-                                    picture: downloadURL,
-                                    name: item.name,
-                                    categories: categories.value,
-                                    banniere: banniere.value,
-                                })
-                            } else {
-                                alaune.value = downloadURL
-                            }
-
-                            loading.value = false
-                        })
-                }
-            )
+        const getKeyByValue = (object, value) => {
+            return Object.keys(object).find((key) => object[key] === value)
         }
-        const onUploadBanniere = (edit = false, item) => {
-            loadingBanniere.value = true
-            progressBar.value = 0
-            var catId = edit === true ? item.id : id
-
-            var storageRef = storage.ref(
-                'categories/' + catId + '/' + file.value.name
-            )
-            let uploadedFile = storageRef.put(file.value)
-            // Listen for state changes, errors, and completion of the upload.
-            uploadedFile.on(
-                'state_changed', // or 'state_changed'
-                function (snapshot) {
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                    var progress =
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    progressBar.value = progress.toFixed(0)
-                    console.log('Upload is ' + progress.toFixed(0) + '% done')
-                    switch (snapshot.state) {
-                        case 'paused': // or 'paused'
-                            console.log('Upload is paused')
-                            break
-                        case 'running': // or 'running'
-                            console.log('Upload is running')
-                            break
-                    }
-                },
-                function (error) {
-                    // A full list of error codes is available at
-                    // https://google.com/docs/storage/web/handle-errors
-                    switch (error.code) {
-                        case 'storage/unauthorized':
-                            // User doesn't have permission to access the object
-                            break
-
-                        case 'storage/canceled':
-                            // User canceled the upload
-                            break
-
-                        case 'storage/unknown':
-                            // Unknown error occurred, inspect error.serverResponse
-                            break
-                    }
-                },
-                function () {
-                    // Upload completed successfully, now we can get the download URL
-                    uploadedFile.snapshot.ref
-                        .getDownloadURL()
-                        .then(function (downloadURL) {
-                            if (edit) {
-                                console.log(item.id)
-                                categories.value.find((params) => {
-                                    return params.id === item.id
-                                }).banniere = downloadURL
-
-                                store.dispatch('category/updateCategory', {
-                                    categoryId: item.id,
-                                    picture: alaune.value,
-                                    name: item.name,
-                                    categories: categories.value,
-                                    banniere: downloadURL,
-                                })
-                            } else {
-                                banniere.value = downloadURL
-                            }
-
-                            loadingBanniere.value = false
-                        })
-                }
-            )
-        }
-        const removePicture = (item, edit) => {
-            var pictureRef = edit === true ? item.picture : item
-            var httpsReference = storage.refFromURL(pictureRef)
+        const removePicture = (item, catId) => {
+            var httpsReference = storage.refFromURL(item)
             httpsReference
                 .delete()
-                .then(function () {
-                    alaune.value = ''
-                    if (edit) {
-                        categories.value.find((params) => {
-                            return params.id === item.id
-                        }).picture = ''
-                        store.dispatch('category/updateCategory', {
-                            categoryId: item.id,
-                            picture: '',
-                            name: item.name,
-                            categories: categories.value,
-                        })
-                    }
-                })
+                .then(function () {})
                 .catch(function (error) {
                     console.log(error)
                 })
         }
-        const removeBanniere = (item, edit) => {
-            var pictureRef = edit === true ? item.banniere : item
-            var httpsReference = storage.refFromURL(pictureRef)
-            httpsReference
-                .delete()
-                .then(function () {
-                    banniere.value = ''
-                    if (edit) {
-                        categories.value.find((params) => {
-                            return params.id === item.id
-                        }).banniere = ''
-                        store.dispatch('category/updateCategory', {
-                            categoryId: item.id,
-                            picture: item.picture,
-                            name: item.name,
-                            categories: categories.value,
-                            banniere: '',
-                        })
-                    }
+
+        const pictureCategoryUpload = (downloadURL) => {
+            alaune.value = downloadURL
+        }
+
+        const updateCategoryTab = (item, catId) => {
+            if (
+                typeof categories.value.find((params) => {
+                    return params.id === catId
+                }) !== 'undefined'
+            ) {
+                var obj = categories.value.find((params) => {
+                    return params.id === catId
                 })
-                .catch(function (error) {
-                    console.log(error)
+                console.log(obj)
+                obj[getKeyByValue(obj, item)] = ''
+                store.dispatch('category/updateCategory', {
+                    ...obj,
+                    categories: categories.value,
                 })
+            }
+        }
+        const pictureCategoryDeleted = (item, catId) => {
+            alaune.value = ''
+            updateCategoryTab(item, catId)
+        }
+        const pictureCategoryDeletedEdit = (item, id) => {
+            updateCategoryTab(item, id)
+        }
+        const banniereCategoryUpload = (downloadURL) => {
+            banniere.value = downloadURL
+        }
+
+        const banniereCategoryDeleted = (item, catId) => {
+            banniere.value = ''
+            updateCategoryTab(item, catId)
+        }
+        const banniereCategoryDeletedEdit = (item, id) => {
+            updateCategoryTab(item, id)
+        }
+
+        const pictureCategoryUploadEdit = (e, id) => {
+            var obj = categories.value.find((params) => {
+                return params.id === id
+            })
+            categories.value.find((params) => {
+                return params.id === id
+            }).picture = e
+
+            store.dispatch('category/updateCategory', {
+                id: id,
+                picture: e,
+                name: obj.name,
+                categories: categories.value,
+                banniere: obj.banniere,
+            })
+        }
+        const banniereCategoryUploadEdit = (e, id) => {
+            var obj = categories.value.find((params) => {
+                return params.id === id
+            })
+            categories.value.find((params) => {
+                return params.id === id
+            }).banniere = e
+
+            store.dispatch('category/updateCategory', {
+                id: id,
+                picture: obj.picture,
+                name: obj.name,
+                categories: categories.value,
+                banniere: e,
+            })
         }
 
         onMounted(async (params) => {
@@ -857,6 +473,7 @@ export default {
         onBeforeUpdate(() => {
             divs.value = []
         })
+
         return {
             categories,
             editable,
@@ -875,18 +492,18 @@ export default {
             start,
             numberRecords,
             loadingPage,
-            loadingBanniere,
-            onChange,
-            file,
-            onUpload,
-            loading,
-            progressBar,
             removePicture,
             alaune,
-            loadingEdit,
-            onChangeEdit,
             banniere,
-            removeBanniere,
+            id,
+            pictureCategoryDeleted,
+            pictureCategoryDeletedEdit,
+            pictureCategoryUpload,
+            pictureCategoryUploadEdit,
+            banniereCategoryDeleted,
+            banniereCategoryDeletedEdit,
+            banniereCategoryUpload,
+            banniereCategoryUploadEdit,
         }
     },
 }
