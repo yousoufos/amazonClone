@@ -59,6 +59,11 @@
                             </span>
                         </div>
                     </div>
+                    <!-- <Pagination
+                        ref="child"
+                        pas="2"
+                        :data="products"
+                    ></Pagination> -->
                     <div class="flex justify-center">
                         <div
                             @click="next(index + 1)"
@@ -76,7 +81,7 @@
                         <div
                             @click="detail(product)"
                             class="h-36 lg:h-48 cursor-pointer rounded-md flex lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md bg-white"
-                            v-for="product in products"
+                            v-for="product in tab"
                             :key="product.data.productId"
                         >
                             <div class="w-1/4 ml-6 my-auto">
@@ -144,7 +149,7 @@
                         <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
                             <div
                                 @click="detail(product)"
-                                v-for="product in products"
+                                v-for="product in tab"
                                 :key="product.productId"
                                 class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
                             >
@@ -230,16 +235,19 @@ import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 import ProductHome from '../components/ProductHome'
 import notif from '../components/notif'
+import Pagination from '../components/Pagination'
 export default {
     components: {
         notif,
         ProductHome,
+        Pagination,
     },
     setup() {
         const store = useStore()
         const route = useRoute()
         const router = useRouter()
         const loading = ref(true)
+        const child = ref(null)
         const currency = useCurrency()
         const categorie = computed((params) => {
             return store.state.category.categorie
@@ -327,6 +335,10 @@ export default {
             start.value = params
         }
 
+        const test = computed((params) => {
+            return child.value.tab
+        })
+
         return {
             categorie,
             products,
@@ -343,6 +355,9 @@ export default {
             next,
             start,
             numberRecords,
+            child,
+            test,
+            tab,
         }
     },
 }

@@ -127,7 +127,13 @@ const actions = {
             payload.productCategory,
             payload.product
         )
+
         await updateAlgolia()
+        commit('updateProduct', {
+            ...payload.product,
+            categories: payload.productCategory.categories,
+            productId: payload.productId,
+        })
         store.dispatch('notification/setNotification', {
             message: 'Product Updated',
             type: 'success',
@@ -186,6 +192,13 @@ const mutations = {
     setProductPictures: function (state, payload) {
         state.product.pictures = payload.pictures
         state.product.defaultPicture = payload.defaultPicture
+    },
+    updateProduct: function (state, payload) {
+        state.tab[
+            state.tab.findIndex((params) => {
+                return params.productId === payload.productId
+            })
+        ] = payload
     },
     addProducts: function (state, payload) {
         state.tab.push(payload)
