@@ -167,7 +167,7 @@
                                                 </div>
                                                 <div v-else>
                                                     <img
-                                                        class="w-14 h-14"
+                                                        class="rounded-full w-20 h-20"
                                                         :src="
                                                             cat.picture === ''
                                                                 ? require('../../../assets/no-image.jpg')
@@ -201,7 +201,7 @@
                                                 </div>
                                                 <div v-else>
                                                     <img
-                                                        class="w-14 h-14"
+                                                        class="rounded-full w-20 h-20"
                                                         :src="
                                                             cat.banniere === ''
                                                                 ? require('../../../assets/no-image.jpg')

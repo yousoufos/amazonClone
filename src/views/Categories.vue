@@ -28,12 +28,8 @@
                 </p>
             </div> -->
             <div class="flex space-x-2">
-                <div class="hidden lg:flex lg:h-screen lg:w-1/3">
-                    <img
-                        class="object-fill"
-                        :src="require('../assets/categorie_pub.jpg')"
-                        alt=""
-                    />
+                <div class="hidden lg:flex lg:w-1/3">
+                    <img class="object-fill" :src="categorie.banniere" alt="" />
                 </div>
                 <div class="flex flex-col w-full">
                     <div
@@ -61,6 +57,19 @@
                             >
                                 view_stream
                             </span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div
+                            @click="next(index + 1)"
+                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
+                            :class="{
+                                'bg-yellow-500': item === start,
+                            }"
+                            v-for="(item, index) in numberRecords"
+                            :key="index"
+                        >
+                            {{ item }}
                         </div>
                     </div>
                     <div v-if="!grid" class="flex flex-col w-full space-y-2">
@@ -293,6 +302,31 @@ export default {
             store.commit('navigation/removeFrom')
         }
 
+        const pas = ref(6)
+        const usersLength = computed(() => {
+            return products.value.length
+        })
+        const numberRecords = computed(() => {
+            return Math.ceil(usersLength.value / pas.value)
+        })
+        const start = ref(1)
+        const tab = computed(() => {
+            var indexStart = (start.value - 1) * pas.value
+
+            var tableau = []
+
+            for (var i = indexStart; i < indexStart + pas.value; i++) {
+                if (typeof products.value[i] !== 'undefined') {
+                    tableau.push(products.value[i])
+                }
+            }
+
+            return tableau
+        })
+        const next = (params) => {
+            start.value = params
+        }
+
         return {
             categorie,
             products,
@@ -306,6 +340,9 @@ export default {
             showAdd,
             from,
             deleting,
+            next,
+            start,
+            numberRecords,
         }
     },
 }
