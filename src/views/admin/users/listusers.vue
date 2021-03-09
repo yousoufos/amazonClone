@@ -6,19 +6,12 @@
                 <div v-if="loading">Loading...</div>
                 <div v-else>
                     <div class="py-4 mx-auto flex flex-col w-11/12">
-                        <div class="flex justify-center">
-                            <div
-                                @click="next(index + 1)"
-                                class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
-                                :class="{
-                                    'bg-yellow-500': item === start,
-                                }"
-                                v-for="(item, index) in numberRecords"
-                                :key="index"
-                            >
-                                {{ item }}
-                            </div>
-                        </div>
+                        <Pagination
+                            ref="child"
+                            :pas="3"
+                            type="users"
+                            :data="users"
+                        ></Pagination>
                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div
                                 class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -117,10 +110,12 @@ import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import Pagination from '../../../components/Pagination'
 export default {
     components: {
         navbar,
         sidebar,
+        Pagination,
     },
 
     setup() {
@@ -140,30 +135,9 @@ export default {
                 },
             })
         })
-        const pas = ref(6)
-        const usersLength = computed(() => {
-            return users.value.length
+        const tab = computed((params) => {
+            return store.getters['navigation/getUsersPagination']
         })
-        const numberRecords = computed(() => {
-            return Math.ceil(usersLength.value / pas.value)
-        })
-        const start = ref(1)
-        const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof users.value[i] !== 'undefined') {
-                    tableau.push(users.value[i])
-                }
-            }
-
-            return tableau
-        })
-        const next = (params) => {
-            start.value = params
-        }
         onMounted(async (params) => {
             await store.dispatch('auth/getUsers')
             loading.value = false
@@ -172,10 +146,7 @@ export default {
             details,
             loading,
             users,
-            start,
             tab,
-            next,
-            numberRecords,
         }
     },
 }

@@ -7,19 +7,12 @@
         >
     </div>
     <div class="py-4 w-11/12 mx-auto flex flex-col">
-        <div class="flex justify-center">
-            <div
-                @click="next(index + 1)"
-                class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
-                :class="{
-                    'bg-yellow-500': item === start,
-                }"
-                v-for="(item, index) in numberRecords"
-                :key="index"
-            >
-                {{ item }}
-            </div>
-        </div>
+        <Pagination
+            ref="child"
+            :pas="3"
+            type="orders"
+            :data="orders"
+        ></Pagination>
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div
                 class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -137,7 +130,11 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
+import Pagination from '../components/Pagination'
 export default {
+    components: {
+        Pagination,
+    },
     setup(props) {
         const router = useRouter()
         const store = useStore()
@@ -164,30 +161,9 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
-        const pas = ref(10)
-        const ordersLength = computed(() => {
-            return orders.value.length
-        })
-        const numberRecords = computed(() => {
-            return Math.ceil(ordersLength.value / pas.value)
-        })
-        const start = ref(1)
         const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof orders.value[i] !== 'undefined') {
-                    tableau.push(orders.value[i])
-                }
-            }
-
-            return tableau
+            return store.getters['navigation/getOrdersPagination']
         })
-        const next = (params) => {
-            start.value = params
-        }
 
         return {
             orders,
@@ -195,9 +171,6 @@ export default {
             currency,
             from,
             deleting,
-            next,
-            start,
-            numberRecords,
             tab,
         }
     },

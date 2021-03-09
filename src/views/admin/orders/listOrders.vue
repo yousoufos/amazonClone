@@ -5,19 +5,12 @@
             <div class="width568 w-full h-screen overflow-y-auto">
                 <div v-if="loading">Loading...</div>
                 <div v-else class="py-4 mx-auto flex flex-col w-11/12">
-                    <div class="flex justify-center">
-                        <div
-                            @click="next(index + 1)"
-                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
-                            :class="{
-                                'bg-yellow-500': item === start,
-                            }"
-                            v-for="(item, index) in numberRecords"
-                            :key="index"
-                        >
-                            {{ item }}
-                        </div>
-                    </div>
+                    <Pagination
+                        ref="child"
+                        :pas="10"
+                        type="orders"
+                        :data="orders"
+                    ></Pagination>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -160,6 +153,7 @@
 import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
 import { useCurrency } from '../../../plugins/currencyPlugin'
+import Pagination from '../../../components/Pagination'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -167,6 +161,7 @@ export default {
     components: {
         navbar,
         sidebar,
+        Pagination,
     },
 
     setup() {
@@ -212,30 +207,9 @@ export default {
                 return
             }
         }
-        const pas = ref(10)
-        const ordersLength = computed(() => {
-            return orders.value.length
-        })
-        const numberRecords = computed(() => {
-            return Math.ceil(ordersLength.value / pas.value)
-        })
-        const start = ref(1)
         const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof orders.value[i] !== 'undefined') {
-                    tableau.push(orders.value[i])
-                }
-            }
-
-            return tableau
+            return store.getters['navigation/getOrdersPagination']
         })
-        const next = (params) => {
-            start.value = params
-        }
 
         onMounted(async (params) => {
             await store.dispatch('order/getOrders')
@@ -249,9 +223,6 @@ export default {
             sortByDateValue,
             currency,
             tab,
-            start,
-            next,
-            numberRecords,
             loading,
         }
     },

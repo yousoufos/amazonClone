@@ -59,24 +59,12 @@
                             </span>
                         </div>
                     </div>
-                    <!-- <Pagination
+                    <Pagination
                         ref="child"
-                        pas="2"
+                        :pas="3"
+                        type="products"
                         :data="products"
-                    ></Pagination> -->
-                    <div class="flex justify-center">
-                        <div
-                            @click="next(index + 1)"
-                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
-                            :class="{
-                                'bg-yellow-500': item === start,
-                            }"
-                            v-for="(item, index) in numberRecords"
-                            :key="index"
-                        >
-                            {{ item }}
-                        </div>
-                    </div>
+                    ></Pagination>
                     <div v-if="!grid" class="flex flex-col w-full space-y-2">
                         <div
                             @click="detail(product)"
@@ -309,34 +297,8 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
-
-        const pas = ref(6)
-        const usersLength = computed(() => {
-            return products.value.length
-        })
-        const numberRecords = computed(() => {
-            return Math.ceil(usersLength.value / pas.value)
-        })
-        const start = ref(1)
-        const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof products.value[i] !== 'undefined') {
-                    tableau.push(products.value[i])
-                }
-            }
-
-            return tableau
-        })
-        const next = (params) => {
-            start.value = params
-        }
-
-        const test = computed((params) => {
-            return child.value.tab
+        const tab = computed((params) => {
+            return store.getters['navigation/getProductsPagination']
         })
 
         return {
@@ -352,11 +314,8 @@ export default {
             showAdd,
             from,
             deleting,
-            next,
-            start,
-            numberRecords,
+
             child,
-            test,
             tab,
         }
     },

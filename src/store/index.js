@@ -12,7 +12,7 @@ import navigation from './navigation'
 
 export default createStore({
   plugins: [
-    createPersistedState({
+    /* createPersistedState({
       paths: ['navigation.test'],
       storage: {
         getItem: (key) => Cookies.get(key),
@@ -20,7 +20,7 @@ export default createStore({
           Cookies.set(key, value, { expires: 3, secure: false }),
         removeItem: (key) => Cookies.remove(key)
       }
-    })
+    }) */
   ],
   state: {},
   mutations: {},

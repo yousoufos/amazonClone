@@ -61,19 +61,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-center">
-                        <div
-                            @click="next(index + 1)"
-                            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer"
-                            :class="{
-                                'bg-yellow-500': item === start,
-                            }"
-                            v-for="(item, index) in numberRecords"
-                            :key="index"
-                        >
-                            {{ item }}
-                        </div>
-                    </div>
+                    <Pagination
+                        ref="child"
+                        :pas="3"
+                        type="categories"
+                        :data="categories"
+                    ></Pagination>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -244,6 +237,7 @@
 import navbar from '../../../components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
 import UploadFile from '../../../components/UploadFile'
+import Pagination from '../../../components/Pagination'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { storage, firebaseApp, db } from '../../../firebase'
@@ -252,6 +246,7 @@ export default {
         navbar,
         sidebar,
         UploadFile,
+        Pagination,
     },
     methods: {
         /* test() {
@@ -353,31 +348,6 @@ export default {
             }
             add.value = false
         }
-
-        const pas = ref(4)
-        const categoriesLength = computed(() => {
-            return categories.value.length
-        })
-        const numberRecords = computed(() => {
-            return Math.ceil(categoriesLength.value / pas.value)
-        })
-        const start = ref(1)
-        const tab = computed(() => {
-            var indexStart = (start.value - 1) * pas.value
-
-            var tableau = []
-
-            for (var i = indexStart; i < indexStart + pas.value; i++) {
-                if (typeof categories.value[i] !== 'undefined') {
-                    tableau.push(categories.value[i])
-                }
-            }
-
-            return tableau
-        })
-        const next = (params) => {
-            start.value = params
-        }
         const alaune = ref('')
         const banniere = ref('')
         const getKeyByValue = (object, value) => {
@@ -465,7 +435,9 @@ export default {
                 banniere: e,
             })
         }
-
+        const tab = computed(() => {
+            return store.getters['navigation/getCategoriesPagination']
+        })
         onMounted(async (params) => {
             await store.dispatch('category/getCategories')
             loadingPage.value = false
@@ -487,10 +459,7 @@ export default {
             cancelAdd,
             test,
             divs,
-            next,
             tab,
-            start,
-            numberRecords,
             loadingPage,
             removePicture,
             alaune,
