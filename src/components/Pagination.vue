@@ -43,6 +43,7 @@ export default {
             switch (props.type) {
                 case 'products':
                     store.commit('navigation/setProductsPagination', tableau)
+
                     break
                 case 'categories':
                     store.commit('navigation/setCategoriesPagination', tableau)

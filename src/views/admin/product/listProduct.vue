@@ -193,7 +193,6 @@ import { useStore } from 'vuex'
 import { storage } from '../../../firebase'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
-import { tab, start } from '../../../mixin'
 export default {
     components: {
         navbar,

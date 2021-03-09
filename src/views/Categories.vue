@@ -1,10 +1,10 @@
 <template>
     <div class="bg-gray-200 lg:bg-gray-100">
         <div v-if="loading">Loading...</div>
-        <div v-else class="flex flex-col lg:w-10/12 mx-auto">
+        <div v-else class="flex flex-col mx-auto lg:w-10/12">
             <div class="px-10" @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
+                    ><span class="text-4xl material-icons">
                         keyboard_backspace
                     </span></router-link
                 >
@@ -23,7 +23,7 @@
                 <img :src="require('../assets/informatiqueBanner.jpg')" alt="" />
             </div> -->
             <!-- <div class="px-2 py-2">
-                <p class="font-light text-gray-700 uppercase tracking-normal">
+                <p class="font-light tracking-normal text-gray-700 uppercase">
                     {{ categorie.name }} 
                 </p>
             </div> -->
@@ -33,30 +33,55 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <div
-                        class="bg-white flex justify-between mb-2 items-center"
+                        class="flex items-center justify-between py-2 mb-2 bg-white"
                     >
                         <div>
                             <p
-                                class="px-2 font-light text-gray-700 uppercase tracking-normal"
+                                class="px-2 font-light tracking-normal text-gray-700 uppercase"
                             >
                                 {{ categorie.name }}>>
                             </p>
                         </div>
-                        <div class="p-2 text-gray-700">
-                            <span
-                                @click="toggleGrid"
-                                class="mr-4 material-icons cursor-pointer"
-                                :class="{ 'text-yellow-500': grid === true }"
-                            >
-                                grid_view
-                            </span>
-                            <span
-                                @click="toggleGrid"
-                                class="material-icons cursor-pointer"
-                                :class="{ 'text-yellow-500': grid === false }"
-                            >
-                                view_stream
-                            </span>
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center space-x-2">
+                                <label class="block" for="sort">Sort By</label>
+                                <div>
+                                    <select
+                                        v-model="sortBy"
+                                        class="border-gray-300 rounded-lg"
+                                        name="sort"
+                                        id="sort"
+                                    >
+                                        <option value>Please Select</option>
+                                        <option value="price">
+                                            Sort By Price
+                                        </option>
+                                        <option value="rating">
+                                            Sort By Rating
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex p-2 text-gray-700">
+                                <span
+                                    @click="toggleGrid"
+                                    class="mr-4 cursor-pointer material-icons"
+                                    :class="{
+                                        'text-yellow-500': grid === true,
+                                    }"
+                                >
+                                    grid_view
+                                </span>
+                                <span
+                                    @click="toggleGrid"
+                                    class="cursor-pointer material-icons"
+                                    :class="{
+                                        'text-yellow-500': grid === false,
+                                    }"
+                                >
+                                    view_stream
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <Pagination
@@ -68,18 +93,18 @@
                     <div v-if="!grid" class="flex flex-col w-full space-y-2">
                         <div
                             @click="detail(product)"
-                            class="h-36 lg:h-48 cursor-pointer rounded-md flex lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md bg-white"
+                            class="flex bg-white rounded-md cursor-pointer h-36 lg:h-48 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md"
                             v-for="product in tab"
                             :key="product.data.productId"
                         >
-                            <div class="w-1/4 ml-6 my-auto">
+                            <div class="w-1/4 my-auto ml-6">
                                 <img
-                                    class="w-24 h-24 lg:w-36 lg:h-36 object-cover"
+                                    class="object-cover w-24 h-24 lg:w-36 lg:h-36"
                                     :src="product.data.defaultPicture"
                                     alt=""
                                 />
                             </div>
-                            <div class="p-4 w-2/4 flex flex-col">
+                            <div class="flex flex-col w-2/4 p-4">
                                 <div>
                                     <p class="mt-4">{{ product.data.title }}</p>
                                 </div>
@@ -88,7 +113,7 @@
                                         <span
                                             v-for="(item, index) in 5"
                                             :key="index"
-                                            class="material-icons text-xs lg:text-sm"
+                                            class="text-xs material-icons lg:text-sm"
                                             :class="{
                                                 'text-yellow-500':
                                                     item <=
@@ -103,7 +128,7 @@
                                         </span>
                                     </div>
                                     <div>
-                                        <p class="text-gray-400 px-2 text-sm">
+                                        <p class="px-2 text-sm text-gray-400">
                                             {{
                                                 '(' +
                                                 product.data.reviewNumber +
@@ -114,10 +139,10 @@
                                 </div>
                                 <div></div>
                             </div>
-                            <div class="w-1/4 text-right flex flex-col">
+                            <div class="flex flex-col w-1/4 text-right">
                                 <div class="flex-grow">
                                     <p
-                                        class="mt-12 px-2 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold text-gray-900"
+                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
                                     >
                                         {{ currency.$t(product.data.price) }}
                                     </p>
@@ -125,7 +150,7 @@
                                 <div>
                                     <button
                                         @click="add(product)"
-                                        class="bg-yellow-500 w-full text-sm lg:px-8 lg:py-1 rounded-sm mb-2 text-gray-50 lg:font-semibold"
+                                        class="w-full mb-2 text-sm bg-yellow-500 rounded-sm lg:px-8 lg:py-1 text-gray-50 lg:font-semibold"
                                     >
                                         Add
                                     </button>
@@ -142,18 +167,18 @@
                                 class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
                             >
                                 <div
-                                    class="flex flex-col px-2 xl:px-2 text-left bg-gray-100 lg:bg-white rounded"
+                                    class="flex flex-col px-2 text-left bg-gray-100 rounded xl:px-2 lg:bg-white"
                                 >
                                     <div class="flex-grow py-2">
                                         <img
-                                            class="mx-auto w-36 h-36 lg:w-56 lg:h-56 object-cover"
+                                            class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
                                             :src="product.data.defaultPicture"
                                             alt=""
                                         />
                                     </div>
                                     <div class="flex flex-col mt-2">
                                         <p
-                                            class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
+                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
                                         >
                                             {{ product.data.title }}
                                         </p>
@@ -162,7 +187,7 @@
                                                 <span
                                                     v-for="(item, index) in 5"
                                                     :key="index"
-                                                    class="material-icons text-xs lg:text-sm"
+                                                    class="text-xs material-icons lg:text-sm"
                                                     :class="{
                                                         'text-yellow-500':
                                                             item <=
@@ -179,7 +204,7 @@
                                             </div>
                                             <div>
                                                 <p
-                                                    class="text-gray-400 px-2 text-sm"
+                                                    class="px-2 text-sm text-gray-400"
                                                 >
                                                     {{
                                                         '(' +
@@ -191,7 +216,7 @@
                                             </div>
                                         </div>
                                         <p
-                                            class="text-gray-700 text-xs font-light lg:font-bold lg:text-l"
+                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
                                         >
                                             {{
                                                 currency.$t(product.data.price)
@@ -199,7 +224,7 @@
                                         </p>
                                         <button
                                             @click="add(product)"
-                                            class="shadow-sm mt-2 mb-2 rounded-sm w-full bg-yellow-500 text-gray-50"
+                                            class="w-full mt-2 mb-2 bg-yellow-500 rounded-sm shadow-sm text-gray-50"
                                         >
                                             Add to cart
                                         </button>
@@ -217,7 +242,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, reactive } from 'vue'
+import { ref, onMounted, computed, reactive, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
@@ -236,6 +261,7 @@ export default {
         const router = useRouter()
         const loading = ref(true)
         const child = ref(null)
+        const sortBy = ref('')
         const currency = useCurrency()
         const categorie = computed((params) => {
             return store.state.category.categorie
@@ -274,6 +300,7 @@ export default {
         onMounted(async (params) => {
             await store.dispatch('category/getCategorieById', route.query.id)
             await store.dispatch('product/getCategorieProduct', route.query.id)
+
             loading.value = false
         })
 
@@ -298,7 +325,15 @@ export default {
             store.commit('navigation/removeFrom')
         }
         const tab = computed((params) => {
-            return store.getters['navigation/getProductsPagination']
+            var obj = store.getters['navigation/getProductsPagination']
+            if (sortBy.value === 'price') {
+                return obj.sort((a, b) => {
+                    console.log(b.data.price - a.data.price)
+                    return b.data.price - a.data.price
+                })
+            } else {
+                return store.getters['navigation/getProductsPagination']
+            }
         })
 
         return {
@@ -314,7 +349,7 @@ export default {
             showAdd,
             from,
             deleting,
-
+            sortBy,
             child,
             tab,
         }
