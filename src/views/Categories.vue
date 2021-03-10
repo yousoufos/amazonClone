@@ -86,7 +86,7 @@
                     </div>
                     <Pagination
                         ref="child"
-                        :pas="3"
+                        :pas="6"
                         type="products"
                         :data="products"
                     ></Pagination>
@@ -95,18 +95,18 @@
                             @click="detail(product)"
                             class="flex bg-white rounded-md cursor-pointer h-36 lg:h-48 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md"
                             v-for="product in tab"
-                            :key="product.data.productId"
+                            :key="product.productId"
                         >
                             <div class="w-1/4 my-auto ml-6">
                                 <img
                                     class="object-cover w-24 h-24 lg:w-36 lg:h-36"
-                                    :src="product.data.defaultPicture"
+                                    :src="product.defaultPicture"
                                     alt=""
                                 />
                             </div>
                             <div class="flex flex-col w-2/4 p-4">
                                 <div>
-                                    <p class="mt-4">{{ product.data.title }}</p>
+                                    <p class="mt-4">{{ product.title }}</p>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="flex text-gray-400">
@@ -118,9 +118,8 @@
                                                 'text-yellow-500':
                                                     item <=
                                                     Math.round(
-                                                        product.data.rating /
-                                                            product.data
-                                                                .reviewNumber
+                                                        product.rating /
+                                                            product.reviewNumber
                                                     ),
                                             }"
                                         >
@@ -130,9 +129,7 @@
                                     <div>
                                         <p class="px-2 text-sm text-gray-400">
                                             {{
-                                                '(' +
-                                                product.data.reviewNumber +
-                                                ')'
+                                                '(' + product.reviewNumber + ')'
                                             }}
                                         </p>
                                     </div>
@@ -144,7 +141,7 @@
                                     <p
                                         class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
                                     >
-                                        {{ currency.$t(product.data.price) }}
+                                        {{ currency.$t(product.price) }}
                                     </p>
                                 </div>
                                 <div>
@@ -172,7 +169,7 @@
                                     <div class="flex-grow py-2">
                                         <img
                                             class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
-                                            :src="product.data.defaultPicture"
+                                            :src="product.defaultPicture"
                                             alt=""
                                         />
                                     </div>
@@ -180,7 +177,7 @@
                                         <p
                                             class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
                                         >
-                                            {{ product.data.title }}
+                                            {{ product.title }}
                                         </p>
                                         <div class="flex items-center">
                                             <div class="flex text-gray-400">
@@ -192,10 +189,8 @@
                                                         'text-yellow-500':
                                                             item <=
                                                             Math.round(
-                                                                product.data
-                                                                    .rating /
-                                                                    product.data
-                                                                        .reviewNumber
+                                                                product.rating /
+                                                                    product.reviewNumber
                                                             ),
                                                     }"
                                                 >
@@ -208,8 +203,7 @@
                                                 >
                                                     {{
                                                         '(' +
-                                                        product.data
-                                                            .reviewNumber +
+                                                        product.reviewNumber +
                                                         ')'
                                                     }}
                                                 </p>
@@ -218,9 +212,7 @@
                                         <p
                                             class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
                                         >
-                                            {{
-                                                currency.$t(product.data.price)
-                                            }}
+                                            {{ currency.$t(product.price) }}
                                         </p>
                                         <button
                                             @click="add(product)"
@@ -278,9 +270,9 @@ export default {
         })
 
         const add = (product) => {
-            if (product.data.stock > 0) {
+            if (product.stock > 0) {
                 store.dispatch('cart/addToCart', {
-                    ...product.data,
+                    ...product,
                     productId: product.productId,
                 })
             }
@@ -328,12 +320,22 @@ export default {
             var obj = store.getters['navigation/getProductsPagination']
             if (sortBy.value === 'price') {
                 return obj.sort((a, b) => {
-                    console.log(b.data.price - a.data.price)
-                    return b.data.price - a.data.price
+                    return b.price - a.price
                 })
-            } else {
-                return store.getters['navigation/getProductsPagination']
             }
+            if (sortBy.value === 'rating') {
+                return obj.sort((a, b) => {
+                    var un = Number.isNaN(b.rating / b.reviewNumber)
+                        ? 0
+                        : b.rating / b.reviewNumber
+                    var deux = Number.isNaN(a.rating / a.reviewNumber)
+                        ? 0
+                        : a.rating / a.reviewNumber
+
+                    return un - deux
+                })
+            }
+            return store.getters['navigation/getProductsPagination']
         })
 
         return {

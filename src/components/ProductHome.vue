@@ -1,19 +1,20 @@
 <template>
     <div
-        class="flex flex-col px-2 xl:px-2 text-left bg-gray-100 lg:bg-white rounded"
+        class="flex flex-col px-2 text-left bg-gray-100 rounded xl:px-2 lg:bg-white"
     >
         <div class="flex-grow">
             <img
-                class="mx-auto w-36 h-36 lg:w-56 lg:h-56 object-cover"
-                :src="product.defaultPicture"
+                @error="test"
+                class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
+                :src="src"
                 alt=""
             />
         </div>
         <div class="">
-            <p class="text-gray-700 text-xs font-light lg:font-bold lg:text-l">
+            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
                 {{ product.title }}
             </p>
-            <p class="text-gray-700 text-xs font-light lg:font-bold lg:text-l">
+            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
                 {{ currency.$t(product.price) }}
             </p>
         </div>
@@ -59,7 +60,14 @@ export default {
                 },
             })
         }
-        return { add, detail, currency }
+        const src = ref('')
+        const test = (params) => {
+            src.value = require('../assets/no-image.jpg')
+        }
+        const show = (product) => {
+            src.value = product.defaultPicture
+        }
+        return { add, detail, currency, test, src, show }
     },
 }
 </script>

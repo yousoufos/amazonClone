@@ -28,6 +28,7 @@ export default function () {
         }
       })
     })
+
     result
       .sort((a, b) => {
         return b.total - a.total

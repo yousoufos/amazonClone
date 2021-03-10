@@ -16,7 +16,7 @@
         </transition>
         <div class="px-10" @click="deleting" v-if="from.length > 0">
             <router-link :to="from[from.length - 1]"
-                ><span class="material-icons text-4xl">
+                ><span class="text-4xl material-icons">
                     keyboard_backspace
                 </span></router-link
             >
@@ -25,27 +25,26 @@
             class="lg:flex lg:h-1/5 lg:py-10 lg:w-10/12 lg:mx-auto lg:rounded-lg"
         >
             <div class="lg:w-4/5 lg:m-0 lg:px-1">
-                <slider :pictures="product.data.pictures"></slider>
+                <slider :pictures="product.pictures"></slider>
             </div>
-            <div class="bg-white p-4 lg:w-full lg:py-14">
-                <p class="font-light text-sm lg:text-3xl">
-                    {{ product.data.title }}
+            <div class="p-4 bg-white lg:w-full lg:py-14">
+                <p class="text-sm font-light lg:text-3xl">
+                    {{ product.title }}
                 </p>
-                <p class="font-bold py-2 text-lg lg:text-4xl">
-                    {{ currency.$t(product.data.price) }}
+                <p class="py-2 text-lg font-bold lg:text-4xl">
+                    {{ currency.$t(product.price) }}
                 </p>
                 <div>
-                    <div class="flex text-gray-400 space-x-1">
+                    <div class="flex space-x-1 text-gray-400">
                         <span
                             v-for="(item, index) in 5"
                             :key="index"
-                            class="h-4 w-4 material-icons"
+                            class="w-4 h-4 material-icons"
                             :class="{
                                 'text-yellow-500':
                                     item <=
                                     Math.round(
-                                        product.data.rating /
-                                            product.data.reviewNumber
+                                        product.rating / product.reviewNumber
                                     ),
                             }"
                         >
@@ -54,17 +53,17 @@
                     </div>
                     <div>
                         <p class="px-4 mt-2 text-xs">
-                            {{ product.data.reviewNumber + ' Notes' }}
+                            {{ product.reviewNumber + ' Notes' }}
                         </p>
                     </div>
                     <div class="mt-10">
                         <button
-                            :disabled="product.data.stock === 0"
+                            :disabled="product.stock === 0"
                             :class="{
-                                'disabled:opacity-50': product.data.stock === 0,
+                                'disabled:opacity-50': product.stock === 0,
                             }"
                             @click="add"
-                            class="btnOrange mr-2"
+                            class="mr-2 btnOrange"
                         >
                             Add to cart
                         </button>
@@ -72,38 +71,37 @@
                 </div>
             </div>
         </div>
-        <div class="p-2 text-gray-600 text-sm lg:hidden">
+        <div class="p-2 text-sm text-gray-600 lg:hidden">
             DETAILS DU PRODUIT
         </div>
-        <div class="bg-white text-sm lg:w-10/12 lg:mx-auto">
-            <div class="lg:flex hidden">
-                <p class="text-gray-500 px-4 border-b w-full text-base">
+        <div class="text-sm bg-white lg:w-10/12 lg:mx-auto">
+            <div class="hidden lg:flex">
+                <p class="w-full px-4 text-base text-gray-500 border-b">
                     DETAILS DU PRODUIT
                 </p>
             </div>
             <div class="p-4">
-                <span class="" v-html="product.data.description"></span>
+                <span class="" v-html="product.description"></span>
             </div>
         </div>
-        <div class="p-2 text-gray-600 text-sm lg:w-10/12 lg:mx-auto">
+        <div class="p-2 text-sm text-gray-600 lg:w-10/12 lg:mx-auto">
             AVIS DES UTILISATEURS
         </div>
         <div
-            v-if="product.data.reviewNumber !== 0"
+            v-if="product.reviewNumber !== 0"
             class="bg-white lg:w-10/12 lg:mx-auto"
         >
-            <div class="flex space-x-4 text-xs p-4 border-b">
+            <div class="flex p-4 space-x-4 text-xs border-b">
                 <div class="">
-                    <p class="text-yellow-500 font-semibold">
+                    <p class="font-semibold text-yellow-500">
                         {{
-                            Math.round(
-                                product.data.rating / product.data.reviewNumber
-                            ) + '/5'
+                            Math.round(product.rating / product.reviewNumber) +
+                            '/5'
                         }}
                     </p>
                 </div>
                 <div>
-                    <p class="">{{ product.data.reviewNumber + ' Notes' }}</p>
+                    <p class="">{{ product.reviewNumber + ' Notes' }}</p>
                 </div>
             </div>
             <!--  a repeter -->
@@ -112,12 +110,12 @@
                 v-for="item in productReviews"
                 :key="item.reviewId"
             >
-                <div class="p-2 flex justify-between">
+                <div class="flex justify-between p-2">
                     <div>
                         <span
                             v-for="(n, index) in 5"
                             :key="index"
-                            class="material-icons text-sm text-gray-500"
+                            class="text-sm text-gray-500 material-icons"
                             :class="{ 'text-yellow-500': index <= item.rating }"
                             >grade</span
                         >
@@ -139,14 +137,14 @@
                         </p>
                     </div>
                     <div class="flex space-x-1 text-green-500">
-                        <span class="material-icons text-sm">
+                        <span class="text-sm material-icons">
                             verified_user
                         </span>
                         <p class="">Achat verifié</p>
                     </div>
                 </div>
             </div>
-            <div v-if="product.data.reviewNumber === 0">
+            <div v-if="product.reviewNumber === 0">
                 <p>Pad d'avis pour ce produit</p>
             </div>
         </div>
@@ -195,14 +193,14 @@ export default {
             })
         )
         const add = () => {
-            if (product.value.data.stock > 0) {
+            if (product.value.stock > 0) {
                 store.dispatch('cart/addToCart', {
                     productId: product.value.productId,
-                    title: product.value.data.title,
-                    description: product.value.data.description,
-                    price: product.value.data.price,
-                    defaultPicture: product.value.data.defaultPicture,
-                    rating: product.value.data.rating,
+                    title: product.value.title,
+                    description: product.value.description,
+                    price: product.value.price,
+                    defaultPicture: product.value.defaultPicture,
+                    rating: product.value.rating,
                     qte: 1,
                 })
             }

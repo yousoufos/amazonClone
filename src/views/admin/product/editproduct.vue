@@ -6,7 +6,7 @@
                 <div v-if="loading">Loading</div>
                 <div v-else :class="{ 'opacity-60': updating }">
                     <form @submit.prevent class="">
-                        <div class="shadow overflow-hidden sm:rounded-md">
+                        <div class="overflow-hidden shadow sm:rounded-md">
                             <div class="px-4 py-5 bg-white sm:p-6">
                                 <div class="grid grid-cols-6 gap-6">
                                     <div class="col-span-6 sm:col-span-3">
@@ -20,7 +20,7 @@
                                             name="title"
                                             v-model="form.title"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
@@ -28,7 +28,7 @@
                                             ref="children"
                                             :category="category"
                                             :selectedCategories="
-                                                product.data.categories
+                                                product.categories
                                             "
                                             types="edit"
                                         ></MultiSelect>
@@ -58,7 +58,7 @@
                                             name="price"
                                             v-model="form.price"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
                                     <div class="col-span-3">
@@ -72,7 +72,7 @@
                                             name="stock"
                                             v-model="form.stock"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
 
@@ -108,16 +108,16 @@
                                             name="file"
                                             accept="image/x-png,image/gif,image/jpeg"
                                             required
-                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="hidden w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             id="file"
                                         />
 
                                         <div v-if="loadingBar" class="w-1/5">
                                             <div
-                                                class="shadow w-full bg-grey-light"
+                                                class="w-full shadow bg-grey-light"
                                             >
                                                 <div
-                                                    class="bg-blue-600 text-xs leading-none py-1 text-center"
+                                                    class="py-1 text-xs leading-none text-center bg-blue-600"
                                                     :style="{
                                                         width:
                                                             progressBar + '%',
@@ -130,23 +130,23 @@
                                         <div class="flex flex-wrap">
                                             <div
                                                 v-for="img in fileTab"
-                                                class="mt-2 mx-2"
+                                                class="mx-2 mt-2"
                                             >
                                                 <div
-                                                    class="flex justify-between items-center"
+                                                    class="flex items-center justify-between"
                                                 >
                                                     <span
                                                         @click="
                                                             removePicture(img)
                                                         "
-                                                        class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                        class="font-semibold text-red-600 cursor-pointer material-icons"
                                                     >
                                                         clear
                                                     </span>
 
                                                     <span>
                                                         <label
-                                                            class="text-xs px-1"
+                                                            class="px-1 text-xs"
                                                             for="one"
                                                             >Default</label
                                                         >
@@ -170,25 +170,25 @@
                                 </div>
                             </div>
                             <div
-                                class="px-4 py-3 bg-gray-50 text-right sm:px-6"
+                                class="px-4 py-3 text-right bg-gray-50 sm:px-6"
                             >
                                 <button
                                     type="button"
                                     @click="onSubmit"
-                                    class="font-semibold bg-yellow-500 w-20"
+                                    class="w-20 font-semibold bg-yellow-500"
                                     :disabled="updating"
                                     :class="{}"
                                 >
                                     Save
                                 </button>
-                                <button
+                                <!-- <button
                                     :disabled="updating"
                                     type="button"
                                     @click="cancel"
-                                    class="ml-4 font-semibold bg-yellow-500 w-20"
+                                    class="w-20 ml-4 font-semibold bg-yellow-500"
                                 >
                                     Cancel
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </form>
@@ -220,6 +220,7 @@ import MultiSelect from '../../../components/MultiSelect.vue'
 import notif from '../../../components/notif.vue'
 import Spin from '../../../components/Spin'
 import { isNumber } from '../../../mixin'
+import _ from 'lodash'
 export default {
     components: {
         navbar,
@@ -240,6 +241,7 @@ export default {
         const store = useStore()
         const file = ref(null)
         const fileTab = ref([])
+        const oldTab = ref([])
         const alaune = ref('')
         const loading = ref(true)
         const progressBar = ref(0)
@@ -398,7 +400,9 @@ export default {
         }
         const onSelected = (categoryId) => {}
         const cancel = () => {
-            removeAllPictures()
+            if (!_isEqual(oldTab.value, fileTab.value)) {
+                removeAllPictures()
+            }
             router.push('/admin/product/listproduct')
         }
 
@@ -418,13 +422,14 @@ export default {
                 'product/getProductById',
                 route.query.productId
             )
-            fileTab.value = product.value.data.pictures
-            alaune.value = product.value.data.defaultPicture
+            oldTab.value = product.value.pictures
+            fileTab.value = product.value.pictures
+            alaune.value = product.value.defaultPicture
             loading.value = false
-            form.title = product.value.data.title
-            form.description = product.value.data.description
-            form.price = product.value.data.price
-            form.stock = product.value.data.stock
+            form.title = product.value.title
+            form.description = product.value.description
+            form.price = product.value.price
+            form.stock = product.value.stock
         })
 
         const product = ref(

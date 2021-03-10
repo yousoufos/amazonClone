@@ -2,12 +2,12 @@
     <div class="flex">
         <div><sidebar :selected="selected"></sidebar></div>
         <div class="flex w-full">
-            <div class="width568 w-full h-screen overflow-y-auto">
+            <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loading">Loading...</div>
-                <div v-else class="py-4 mx-auto flex flex-col w-11/12">
+                <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
                     <router-link to="/admin/product/newProduct">
                         <div
-                            class="flex w-48 mb-4 space-x-2 justify-center rounded-md py-2 bg-gray-300 cursor-pointer"
+                            class="flex justify-center w-48 py-2 mb-4 space-x-2 bg-gray-300 rounded-md cursor-pointer"
                         >
                             <span class="material-icons">
                                 add_circle_outline
@@ -23,10 +23,10 @@
                     ></Pagination>
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
-                            class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+                            class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                         >
                             <div
-                                class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
                             >
                                 <table
                                     class="min-w-full divide-y divide-gray-200"
@@ -36,20 +36,20 @@
                                         <tr>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Reference
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Title
                                             </th>
                                             <th
                                                 @click="sortByPrice"
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
                                             >
                                                 <div
                                                     class="flex items-center space-x-1"
@@ -65,7 +65,7 @@
                                             <th
                                                 @click="sortByStock"
                                                 scope="col"
-                                                class="flex items-center space-x-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                                                class="flex items-center px-6 py-3 space-x-1 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
                                             >
                                                 <span>Stock</span>
                                                 <span class="material-icons">
@@ -74,19 +74,19 @@
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Category
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Picture
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Actions
                                             </th>
@@ -100,22 +100,22 @@
                                             :key="product.productId"
                                         >
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 {{ product.productId }}
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 {{ product.title }}
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 {{ currency.$t(product.price) }}
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <span
                                                     :class="{
@@ -126,7 +126,7 @@
                                                 >
                                             </td>
                                             <td
-                                                class="px-6 py-4 text-sm text-gray-500 flex space-x-1 w-56 overflow-auto"
+                                                class="flex w-56 px-6 py-4 space-x-1 overflow-auto text-sm text-gray-500"
                                             >
                                                 <div
                                                     v-if="
@@ -135,14 +135,14 @@
                                                     "
                                                     v-for="item in product.categories"
                                                     :key="item.id"
-                                                    class="bg-green-400 rounded-lg px-2 mt-3 flex flex-nowrap"
+                                                    class="flex px-2 mt-3 bg-green-400 rounded-lg flex-nowrap"
                                                 >
-                                                    {{ item.data.name }}
+                                                    {{ item.name }}
                                                 </div>
                                                 <div v-else>No categories</div>
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <img
                                                     class="w-12 h-12"
@@ -156,17 +156,17 @@
                                                 />
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2"
+                                                class="flex px-6 py-4 space-x-2 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <span
                                                     @click="remove(product)"
-                                                    class="material-icons cursor-pointer text-red-500"
+                                                    class="text-red-500 cursor-pointer material-icons"
                                                 >
                                                     delete_forever
                                                 </span>
                                                 <span
                                                     @click="edit(product)"
-                                                    class="material-icons cursor-pointer"
+                                                    class="cursor-pointer material-icons"
                                                 >
                                                     edit
                                                 </span>
