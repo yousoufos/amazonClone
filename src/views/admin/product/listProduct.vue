@@ -211,6 +211,7 @@ export default {
         const sortByPriceValue = ref('DESC')
         const products = ref(
             computed(() => {
+                console.log(store.state.product.tab)
                 return store.state.product.tab
             })
         )

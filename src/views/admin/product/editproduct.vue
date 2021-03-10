@@ -389,7 +389,7 @@ export default {
         const category = ref(
             computed(() => {
                 if (store.state.category.categories === null) {
-                    return [{ id: '', data: { name: '' } }]
+                    return [{ id: '', name: '' }]
                 } else {
                     return store.state.category.categories
                 }

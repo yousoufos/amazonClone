@@ -4,9 +4,12 @@
     >
         <div class="flex-grow">
             <img
-                @error="test"
                 class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
-                :src="src"
+                :src="
+                    product.defaultPicture === ''
+                        ? require('../assets/no-image.jpg')
+                        : product.defaultPicture
+                "
                 alt=""
             />
         </div>

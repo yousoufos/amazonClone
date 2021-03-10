@@ -112,7 +112,7 @@ export default {
             if (selectedOptions.value.indexOf(item) === -1) {
                 selectedOptions.value.push({
                     id: item.id,
-                    data: { name: item.name },
+                    name: item.name,
                 })
             }
         }

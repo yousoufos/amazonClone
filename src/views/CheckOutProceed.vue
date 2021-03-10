@@ -6,12 +6,12 @@
             :user="user"
             @formCancel="cancel"
             v-if="show"
-            class="absolute top-0 left-0 right-0 bottom-0"
+            class="absolute top-0 bottom-0 left-0 right-0"
         ></cardUser>
         <div class="flex w-full">
             <div @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
+                    ><span class="text-4xl material-icons">
                         keyboard_backspace
                     </span></router-link
                 >
@@ -45,7 +45,7 @@
         <div class="w-full" v-else>
             <div @click="deleting" class="p-2" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
+                    ><span class="text-4xl material-icons">
                         keyboard_backspace
                     </span></router-link
                 >
@@ -59,9 +59,9 @@
                 class="py-2"
                 @methodSelected="paymentFromEvent"
             ></payment-methods>
-            <div class="p-4 bg-gray-200 flex flex-col w-full">
+            <div class="flex flex-col w-full p-4 bg-gray-200">
                 <div
-                    class="flex flex-col border-t border-b border-gray-400 py-2"
+                    class="flex flex-col py-2 border-t border-b border-gray-400"
                 >
                     <div
                         class="flex justify-between text-sm font-medium text-black"
@@ -77,15 +77,15 @@
                     </div>
                 </div>
                 <div class="flex justify-between p-4">
-                    <span class="font-semibold text-lg">Total : </span>
-                    <span class="font-bold text-lg text-yellow-500">{{
+                    <span class="text-lg font-semibold">Total : </span>
+                    <span class="text-lg font-bold text-yellow-500">{{
                         currency.$t(Number(cart.total) + 5)
                     }}</span>
                 </div>
                 <div class="p-6">
                     <button
                         @click="valider"
-                        class="font-semibold bg-yellow-500 rounded-lg h-10 w-full"
+                        class="w-full h-10 font-semibold bg-yellow-500 rounded-lg"
                     >
                         Order Now
                     </button>
@@ -152,10 +152,10 @@ export default {
             }
             for (const item of cart.value.items) {
                 await store.dispatch('product/getProductById', item.productId)
-                if (stock.value.data.stock >= item.qte) {
+                if (stock.value.stock >= item.qte) {
                     tab.push({
                         productId: item.productId,
-                        stock: stock.value.data.stock - item.qte,
+                        stock: stock.value.stock - item.qte,
                     })
                 } else {
                     return alert(`La quantité du produit ${item.title} n'est pas disponible,
