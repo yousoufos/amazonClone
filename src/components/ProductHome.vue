@@ -1,6 +1,7 @@
 <template>
     <div
-        class="flex flex-col px-2 text-left bg-gray-100 rounded xl:px-2 lg:bg-white"
+        @click="detail"
+        class="flex flex-col px-2 text-left bg-gray-100 rounded cursor-pointer xl:px-2 lg:bg-white"
     >
         <div class="flex-grow">
             <img
@@ -70,6 +71,7 @@ export default {
         const show = (product) => {
             src.value = product.defaultPicture
         }
+
         return { add, detail, currency, test, src, show }
     },
 }

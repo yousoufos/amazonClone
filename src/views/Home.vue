@@ -11,8 +11,8 @@
                 :show="notification.show"
             ></notif>
         </transition>
-        <div class="flex flex-col mx-auto lg:w-11/12 space-y-4">
-            <div class="-mb-64 hidden lg:flex">
+        <div class="flex flex-col mx-auto space-y-4 lg:w-11/12">
+            <div class="hidden -mb-64 lg:flex">
                 <img
                     class="w-full"
                     src="https://images-eu.ssl-images-amazon.com/images/G/08/kindle/journeys/YzkyZTQzZGQt/YzkyZTQzZGQt-OTVjNzIxZDIt-w1500._CB659208910_.jpg"
@@ -24,42 +24,43 @@
             </div>
             <div class="flex flex-col bg-white">
                 <div
-                    class="px-2 py-2 font-light text-gray-700 uppercase tracking-normal bg-yellow-300"
+                    class="px-2 py-2 font-light tracking-normal text-gray-700 uppercase bg-yellow-300"
                 >
                     <p>Best Sellers</p>
                 </div>
 
                 <div
-                    class="grid grid-cols-2 lg:flex lg:flex-nowrap gap-2 lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
+                    class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
+                    v-if="length"
                 >
                     <ProductHome
-                        class="p-4 flex-none scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
-                        v-for="item in width < 700
-                            ? bestSeller.slice(0, 4)
-                            : bestSeller"
-                        :key="item.id"
+                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                        v-for="(item, index) in width < 700
+                            ? availableBestSellers.slice(0, 4)
+                            : availableBestSellers"
                         :product="item"
+                        :key="index"
                     ></ProductHome>
                 </div>
             </div>
             <div class="hidden lg:flex">
                 <div class="w-1/3">
                     <img
-                        class="w-72 h-56 object-cover mx-auto"
+                        class="object-cover h-56 mx-auto w-72"
                         :src="require('../assets/shopping.jpg')"
                         alt=""
                     />
                 </div>
                 <div class="w-1/3">
                     <img
-                        class="w-72 h-56 object-cover mx-auto"
+                        class="object-cover h-56 mx-auto w-72"
                         :src="require('../assets/famille.jpg')"
                         alt=""
                     />
                 </div>
                 <div class="w-1/3">
                     <img
-                        class="w-72 h-56 object-cover mx-auto"
+                        class="object-cover h-56 mx-auto w-72"
                         :src="require('../assets/solde.jpg')"
                         alt=""
                     />
@@ -67,15 +68,15 @@
             </div>
             <div class="flex flex-col bg-white">
                 <div
-                    class="px-2 py-2 font-light text-gray-700 uppercase tracking-normal bg-yellow-300"
+                    class="px-2 py-2 font-light tracking-normal text-gray-700 uppercase bg-yellow-300"
                 >
                     <p>Promotion</p>
                 </div>
                 <div
-                    class="grid grid-cols-2 lg:flex lg:flex-nowrap gap-2 lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
+                    class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
                 >
                     <ProductHome
-                        class="p-4 flex-none scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
                         v-for="item in width < 700
                             ? data.tab.slice(0, 4)
                             : data.tab"
@@ -88,7 +89,7 @@
                 class="flex flex-col lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
             >
                 <ProductHome
-                    class="m-4 p-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                    class="p-4 m-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
                     v-for="item in data.tab"
                     :key="item.id"
                     :product="item"
@@ -120,6 +121,27 @@ export default {
         const router = useRouter()
         const { width } = useBreakpoints()
         const { bestSeller } = useBestSeller()
+
+        const availableBestSellers = computed(() => {
+            var tab = []
+
+            bestSeller.value.forEach((params) => {
+                if (
+                    data.tab.find((product) => {
+                        return (
+                            product.productId === params.productId &&
+                            params.defaultPicture !== ''
+                        )
+                    })
+                ) {
+                    tab.push(params)
+                }
+            })
+            return tab
+        })
+        const length = computed(() => {
+            return availableBestSellers.value.length > 0
+        })
         const loading = computed(() => {
             return store.state.navigation.loading
         })
@@ -147,6 +169,8 @@ export default {
             width,
             bestSeller,
             showCategorie,
+            availableBestSellers,
+            length,
         }
     },
 }

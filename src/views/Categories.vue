@@ -158,12 +158,12 @@
                     <div v-else class="">
                         <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
                             <div
-                                @click="detail(product)"
                                 v-for="product in tab"
                                 :key="product.productId"
                                 class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
                             >
                                 <div
+                                    @click="detail(product)"
                                     class="flex flex-col px-2 text-left bg-gray-100 rounded xl:px-2 lg:bg-white"
                                 >
                                     <div class="flex-grow py-2">
@@ -214,15 +214,17 @@
                                         >
                                             {{ currency.$t(product.price) }}
                                         </p>
-                                        <button
-                                            @click="add(product)"
-                                            class="w-full mt-2 mb-2 bg-yellow-500 rounded-sm shadow-sm text-gray-50"
-                                        >
-                                            Add to cart
-                                        </button>
                                     </div>
 
                                     <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
+                                </div>
+                                <div>
+                                    <button
+                                        @click="add(product)"
+                                        class="w-full bg-yellow-500 rounded-sm shadow-sm text-gray-50"
+                                    >
+                                        Add to cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -278,6 +280,7 @@ export default {
             }
         }
         const detail = (product) => {
+            console.log('div')
             router.push({
                 name: 'ProductDetails',
                 query: {
