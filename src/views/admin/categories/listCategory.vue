@@ -285,7 +285,6 @@ export default {
                     oldValue[cat].picture === categories.value[cat].picture &&
                     oldValue[cat].banniere === categories.value[cat].banniere
                 ) {
-                    console.log('No changes')
                     params.editable = false
                     return
                 }
@@ -296,11 +295,9 @@ export default {
                     categories: categories.value,
                     banniere: params.banniere,
                 })
-                console.log('enter pressed')
                 params.editable = false
             } else if (params.editable === true && event.key === 'Escape') {
                 store.dispatch('category/setCategories', oldValue)
-                console.log('escape pressed')
                 params.editable = false
             } else {
                 params.editable = false
@@ -376,7 +373,6 @@ export default {
                 var obj = categories.value.find((params) => {
                     return params.id === catId
                 })
-                console.log(obj)
                 obj[getKeyByValue(obj, item)] = ''
                 store.dispatch('category/updateCategory', {
                     ...obj,

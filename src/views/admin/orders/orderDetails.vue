@@ -2,14 +2,14 @@
     <div class="flex">
         <div><sidebar selected="Orders"></sidebar></div>
         <div class="flex w-full">
-            <div class="width568 w-full h-screen overflow-y-auto">
+            <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loading">Loading...</div>
                 <div v-else>
                     <div v-if="order.error === 'forbiden'">
                         Forbidden access
                     </div>
-                    <div v-else class="bg-gray-200 flex flex-col mx-auto">
-                        <div class="flex space-x-4 p-4">
+                    <div v-else class="flex flex-col mx-auto bg-gray-200">
+                        <div class="flex p-4 space-x-4">
                             <div class="flex flex-col cursor-pointer">
                                 <button
                                     :class="{
@@ -22,7 +22,7 @@
                                     "
                                     v-if="!showDelivered"
                                     @click="toggleDelivered"
-                                    class="flex space-x-1 bg-green-500 text-gray-200 p-2 rounded-md"
+                                    class="flex p-2 space-x-1 text-gray-200 bg-green-500 rounded-md"
                                 >
                                     <span class="material-icons">
                                         local_shipping </span
@@ -39,7 +39,7 @@
                                     <div class="mt-2">
                                         <button
                                             @click="addDelivered"
-                                            class="bg-yellow-500 w-full rounded-md"
+                                            class="w-full bg-yellow-500 rounded-md"
                                         >
                                             Add
                                         </button>
@@ -55,7 +55,7 @@
                                     :disabled="order.paymentStatus === 'Paid'"
                                     v-if="!showPayment"
                                     @click="togglePayment"
-                                    class="flex space-x-1 bg-blue-500 text-gray-200 p-2 rounded-md"
+                                    class="flex p-2 space-x-1 text-gray-200 bg-blue-500 rounded-md"
                                 >
                                     <span class="material-icons">
                                         monetization_on </span
@@ -72,7 +72,7 @@
                                     <div class="mt-2">
                                         <button
                                             @click="addPayment"
-                                            class="bg-yellow-500 w-full rounded-md"
+                                            class="w-full bg-yellow-500 rounded-md"
                                         >
                                             Add
                                         </button>
@@ -80,10 +80,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex text-base font-semibold p-2">
+                        <div class="flex p-2 text-base font-semibold">
                             Order Details
                         </div>
-                        <div class="bg-white p-2 my-2 tracking-wide text-sm">
+                        <div class="p-2 my-2 text-sm tracking-wide bg-white">
                             <p class="font-semibold">
                                 Order N°: {{ order.orderId }}
                             </p>
@@ -98,16 +98,16 @@
                             </p>
                         </div>
                         <div>
-                            <div class="text-gray-800 p-2">
+                            <div class="p-2 text-gray-800">
                                 <p>Articles</p>
                             </div>
                             <div class="space-y-2">
                                 <div
                                     v-for="item in order.items"
                                     :key="item.id"
-                                    class="bg-white p-4 mx-2 rounded-md"
+                                    class="p-4 mx-2 bg-white rounded-md"
                                 >
-                                    <div class="text-sm space-y-2 border-b">
+                                    <div class="space-y-2 text-sm border-b">
                                         <span
                                             class="p-1 text-gray-100"
                                             :class="
@@ -130,11 +130,15 @@
                                         <div>
                                             <img
                                                 class="w-20 h-20 lg:w-40 lg:h-40"
-                                                :src="item.defaultPicture"
+                                                :src="
+                                                    item.defaultPicture === ''
+                                                        ? require('../../../assets/no-image.jpg')
+                                                        : item.defaultPicture
+                                                "
                                                 alt=""
                                             />
                                         </div>
-                                        <div class="px-2 text-sm space-y-2">
+                                        <div class="px-2 space-y-2 text-sm">
                                             <p>{{ item.title }}</p>
                                             <p>Qte: {{ item.qte }}</p>
                                             <p class="font-semibold">
@@ -146,27 +150,27 @@
                             </div>
                         </div>
                         <div>
-                            <div class="text-gray-800 p-2">
+                            <div class="p-2 text-gray-800">
                                 <p>Payment</p>
                             </div>
-                            <div class="bg-white p-4 mx-2 rounded-md">
+                            <div class="p-4 mx-2 bg-white rounded-md">
                                 <div class="space-y-1 border-b">
-                                    <span class="font-semibold text-xs"
+                                    <span class="text-xs font-semibold"
                                         >Payment Method</span
                                     >
                                     <p class="text-xs text-gray-500">
                                         {{ order.paymentMethod }}
                                     </p>
                                 </div>
-                                <div class="space-y-1 py-2 flex flex-col">
-                                    <span class="font-semibold text-xs"
+                                <div class="flex flex-col py-2 space-y-1">
+                                    <span class="text-xs font-semibold"
                                         >Payment Details</span
                                     >
                                     <div class="flex">
                                         <span class="text-xs text-gray-500"
                                             >Total articles :
                                         </span>
-                                        <span class="text-xs ml-2"
+                                        <span class="ml-2 text-xs"
                                             >{{ currency.$t(order.total) }}
                                         </span>
                                     </div>
@@ -174,7 +178,7 @@
                                         <span class="text-xs text-gray-500"
                                             >Delevery :
                                         </span>
-                                        <span class="text-xs ml-2">{{
+                                        <span class="ml-2 text-xs">{{
                                             currency.$t(8)
                                         }}</span>
                                     </div>
@@ -182,7 +186,7 @@
                                         <span class="text-xs text-gray-500"
                                             >Total :
                                         </span>
-                                        <span class="text-xs ml-2">{{
+                                        <span class="ml-2 text-xs">{{
                                             currency.$t(order.total)
                                         }}</span>
                                     </div>
@@ -190,10 +194,10 @@
                             </div>
                         </div>
                         <div>
-                            <div class="text-gray-800 p-2"><p>Delevery</p></div>
-                            <div class="mx-2 p-4 bg-white rounded-md">
+                            <div class="p-2 text-gray-800"><p>Delevery</p></div>
+                            <div class="p-4 mx-2 bg-white rounded-md">
                                 <div class="space-y-1 border-b">
-                                    <span class="font-semibold text-xs"
+                                    <span class="text-xs font-semibold"
                                         >Delevery Method</span
                                     >
                                     <p class="text-xs text-gray-500">

@@ -280,7 +280,6 @@ export default {
             }
         }
         const detail = (product) => {
-            console.log('div')
             router.push({
                 name: 'ProductDetails',
                 query: {
@@ -303,9 +302,7 @@ export default {
         const toggleGrid = (params) => {
             grid.value = !grid.value
         }
-        const showAdd = (params) => {
-            console.log('rrrrr')
-        }
+        const showAdd = (params) => {}
 
         const from = ref(
             computed((params) => {

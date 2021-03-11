@@ -116,7 +116,6 @@ export default {
         })
         const cancel = ref((elm) => {
             show.value = elm
-            console.log(show.value)
         })
         const user = ref(computed(() => store.state.auth.user))
         const cart = ref(computed(() => store.state.cart.cart))

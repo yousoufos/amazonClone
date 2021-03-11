@@ -211,7 +211,6 @@ export default {
         const sortByPriceValue = ref('DESC')
         const products = ref(
             computed(() => {
-                console.log(store.state.product.tab)
                 return store.state.product.tab
             })
         )
@@ -220,7 +219,7 @@ export default {
             var httpsReference = storage.refFromURL(item)
             httpsReference
                 .delete()
-                .then(console.log('pictures removed'))
+                .then()
                 .catch(function (error) {
                     console.log(error)
                 })

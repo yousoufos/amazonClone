@@ -268,7 +268,6 @@ export default {
                         })
 
                         if (resultPwdVerification.value) {
-                            console.log('Mot de passe correct')
                             await store.dispatch(
                                 'auth/updatePassword',
                                 login.newPwd
@@ -277,7 +276,6 @@ export default {
                             login.newPwd = ''
                             login.verifyPwd = ''
                         } else {
-                            console.log('Mot de passe incorrect')
                         }
                     } else {
                         alert('Password very weak')

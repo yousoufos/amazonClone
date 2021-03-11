@@ -9,11 +9,11 @@
                     </div>
                     <div
                         v-else
-                        class="bg-gray-200 flex flex-col lg:w-1/2 lg:mx-auto lg:mt-2"
+                        class="flex flex-col bg-gray-200 lg:w-1/2 lg:mx-auto lg:mt-2"
                     >
                         <div @click="deleting" v-if="from.length > 0">
                             <router-link :to="from[from.length - 1]"
-                                ><span class="material-icons text-4xl">
+                                ><span class="text-4xl material-icons">
                                     keyboard_backspace
                                 </span></router-link
                             >
@@ -23,7 +23,7 @@
                         >
                             Your Order Details
                         </div>
-                        <div class="bg-white p-2 my-2 tracking-wide text-sm">
+                        <div class="p-2 my-2 text-sm tracking-wide bg-white">
                             <p class="font-semibold">
                                 Order N°: {{ order.orderId }}
                             </p>
@@ -41,16 +41,16 @@
                             </p>
                         </div>
                         <div>
-                            <div class="text-gray-800 p-2">
+                            <div class="p-2 text-gray-800">
                                 <p>Your articles</p>
                             </div>
                             <div class="space-y-2">
                                 <div
                                     v-for="item in order.items"
                                     :key="item.id"
-                                    class="bg-white p-4 mx-2 rounded-md"
+                                    class="p-4 mx-2 bg-white rounded-md"
                                 >
-                                    <div class="text-sm space-y-2 border-b">
+                                    <div class="space-y-2 text-sm border-b">
                                         <span
                                             class="p-1 text-gray-100"
                                             :class="
@@ -73,11 +73,15 @@
                                         <div>
                                             <img
                                                 class="w-20 h-20 lg:w-40 lg:h-40"
-                                                :src="item.defaultPicture"
+                                                :src="
+                                                    item.defaultPicture === ''
+                                                        ? require('../assets/no-image.jpg')
+                                                        : item.defaultPicture
+                                                "
                                                 alt=""
                                             />
                                         </div>
-                                        <div class="px-2 text-sm space-y-2">
+                                        <div class="px-2 space-y-2 text-sm">
                                             <p>{{ item.title }}</p>
                                             <p>Qte: {{ item.qte }}</p>
                                             <p class="font-semibold">
@@ -90,11 +94,11 @@
                                             order.deliveryStatus === 'Delivered'
                                         "
                                     >
-                                        <div class="text-gray-800 p-2 border-b">
+                                        <div class="p-2 text-gray-800 border-b">
                                             <p>Review</p>
                                         </div>
                                         <div
-                                            class="mx-2 p-4 bg-white rounded-md"
+                                            class="p-4 mx-2 bg-white rounded-md"
                                         >
                                             <div
                                                 v-if="
@@ -137,7 +141,7 @@
                                                                 n, index
                                                             ) in 5"
                                                             :key="index"
-                                                            class="material-icons text-gray-500 cursor-pointer"
+                                                            class="text-gray-500 cursor-pointer material-icons"
                                                             :class="{
                                                                 'text-yellow-500':
                                                                     index <=
@@ -164,7 +168,7 @@
                                                             v-for="(
                                                                 n, index
                                                             ) in 5"
-                                                            class="material-icons text-sm text-gray-500"
+                                                            class="text-sm text-gray-500 material-icons"
                                                             :class="{
                                                                 'text-yellow-500':
                                                                     index <=
@@ -197,27 +201,27 @@
                             </div>
                         </div>
                         <div>
-                            <div class="text-gray-800 p-2">
+                            <div class="p-2 text-gray-800">
                                 <p>Payment</p>
                             </div>
-                            <div class="bg-white p-4 mx-2 rounded-md">
+                            <div class="p-4 mx-2 bg-white rounded-md">
                                 <div class="space-y-1 border-b">
-                                    <span class="font-semibold text-xs"
+                                    <span class="text-xs font-semibold"
                                         >Payment Method:</span
                                     >
                                     <p class="text-xs text-gray-500">
                                         {{ order.paymentMethod }}
                                     </p>
                                 </div>
-                                <div class="space-y-1 py-2 flex flex-col">
-                                    <span class="font-semibold text-xs"
+                                <div class="flex flex-col py-2 space-y-1">
+                                    <span class="text-xs font-semibold"
                                         >Payment Details:</span
                                     >
                                     <div class="flex">
                                         <span class="text-xs text-gray-500"
                                             >Total articles :
                                         </span>
-                                        <span class="text-xs ml-2">{{
+                                        <span class="ml-2 text-xs">{{
                                             currency.$t(order.total)
                                         }}</span>
                                     </div>
@@ -225,7 +229,7 @@
                                         <span class="text-xs text-gray-500"
                                             >Delevery :
                                         </span>
-                                        <span class="text-xs ml-2">{{
+                                        <span class="ml-2 text-xs">{{
                                             currency.$t(8)
                                         }}</span>
                                     </div>
@@ -233,7 +237,7 @@
                                         <span class="text-xs text-gray-500"
                                             >Total :
                                         </span>
-                                        <span class="text-xs ml-2">{{
+                                        <span class="ml-2 text-xs">{{
                                             currency.$t(order.total)
                                         }}</span>
                                     </div>

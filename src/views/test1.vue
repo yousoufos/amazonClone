@@ -51,7 +51,6 @@ export default {
                 .limit(2)
                 .get()
                 .then((doc) => {
-                    console.log(doc.size)
                     if (doc.size === 0) {
                         nextDisabled.value = true
                         loading.value = false
@@ -71,7 +70,6 @@ export default {
                 .limit(2)
                 .get()
                 .then((doc) => {
-                    console.log(doc.size)
                     tabCat.value = [...doc.docs.map((cat) => cat.data())]
                     lastDoc.value = doc.docs[doc.docs.length - 1]
                 })
@@ -94,7 +92,6 @@ export default {
         const convertDate = ref('')
         const convert = (params) => {
             convertDate.value = moment(date).format('LL')
-            console.log(convertDate.value)
         }
 
         return {
