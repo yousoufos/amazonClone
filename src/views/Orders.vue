@@ -1,123 +1,133 @@
 <template>
-    <div @click="deleting" v-if="from.length > 0">
-        <router-link :to="from[from.length - 1]"
-            ><span class="material-icons text-4xl">
-                keyboard_backspace
-            </span></router-link
-        >
-    </div>
-    <div class="py-4 w-11/12 mx-auto flex flex-col">
-        <Pagination
-            ref="child"
-            :pas="3"
-            type="orders"
-            :data="orders"
-        ></Pagination>
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div
-                class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+    <div>
+        <div @click="deleting" v-if="from.length > 0">
+            <router-link :to="from[from.length - 1]"
+                ><span class="text-4xl material-icons">
+                    keyboard_backspace
+                </span></router-link
             >
+        </div>
+        <div class="flex flex-col w-11/12 py-4 mx-auto">
+            <Pagination
+                ref="child"
+                :pas="20"
+                type="orders"
+                :data="orders"
+            ></Pagination>
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div
-                    class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                    class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                 >
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Date
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Order Number
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Total
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Status Delivery
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Status Payment
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr
-                                @click="detail(item.orderId)"
-                                v-for="item in tab"
-                                :key="item.orderId"
-                                class="cursor-pointer"
-                            >
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ item.date }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ item.orderId }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    {{ currency.$t(item.total) }}
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                >
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
-                                        :class="
-                                            item.deliveryStatus === 'pending'
-                                                ? 'bg-red-200'
-                                                : 'bg-green-200'
-                                        "
+                    <div
+                        class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
+                    >
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th
+                                        @click="sortByDate"
+                                        scope="col"
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
                                     >
-                                        {{
-                                            item.deliveryDate != null
-                                                ? item.deliveryDate
-                                                : item.deliveryStatus
-                                        }}</span
+                                        <span>Date</span
+                                        ><span class="material-icons">
+                                            sort
+                                        </span>
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                     >
-                                </td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                        Order Number
+                                    </th>
+                                    <th
+                                        @click="sortByPrice"
+                                        scope="col"
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
+                                    >
+                                        <span>Total</span
+                                        ><span class="material-icons">
+                                            sort
+                                        </span>
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                    >
+                                        Status Delivery
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                    >
+                                        Status Payment
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr
+                                    @click="detail(item.orderId)"
+                                    v-for="item in tab"
+                                    :key="item.orderId"
+                                    class="cursor-pointer"
                                 >
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
-                                        :class="
-                                            item.paymentStatus === 'pending'
-                                                ? 'bg-red-200'
-                                                : 'bg-green-200'
-                                        "
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                     >
-                                        {{
-                                            item.paymentDate != null
-                                                ? item.paymentDate
-                                                : item.paymentStatus
-                                        }}</span
+                                        {{ item.date }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                     >
-                                </td>
-                            </tr>
-
-                            <!-- More rows... -->
-                        </tbody>
-                    </table>
+                                        {{ item.orderId }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        {{ currency.$t(item.total) }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        <span
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full"
+                                            :class="
+                                                item.deliveryStatus ===
+                                                'pending'
+                                                    ? 'bg-red-200'
+                                                    : 'bg-green-200'
+                                            "
+                                        >
+                                            {{
+                                                item.deliveryDate != null
+                                                    ? item.deliveryDate
+                                                    : item.deliveryStatus
+                                            }}</span
+                                        >
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        <span
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full"
+                                            :class="
+                                                item.paymentStatus === 'pending'
+                                                    ? 'bg-red-200'
+                                                    : 'bg-green-200'
+                                            "
+                                        >
+                                            {{
+                                                item.paymentDate != null
+                                                    ? item.paymentDate
+                                                    : item.paymentStatus
+                                            }}</span
+                                        >
+                                    </td>
+                                </tr>
+                                <!-- More rows... -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,6 +141,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 import Pagination from '../components/Pagination'
+import moment from 'moment'
 export default {
     components: {
         Pagination,
@@ -138,6 +149,8 @@ export default {
     setup(props) {
         const router = useRouter()
         const store = useStore()
+        const sortByPriceValue = ref('DESC')
+        const sortByDateValue = ref('DESC')
         const currency = useCurrency()
         const orders = ref(computed(() => store.state.order.orders))
         const from = ref(
@@ -161,7 +174,72 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
+
+        const sortByPrice = (params) => {
+            sortType.value = 'price'
+            /* if (sortByPriceValue.value === 'DESC') {
+                store.dispatch('order/sortByPrice', sortByPriceValue.value)
+                sortByPriceValue.value = 'ASC'
+                return
+            }
+            if (sortByPriceValue.value === 'ASC') {
+                store.dispatch('order/sortByPrice', sortByPriceValue.value)
+                sortByPriceValue.value = 'DESC'
+                return
+            } */
+        }
+        const sortByDate = (params) => {
+            sortType.value = 'date'
+            /* if (sortByDateValue.value === 'DESC') {
+                store.dispatch('order/sortByDate', sortByDateValue.value)
+                sortByDateValue.value = 'ASC'
+                return
+            }
+            if (sortByDateValue.value === 'ASC') {
+                store.dispatch('order/sortByDate', sortByDateValue.value)
+                sortByDateValue.value = 'DESC'
+                return
+            } */
+        }
+        const sortType = ref('')
         const tab = computed(() => {
+            var obj = store.getters['navigation/getOrdersPagination']
+            if (sortType.value === 'date') {
+                if (sortByDateValue.value === 'DESC') {
+                    sortByDateValue.value = 'ASC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        if (moment(a) > moment(b)) {
+                            return 1
+                        } else return -1
+                    })
+                }
+                if (sortByDateValue.value === 'ASC') {
+                    sortByDateValue.value = 'DESC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        if (moment(a.date) < moment(b.date)) {
+                            return -1
+                        } else return 1
+                    })
+                }
+            }
+            if (sortType.value === 'price') {
+                if (sortByPriceValue.value === 'DESC') {
+                    sortByPriceValue.value = 'ASC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        return b.total - a.total
+                    })
+                }
+                if (sortByPriceValue.value === 'ASC') {
+                    sortByPriceValue.value = 'DESC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        return a.total - b.total
+                    })
+                }
+            }
             return store.getters['navigation/getOrdersPagination']
         })
 
@@ -172,6 +250,8 @@ export default {
             from,
             deleting,
             tab,
+            sortByPrice,
+            sortByDate,
         }
     },
 

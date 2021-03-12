@@ -3,7 +3,7 @@
         <div class="lg:w-8/12">
             <div @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
+                    ><span class="text-4xl material-icons">
                         keyboard_backspace
                     </span></router-link
                 >
@@ -23,14 +23,14 @@
                 :total="total"
             ></product>
         </div>
-        <div class="flex flex-col bg-gray-200 w-4/12 h-40 ml-10">
+        <div class="flex flex-col w-4/12 h-screen ml-10 bg-gray-200 rounded-md">
             <p class="p-10 text-lg font-semibold">
                 Subtotal ({{ count }} items ) :
                 <span class="font-bold">{{ currency.$t(total) }}</span>
             </p>
             <button
                 @click="proceed"
-                class="px-4 font-semibold bg-yellow-500 mx-auto"
+                class="px-4 mx-auto font-semibold bg-yellow-500"
                 :disabled="count === 0"
                 :class="{ 'disabled:opacity-50': count === 0 }"
             >
@@ -41,7 +41,7 @@
     <div class="flex flex-col lg:hidden">
         <div @click="deleting" v-if="from.length > 0">
             <router-link :to="from[from.length - 1]"
-                ><span class="material-icons text-4xl">
+                ><span class="text-4xl material-icons">
                     keyboard_backspace
                 </span></router-link
             >
@@ -52,7 +52,7 @@
         <div class="m-4">
             <div class="">
                 <product
-                    class="bg-gray-100 mb-2 rounded-lg"
+                    class="mb-2 bg-gray-100 rounded-lg"
                     @qteUpdated="update"
                     v-for="item in cart.items"
                     :key="item.productId"
@@ -61,25 +61,25 @@
                 ></product>
             </div>
         </div>
-        <div class="bg-gray-100 h-20">
-            <div class="flex px-4 py-2 font-sans font-medium justify-between">
+        <div class="h-20 bg-gray-100">
+            <div class="flex justify-between px-4 py-2 font-sans font-medium">
                 <span>Total</span
-                ><span class="text-yellow-500 font-bold">{{ total }}</span>
+                ><span class="font-bold text-yellow-500">{{ total }}</span>
             </div>
             <div class="mx-2">
                 <button
                     @click="proceed"
-                    class="bg-yellow-500 rounded-lg w-full h-10 font-bold"
+                    class="w-full h-10 font-bold bg-yellow-500 rounded-lg"
                     :disabled="count === 0"
                     :class="{ 'disabled:opacity-50': count === 0 }"
                 >
                     Proceed to checkout
                 </button>
             </div>
-            <div class="mt-2 mx-2">
+            <div class="mx-2 mt-2">
                 <button
                     @click="back"
-                    class="bg-gray-300 rounded-lg w-full h-10 font-bold"
+                    class="w-full h-10 font-bold bg-gray-300 rounded-lg"
                 >
                     Cancel
                 </button>

@@ -2,7 +2,7 @@
     <div class="flex justify-center">
         <div
             @click="next(index + 1)"
-            class="border p-1 mx-1 mb-4 border-indigo-600 cursor-pointer rounded-full w-8 text-center"
+            class="w-8 p-1 mx-1 mb-4 text-center border border-indigo-600 rounded-full cursor-pointer"
             :class="{
                 'bg-yellow-500': item === start,
             }"
@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 export default {
     props: {
         type: String,
         pas: Number,
-        data: Object,
+        data: Array,
     },
     setup(props) {
         const store = useStore()
@@ -40,6 +40,7 @@ export default {
                     tableau.push(props.data[i])
                 }
             }
+
             switch (props.type) {
                 case 'products':
                     store.commit('navigation/setProductsPagination', tableau)
@@ -63,6 +64,7 @@ export default {
             if (tab.value.length > 0) {
             }
         }
+
         onMounted((params) => {
             switch (props.type) {
                 case 'products':

@@ -249,7 +249,8 @@ export default {
             })
         }
         const sortByStock = (params) => {
-            if (sortByStockValue.value === 'DESC') {
+            sortType.value = 'stock'
+            /* if (sortByStockValue.value === 'DESC') {
                 store.commit('product/sortByStock', 'DESC')
                 sortByStockValue.value = 'ASC'
                 return
@@ -258,10 +259,11 @@ export default {
                 store.commit('product/sortByStock', 'ASC')
                 sortByStockValue.value = 'DESC'
                 return
-            }
+            } */
         }
         const sortByPrice = (params) => {
-            if (sortByPriceValue.value === 'DESC') {
+            sortType.value = 'price'
+            /* if (sortByPriceValue.value === 'DESC') {
                 store.commit('product/sortByPrice', 'DESC')
                 sortByPriceValue.value = 'ASC'
                 return
@@ -270,10 +272,45 @@ export default {
                 store.commit('product/sortByPrice', 'ASC')
                 sortByPriceValue.value = 'DESC'
                 return
-            }
+            } */
         }
-
+        const sortType = ref('')
         const tab = computed(() => {
+            var obj = store.getters['navigation/getProductsPagination']
+            if (sortType.value === 'stock') {
+                if (sortByStockValue.value === 'DESC') {
+                    sortByStockValue.value = 'ASC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        return b.stock - a.stock
+                    })
+                }
+                if (sortByStockValue.value === 'ASC') {
+                    sortByStockValue.value = 'DESC'
+                    sortType.value = ''
+
+                    return obj.sort((a, b) => {
+                        return a.stock - b.stock
+                    })
+                }
+            }
+            if (sortType.value === 'price') {
+                if (sortByPriceValue.value === 'DESC') {
+                    sortByPriceValue.value = 'ASC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        return b.price - a.price
+                    })
+                }
+                if (sortByPriceValue.value === 'ASC') {
+                    sortByPriceValue.value = 'DESC'
+                    sortType.value = ''
+                    return obj.sort((a, b) => {
+                        return a.price - b.price
+                    })
+                }
+            }
+
             return store.getters['navigation/getProductsPagination']
         })
 
