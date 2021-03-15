@@ -19,15 +19,11 @@
                                     Title
                                 </th>
                                 <th
-                                    @click="sortByPrice"
                                     scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
                                 >
                                     <div class="flex items-center space-x-1">
                                         <span>Price</span>
-                                        <span class="material-icons">
-                                            sort
-                                        </span>
                                     </div>
                                 </th>
                                 <th

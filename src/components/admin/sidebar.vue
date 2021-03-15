@@ -1,10 +1,10 @@
 <template>
-    <div class="text-gray-100 bg-gray-700 w-48 border-r h-screen flex flex-col">
-        <div class="flex-grow mt-2 mx-auto">
+    <div class="flex flex-col w-48 h-screen text-gray-100 bg-gray-700 border-r">
+        <div class="flex-grow mx-auto mt-2">
             <ul class="space-y-4">
                 <router-link to="/admin/">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'adminHome' },
                             { 'text-yellow-500': selected === 'adminHome' },
@@ -16,7 +16,7 @@
                 </router-link>
                 <router-link to="/admin/product/listproduct">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'Product' },
                             { 'text-yellow-500': selected === 'Product' },
@@ -28,7 +28,7 @@
                 </router-link>
                 <router-link to="/admin/orders/listorders">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'Orders' },
                             { 'text-yellow-500': selected === 'Orders' },
@@ -40,7 +40,7 @@
                 </router-link>
                 <router-link to="/admin/category/listcategory">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'Categories' },
                             { 'text-yellow-500': selected === 'Categories' },
@@ -52,7 +52,7 @@
                 </router-link>
                 <router-link to="/admin/users/listusers">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'Users' },
                             { 'text-yellow-500': selected === 'Users' },
@@ -62,13 +62,25 @@
                         <p class="px-2">Users</p>
                     </li>
                 </router-link>
+                <router-link to="/admin/promotion/listpromotions">
+                    <li
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
+                        :class="[
+                            { 'bg-gray-100': selected === 'Promotion' },
+                            { 'text-yellow-500': selected === 'Promotion' },
+                        ]"
+                    >
+                        <span class="material-icons"> request_page</span>
+                        <p class="px-2">Promotion</p>
+                    </li>
+                </router-link>
             </ul>
         </div>
         <div class="mx-auto">
             <ul>
                 <router-link to="/admin/settings">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                         :class="[
                             { 'bg-gray-100': selected === 'Settings' },
                             { 'text-yellow-500': selected === 'Settings' },
@@ -80,7 +92,7 @@
                 </router-link>
                 <router-link to="/">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                     >
                         <span class="material-icons"> important_devices</span>
                         <p class="px-2">FrontEnd</p>
@@ -88,7 +100,7 @@
                 </router-link>
                 <router-link to="/logout">
                     <li
-                        class="p-4 text-lg flex items-center hover:bg-gray-100 hover:text-yellow-500 cursor-pointer"
+                        class="flex items-center p-4 text-lg cursor-pointer hover:bg-gray-100 hover:text-yellow-500"
                     >
                         <span class="material-icons"> logout </span>
                         <p class="px-2">LogOut</p>
