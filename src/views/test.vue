@@ -7,7 +7,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import CardTest from '../components/CardTest'
+import CardTest from '../components/admin/promotion/CardProduct'
 import { useStore } from 'vuex'
 export default {
     components: {

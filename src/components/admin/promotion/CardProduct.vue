@@ -1,5 +1,5 @@
 <template>
-    <div class="centerVH">
+    <div class="bg-yellow-100 centerVH">
         <div class="w-full">
             <div class="p-4 rounded-lg shadow-lg">
                 <div>
@@ -34,8 +34,11 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody
+                            class="bg-white divide-y divide-gray-200 cursor-pointer"
+                        >
                             <tr
+                                @click="add(product)"
                                 v-for="product in products"
                                 :key="product.productId"
                             >
@@ -62,7 +65,7 @@
                                         class="w-12 h-12"
                                         :src="
                                             product.defaultPicture === ''
-                                                ? require('../assets/no-image.jpg')
+                                                ? require('../../../assets/no-image.jpg')
                                                 : product.defaultPicture
                                         "
                                         alt=""
@@ -80,15 +83,19 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useCurrency } from '../plugins/currencyPlugin'
+import { useCurrency } from '../../../plugins/currencyPlugin'
 export default {
-    setup() {
+    setup(props, { emit }) {
         const store = useStore()
         const currency = useCurrency()
         const products = store.state.product.tab
+        const add = (params) => {
+            emit('addProduct', params)
+        }
         return {
             products,
             currency,
+            add,
         }
     },
 }
