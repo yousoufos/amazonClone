@@ -1,7 +1,8 @@
 <template>
-    <div class="relative h-screen">
-        <CardTest class=""></CardTest>
-        <div class=""></div>
+    <div class="w-1/2 mx-auto">
+        <div class="aspect-w-16 aspect-h-9">
+            <img src="../assets/informatique.jpg" alt="" />
+        </div>
     </div>
 </template>
 

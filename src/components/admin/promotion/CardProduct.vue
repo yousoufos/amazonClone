@@ -1,8 +1,16 @@
 <template>
-    <div class="bg-yellow-100 centerVH">
+    <div class="w-10/12 bg-yellow-100 centerVH">
         <div class="w-full">
             <div class="p-4 rounded-lg shadow-lg">
-                <div>
+                <div class="flex flex-col">
+                    <div class="flex justify-end w-full">
+                        <span
+                            @click="close"
+                            class="text-red-500 cursor-pointer material-icons"
+                        >
+                            disabled_by_default
+                        </span>
+                    </div>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -92,10 +100,14 @@ export default {
         const add = (params) => {
             emit('addProduct', params)
         }
+        const close = (params) => {
+            emit('closeCard', true)
+        }
         return {
             products,
             currency,
             add,
+            close,
         }
     },
 }

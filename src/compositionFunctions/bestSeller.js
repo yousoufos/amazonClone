@@ -28,12 +28,28 @@ export default function () {
         }
       })
     })
+    result.forEach((params, index) => {
+      items.forEach((p) => {
+        p.forEach((item) => {
+          console.log(item.productId)
+          if (item.productId === params.productId) {
+            if (
+              item.defaultPicture !== '' &&
+                            params.defaultPicture === ''
+            ) {
+              result[index].defaultPicture = item.defaultPicture
+            }
+          }
+        })
+      })
+    })
 
     result
       .sort((a, b) => {
         return b.total - a.total
       })
       .map((items) => items.total)
+
     return result
   })
 

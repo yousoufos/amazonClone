@@ -7,6 +7,7 @@
                 <div v-else class="relative flex flex-col w-11/12 py-4 mx-auto">
                     <CardProducts
                         @addProduct="addProduct"
+                        @closeCard="showCard = !showCard"
                         class="z-20"
                         v-if="showCard === true"
                     ></CardProducts>
@@ -22,31 +23,39 @@
                                 <div class="flex flex-col w-1/2">
                                     <label for="name">Promotion's name</label>
                                     <input
+                                        v-model="form.nom"
                                         class="bg-gray-100 rounded-lg appearance-none"
                                         type="text"
+                                        name="name"
                                     />
                                 </div>
                                 <div class="flex flex-col w-1/2">
-                                    <label for="name">Starting Date</label>
+                                    <label for="datedebut">Starting Date</label>
                                     <input
+                                        v-model="form.dateDebut"
                                         class="bg-gray-100 rounded-lg"
                                         type="date"
+                                        name="datedebut"
                                     />
                                 </div>
                             </div>
                             <div class="flex space-x-4">
                                 <div class="flex flex-col w-1/2">
-                                    <label for="name">Taux</label>
+                                    <label for="taux">Taux %</label>
                                     <input
+                                        v-model="form.taux"
                                         class="bg-gray-100 rounded-lg"
                                         type="text"
+                                        name="taux"
                                     />
                                 </div>
                                 <div class="flex flex-col w-1/2">
-                                    <label for="name">Ending Date</label>
+                                    <label for="datefin">Ending Date</label>
                                     <input
+                                        v-model="form.dateFin"
                                         class="bg-gray-100 rounded-lg"
                                         type="date"
+                                        name="datefin"
                                     />
                                 </div>
                             </div>
@@ -117,18 +126,26 @@
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
-                                                {{ product.price }}
+                                                {{ currency.$t(product.price) }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
-                                                45
+                                                {{
+                                                    currency.$t(
+                                                        product.newPrice
+                                                    )
+                                                }}
                                             </td>
                                             <td
                                                 @click="removeProduct(index)"
                                                 class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
-                                                remove
+                                                <span
+                                                    class="text-red-500 material-icons"
+                                                >
+                                                    delete_forever
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -146,10 +163,11 @@
 import sidebar from '../../../components/admin/sidebar'
 import spin from '../../../components/Spin'
 import CardProducts from '../../../components/admin/promotion/CardProduct'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
+import moment from 'moment'
 export default {
     components: {
         sidebar,
@@ -166,11 +184,42 @@ export default {
         const loading = ref(true)
         const showCard = ref(false)
         const productsList = ref([])
+        const obj = ref([])
+        const form = reactive({
+            nom: '',
+            taux: 1,
+            dateDebut: moment().format('LL'),
+            dateFin: moment().format('LL'),
+        })
         const addProduct = (params) => {
-            productsList.value.push(params)
+            if (
+                typeof productsList.value.find((item) => {
+                    return params.productId === item.productId
+                }) === 'undefined'
+            ) {
+                obj.value.push(params)
+                productsList.value = obj.value.map((params) => {
+                    return {
+                        ...params,
+                        newPrice: params.price * (1 + form.taux / 100),
+                    }
+                })
+            }
         }
+        watch(
+            () => form.taux,
+            (count, prevCount) => {
+                productsList.value = obj.value.map((params) => {
+                    return {
+                        ...params,
+                        newPrice: params.price * (1 + form.taux / 100),
+                    }
+                })
+            }
+        )
+
         const removeProduct = (params) => {
-            productsList.value.slice(params, 1)
+            productsList.value.splice(params, 1)
         }
 
         onMounted(async () => {
@@ -186,6 +235,8 @@ export default {
             productsList,
             currency,
             addProduct,
+            removeProduct,
+            form,
         }
     },
 }
