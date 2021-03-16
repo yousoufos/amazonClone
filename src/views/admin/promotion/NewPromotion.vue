@@ -23,7 +23,7 @@
                                 <div class="flex flex-col w-1/2">
                                     <label for="name">Promotion's name</label>
                                     <input
-                                        v-model="form.nom"
+                                        v-model="form.name"
                                         class="bg-gray-100 rounded-lg appearance-none"
                                         type="text"
                                         name="name"
@@ -32,6 +32,7 @@
                                 <div class="flex flex-col w-1/2">
                                     <label for="datedebut">Starting Date</label>
                                     <input
+                                        @change="dateDisabled = false"
                                         v-model="form.dateDebut"
                                         class="bg-gray-100 rounded-lg"
                                         type="date"
@@ -45,8 +46,10 @@
                                     <input
                                         v-model="form.taux"
                                         class="bg-gray-100 rounded-lg"
-                                        type="text"
+                                        type="number"
                                         name="taux"
+                                        min="0"
+                                        max="100"
                                     />
                                 </div>
                                 <div class="flex flex-col w-1/2">
@@ -56,6 +59,8 @@
                                         class="bg-gray-100 rounded-lg"
                                         type="date"
                                         name="datefin"
+                                        :min="form.dateDebut"
+                                        :disabled="dateDisabled"
                                     />
                                 </div>
                             </div>
@@ -151,6 +156,15 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div>
+                                <button
+                                    @click="submit"
+                                    class="w-full p-2 bg-gray-300 rounded-md"
+                                    type="button"
+                                >
+                                    Submit
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,8 +199,9 @@ export default {
         const showCard = ref(false)
         const productsList = ref([])
         const obj = ref([])
+        const dateDisabled = ref(true)
         const form = reactive({
-            nom: '',
+            name: '',
             taux: 1,
             dateDebut: moment().format('LL'),
             dateFin: moment().format('LL'),
@@ -221,6 +236,24 @@ export default {
         const removeProduct = (params) => {
             productsList.value.splice(params, 1)
         }
+        const submit = (params) => {
+            var obj = {
+                name: form.name,
+                taux: form.taux,
+                dateDebut: form.dateDebut,
+                dateFin: form.dateFin,
+                productsList: productsList.value,
+            }
+            console.log(obj)
+        }
+        const testTaux = (params) => {
+            var regex = new RegExp('^[1-9][0-9]?$|^100$')
+            if (form.taux.match(regex)) {
+                console.log('ok')
+            } else {
+                return false
+            }
+        }
 
         onMounted(async () => {
             //await store.dispatch('product/getProducts')
@@ -237,6 +270,9 @@ export default {
             addProduct,
             removeProduct,
             form,
+            submit,
+            dateDisabled,
+            testTaux,
         }
     },
 }

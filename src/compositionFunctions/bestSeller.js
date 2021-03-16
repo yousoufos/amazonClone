@@ -2,56 +2,55 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default function () {
-  const store = useStore()
-  const orders = computed(() => {
-    return store.state.order.orders
-  })
-  const findElem = (array, elem) => {
-    return array.find((params) => {
-      return params.productId === elem.productId
+    const store = useStore()
+    const orders = computed(() => {
+        return store.state.order.orders
     })
-  }
-  const bestSeller = computed(() => {
-    const result = []
-    // c'est ici que ca se passe si on veut limiter la recherche à deux dates
-    const items = orders.value.map((order) => {
-      return order.items
-    })
-
-    items.forEach((element) => {
-      element.forEach((params) => {
-        if (typeof findElem(result, params) !== 'undefined') {
-          findElem(result, params).qte += params.qte
-          findElem(result, params).total += params.price * params.qte
-        } else {
-          result.push({ ...params, total: params.price })
-        }
-      })
-    })
-    result.forEach((params, index) => {
-      items.forEach((p) => {
-        p.forEach((item) => {
-          console.log(item.productId)
-          if (item.productId === params.productId) {
-            if (
-              item.defaultPicture !== '' &&
-                            params.defaultPicture === ''
-            ) {
-              result[index].defaultPicture = item.defaultPicture
-            }
-          }
+    const findElem = (array, elem) => {
+        return array.find((params) => {
+            return params.productId === elem.productId
         })
-      })
+    }
+    const bestSeller = computed(() => {
+        const result = []
+        // c'est ici que ca se passe si on veut limiter la recherche à deux dates
+        const items = orders.value.map((order) => {
+            return order.items
+        })
+
+        items.forEach((element) => {
+            element.forEach((params) => {
+                if (typeof findElem(result, params) !== 'undefined') {
+                    findElem(result, params).qte += params.qte
+                    findElem(result, params).total += params.price * params.qte
+                } else {
+                    result.push({ ...params, total: params.price })
+                }
+            })
+        })
+        result.forEach((params, index) => {
+            items.forEach((p) => {
+                p.forEach((item) => {
+                    if (item.productId === params.productId) {
+                        if (
+                            item.defaultPicture !== '' &&
+                            params.defaultPicture === ''
+                        ) {
+                            result[index].defaultPicture = item.defaultPicture
+                        }
+                    }
+                })
+            })
+        })
+
+        result
+            .sort((a, b) => {
+                return b.total - a.total
+            })
+            .map((items) => items.total)
+
+        return result
     })
 
-    result
-      .sort((a, b) => {
-        return b.total - a.total
-      })
-      .map((items) => items.total)
-
-    return result
-  })
-
-  return { bestSeller }
+    return { bestSeller }
 }
