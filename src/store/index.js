@@ -9,10 +9,11 @@ import category from './category'
 import notification from './notification'
 import review from './review'
 import navigation from './navigation'
+import promotion from './promotion'
 
 export default createStore({
-  plugins: [
-    /* createPersistedState({
+    plugins: [
+        /* createPersistedState({
       paths: ['navigation.test'],
       storage: {
         getItem: (key) => Cookies.get(key),
@@ -21,18 +22,19 @@ export default createStore({
         removeItem: (key) => Cookies.remove(key)
       }
     }) */
-  ],
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {
-    product,
-    auth,
-    cart,
-    order,
-    review,
-    notification,
-    category,
-    navigation
-  }
+    ],
+    state: {},
+    mutations: {},
+    actions: {},
+    modules: {
+        product,
+        auth,
+        cart,
+        order,
+        review,
+        notification,
+        category,
+        navigation,
+        promotion,
+    },
 })

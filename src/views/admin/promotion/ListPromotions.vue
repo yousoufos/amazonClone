@@ -15,6 +15,82 @@
                             <span>Add Promotion</span>
                         </div>
                     </router-link>
+                    <div>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <th
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                >
+                                    Name
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                >
+                                    Starting Date
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                >
+                                    Ending Date
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                >
+                                    Taux
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                >
+                                    Actions
+                                </th>
+                            </thead>
+                            <tbody
+                                class="bg-white divide-y divide-gray-200 cursor-pointer"
+                            >
+                                <tr
+                                    v-for="(item, index) in promotions"
+                                    :key="index"
+                                >
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        {{ item.name }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        {{ item.dateDebut }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        {{ item.dateFin }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        {{ item.taux }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
+                                    >
+                                        <span
+                                            @click="remove(item)"
+                                            class="text-red-500 cursor-pointer material-icons"
+                                        >
+                                            delete_forever
+                                        </span>
+                                        <span
+                                            @click="edit(product)"
+                                            class="cursor-pointer material-icons"
+                                        >
+                                            edit
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,8 +119,16 @@ export default {
         const selected = ref('Promotion')
         const loading = ref(true)
 
+        const promotions = computed(() => {
+            return store.state.promotion.tab
+        })
+
+        const remove = (params) => {
+            store.dispatch('promotion/deletePromotion', params)
+        }
+
         onMounted(async () => {
-            //await store.dispatch('product/getProducts')
+            await store.dispatch('promotion/getPromotions')
             loading.value = false
         })
 
@@ -52,8 +136,9 @@ export default {
             toggle,
             selected,
             loading,
-
+            promotions,
             currency,
+            remove,
         }
     },
 }

@@ -159,7 +159,11 @@
                             <div>
                                 <button
                                     @click="submit"
-                                    class="w-full p-2 bg-gray-300 rounded-md"
+                                    class="w-full p-2 bg-yellow-500 rounded-md"
+                                    :disabled="productsListLength"
+                                    :class="{
+                                        'disabled:opacity-50': productsListLength,
+                                    }"
                                     type="button"
                                 >
                                     Submit
@@ -200,6 +204,9 @@ export default {
         const productsList = ref([])
         const obj = ref([])
         const dateDisabled = ref(true)
+        const productsListLength = computed(() => {
+            return productsList.value.length === 0 || form.name === ''
+        })
         const form = reactive({
             name: '',
             taux: 1,
@@ -240,11 +247,12 @@ export default {
             var obj = {
                 name: form.name,
                 taux: form.taux,
-                dateDebut: form.dateDebut,
-                dateFin: form.dateFin,
+                dateDebut: moment(form.dateDebut).format('LL'),
+                dateFin: moment(form.dateFin).format('LL'),
                 productsList: productsList.value,
             }
-            console.log(obj)
+            store.dispatch('promotion/addPromotion', obj)
+            router.push({ name: 'ListPromotion' })
         }
         const testTaux = (params) => {
             var regex = new RegExp('^[1-9][0-9]?$|^100$')
@@ -273,6 +281,7 @@ export default {
             submit,
             dateDisabled,
             testTaux,
+            productsListLength,
         }
     },
 }
