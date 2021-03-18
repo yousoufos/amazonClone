@@ -27,7 +27,9 @@ import userDetails from '../views/admin/users/userDetails.vue'
 import Settings from '../views/admin/settings/Settings.vue'
 import newPromotion from '../views/admin/promotion/NewPromotion.vue'
 import listPromotion from '../views/admin/promotion/ListPromotions.vue'
+import EditPromotion from '../views/admin/promotion/EditPromotion.vue'
 import store from '@/store'
+
 // import isAuth from '../middleware/Auth'
 
 function isAuth (to, from, next) {
@@ -209,6 +211,12 @@ const routes = [
     path: '/admin/promotion/listpromotions',
     name: 'ListPromotion',
     component: listPromotion,
+    beforeEnter: [isAuth, isAdmin]
+  },
+  {
+    path: '/admin/promotion/editpromotion',
+    name: 'EditPromotion',
+    component: EditPromotion,
     beforeEnter: [isAuth, isAdmin]
   },
   // errors

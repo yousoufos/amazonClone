@@ -16,7 +16,6 @@
                         :class="{ 'opacity-20': showCard === true }"
                         class="z-0"
                     >
-                        {{ form.dateFin }}
                         <div
                             class="flex flex-col px-8 pt-6 pb-8 my-2 mb-4 space-y-10 bg-white rounded shadow-md"
                         >
@@ -184,7 +183,7 @@ import spin from '../../../components/Spin'
 import CardProducts from '../../../components/admin/promotion/CardProduct'
 import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 import moment from 'moment'
 export default {
@@ -196,6 +195,7 @@ export default {
     },
     setup() {
         const store = useStore()
+        const route = useRoute()
         const router = useRouter()
         const currency = useCurrency()
         const toggle = ref(true)
@@ -204,18 +204,22 @@ export default {
         const showCard = ref(false)
         const productsList = ref([])
         const obj = ref([])
-        const dateDisabled = ref(false)
+        const dateDisabled = ref(true)
         const productsListLength = computed(() => {
             return productsList.value.length === 0 || form.name === ''
         })
-        const minDate = computed(() => {
-            return moment(form.dateDebut).add(1, 'day').format('YYYY-MM-DD')
-        })
         const form = reactive({
             name: '',
-            taux: 1,
-            dateDebut: moment().format('YYYY-MM-DD'),
-            dateFin: moment().add(1, 'day').format('YYYY-MM-DD'),
+            taux: 0,
+            dateDebut: '',
+            dateFin: '',
+        })
+        const promotion = computed(() => {
+            return store.state.promotion.promotion
+        })
+        const minDate = computed(() => {
+            console.log(moment(form.dateDebut).add(1, 'day').format('LL'))
+            return moment(form.dateDebut).add(1, 'day').format('LL')
         })
         const addProduct = (params) => {
             if (
@@ -235,19 +239,9 @@ export default {
         watch(
             () => form.taux,
             (count, prevCount) => {
-                productsList.value = obj.value.map((params) => {
-                    return {
-                        ...params,
-                        newPrice: params.price * (1 + form.taux / 100),
-                    }
+                productsList.value.forEach((params) => {
+                    params.newPrice = params.price * (1 + form.taux / 100)
                 })
-            }
-        )
-
-        watch(
-            () => form.dateDebut,
-            (count, prevCount) => {
-                form.dateFin = count
             }
         )
 
@@ -262,7 +256,7 @@ export default {
                 dateFin: moment(form.dateFin).format('LL'),
                 productsList: productsList.value,
             }
-            store.dispatch('promotion/addPromotion', obj)
+            store.dispatch('promotion/updatePromotion', obj)
             router.push({ name: 'ListPromotion' })
         }
         const testTaux = (params) => {
@@ -275,7 +269,20 @@ export default {
         }
 
         onMounted(async () => {
-            //await store.dispatch('product/getProducts')
+            //FIXME: change to id
+            await store.dispatch('promotion/getPromotionById', route.query.name)
+
+            productsList.value = promotion.value.productsList
+
+            form.name = promotion.value.name
+            ;(form.dateDebut = moment(promotion.value.dateDebut).format(
+                'YYYY-MM-DD'
+            )),
+                (form.dateFin = moment(promotion.value.dateFin).format(
+                    'YYYY-MM-DD'
+                )),
+                (form.taux = promotion.value.taux)
+
             loading.value = false
         })
 
@@ -293,6 +300,7 @@ export default {
             dateDisabled,
             testTaux,
             productsListLength,
+            promotion,
             minDate,
         }
     },

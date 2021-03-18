@@ -81,7 +81,7 @@
                                             delete_forever
                                         </span>
                                         <span
-                                            @click="edit(product)"
+                                            @click="edit(item)"
                                             class="cursor-pointer material-icons"
                                         >
                                             edit
@@ -126,6 +126,9 @@ export default {
         const remove = (params) => {
             store.dispatch('promotion/deletePromotion', params)
         }
+        const edit = (params) => {
+            router.push({ name: 'EditPromotion', query: { name: params.name } })
+        }
 
         onMounted(async () => {
             await store.dispatch('promotion/getPromotions')
@@ -139,6 +142,7 @@ export default {
             promotions,
             currency,
             remove,
+            edit,
         }
     },
 }
