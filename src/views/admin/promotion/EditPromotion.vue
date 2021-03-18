@@ -204,7 +204,7 @@ export default {
         const showCard = ref(false)
         const productsList = ref([])
         const obj = ref([])
-        const dateDisabled = ref(true)
+        const dateDisabled = ref(false)
         const productsListLength = computed(() => {
             return productsList.value.length === 0 || form.name === ''
         })
@@ -218,8 +218,7 @@ export default {
             return store.state.promotion.promotion
         })
         const minDate = computed(() => {
-            console.log(moment(form.dateDebut).add(1, 'day').format('LL'))
-            return moment(form.dateDebut).add(1, 'day').format('LL')
+            return moment(form.dateDebut).add(1, 'day').format('YYYY-MM-DD')
         })
         const addProduct = (params) => {
             if (
@@ -244,6 +243,12 @@ export default {
                 })
             }
         )
+        watch(
+            () => form.dateDebut,
+            (count, prevCount) => {
+                form.dateFin = moment(count).add(1, 'day').format('YYYY-MM-DD')
+            }
+        )
 
         const removeProduct = (params) => {
             productsList.value.splice(params, 1)
@@ -255,6 +260,7 @@ export default {
                 dateDebut: moment(form.dateDebut).format('LL'),
                 dateFin: moment(form.dateFin).format('LL'),
                 productsList: productsList.value,
+                promotionId: promotion.value.promotionId,
             }
             store.dispatch('promotion/updatePromotion', obj)
             router.push({ name: 'ListPromotion' })
@@ -269,8 +275,10 @@ export default {
         }
 
         onMounted(async () => {
-            //FIXME: change to id
-            await store.dispatch('promotion/getPromotionById', route.query.name)
+            await store.dispatch(
+                'promotion/getPromotionById',
+                route.query.promotionId
+            )
 
             productsList.value = promotion.value.productsList
 

@@ -124,10 +124,15 @@ export default {
         })
 
         const remove = (params) => {
-            store.dispatch('promotion/deletePromotion', params)
+            if (confirm('Do you really want to remove this promotion ?')) {
+                store.dispatch('promotion/deletePromotion', params)
+            }
         }
         const edit = (params) => {
-            router.push({ name: 'EditPromotion', query: { name: params.name } })
+            router.push({
+                name: 'EditPromotion',
+                query: { promotionId: params.promotionId },
+            })
         }
 
         onMounted(async () => {

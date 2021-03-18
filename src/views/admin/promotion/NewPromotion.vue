@@ -16,7 +16,6 @@
                         :class="{ 'opacity-20': showCard === true }"
                         class="z-0"
                     >
-                        {{ form.dateFin }}
                         <div
                             class="flex flex-col px-8 pt-6 pb-8 my-2 mb-4 space-y-10 bg-white rounded shadow-md"
                         >
@@ -247,7 +246,7 @@ export default {
         watch(
             () => form.dateDebut,
             (count, prevCount) => {
-                form.dateFin = count
+                form.dateFin = moment(count).add(1, 'day').format('YYYY-MM-DD')
             }
         )
 
