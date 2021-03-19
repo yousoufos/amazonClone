@@ -98,14 +98,18 @@ export default {
         const currency = useCurrency()
         const products = store.state.product.tab
         const checkProductInPromotion = computed(() => {
-            return store.state.checkProductInPromotion
+            return store.getters['promotion/getCheckProductInPromotion']
         })
-        const add = async (params) => {
-            await store.dispatch('promotion/checkProductInPromotion', params)
-            if (!checkProductInPromotion.value) {
+        const add = (params) => {
+            store.dispatch('promotion/checkProductInPromotion', params)
+
+            if (checkProductInPromotion.value === null) {
                 emit('addProduct', params)
             } else {
-                alert('Product already in promotion')
+                alert(
+                    'Product already in promotion ' +
+                        checkProductInPromotion.value.name
+                )
             }
         }
         const close = (params) => {

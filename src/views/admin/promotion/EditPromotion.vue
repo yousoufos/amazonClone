@@ -239,7 +239,7 @@ export default {
             () => form.taux,
             (count, prevCount) => {
                 productsList.value.forEach((params) => {
-                    params.newPrice = params.price * (1 + form.taux / 100)
+                    params.newPrice = params.price * (1 - form.taux / 100)
                 })
             }
         )

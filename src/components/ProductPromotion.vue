@@ -23,7 +23,7 @@
             >
                 {{ currency.$t(product.price) }}
             </p>
-            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
+            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg">
                 {{ currency.$t(product.newPrice) }}
             </p>
         </div>

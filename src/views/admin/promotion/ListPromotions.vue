@@ -138,7 +138,7 @@ export default {
         }
 
         onMounted(async () => {
-            await store.dispatch('promotion/getPromotions')
+            //await store.dispatch('promotion/getPromotions')
             loading.value = false
         })
 

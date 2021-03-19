@@ -44,7 +44,6 @@ const getPromotionById = async function (payload) {
 
 const deletePromotion = async function (payload) {
     try {
-        console.log(payload)
         await db.collection('promotions').doc(payload).delete()
     } catch (error) {
         console.log(error)
