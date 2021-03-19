@@ -36,7 +36,7 @@
                                 <th
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                 >
-                                    Taux
+                                    Taux %
                                 </th>
                                 <th
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
@@ -126,6 +126,8 @@ export default {
         const remove = (params) => {
             if (confirm('Do you really want to remove this promotion ?')) {
                 store.dispatch('promotion/deletePromotion', params)
+            } else {
+                return
             }
         }
         const edit = (params) => {

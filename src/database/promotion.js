@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 
 const createPromotion = async function (payload) {
     try {
-        var ref = db.collection('promotions').doc()
+        const ref = db.collection('promotions').doc()
         await ref.set(payload)
         return { ...payload, promotionId: ref.id }
     } catch (error) {
@@ -13,8 +13,8 @@ const createPromotion = async function (payload) {
 
 const getPromotions = async function () {
     try {
-        var result = await db.collection('promotions').get()
-        var tab = []
+        const result = await db.collection('promotions').get()
+        const tab = []
         result.forEach((doc) => {
             tab.push({
                 promotionId: doc.id,
@@ -32,7 +32,7 @@ const getPromotions = async function () {
 }
 const getPromotionById = async function (payload) {
     try {
-        var result = await db.collection('promotions').doc(payload).get()
+        const result = await db.collection('promotions').doc(payload).get()
 
         if (result.exists) {
             return { ...result.data(), promotionId: result.id }
@@ -44,7 +44,8 @@ const getPromotionById = async function (payload) {
 
 const deletePromotion = async function (payload) {
     try {
-        await db.collection('promotions').doc(payload.promotionId).delete()
+        console.log(payload)
+        await db.collection('promotions').doc(payload).delete()
     } catch (error) {
         console.log(error)
     }

@@ -97,8 +97,16 @@ export default {
         const store = useStore()
         const currency = useCurrency()
         const products = store.state.product.tab
-        const add = (params) => {
-            emit('addProduct', params)
+        const checkProductInPromotion = computed(() => {
+            return store.state.checkProductInPromotion
+        })
+        const add = async (params) => {
+            await store.dispatch('promotion/checkProductInPromotion', params)
+            if (!checkProductInPromotion.value) {
+                emit('addProduct', params)
+            } else {
+                alert('Product already in promotion')
+            }
         }
         const close = (params) => {
             emit('closeCard', true)

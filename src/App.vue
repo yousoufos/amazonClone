@@ -39,6 +39,7 @@ export default {
             store.commit('navigation/setLoading', true)
             await store.dispatch('product/getProducts')
             await store.dispatch('order/getOrders')
+            await store.dispatch('promotion/getPromotions')
             if (store.getters['auth/user']) {
                 await store.dispatch(
                     'cart/getUserCart',

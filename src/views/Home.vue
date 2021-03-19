@@ -75,14 +75,20 @@
                 <div
                     class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
                 >
-                    <ProductHome
-                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
-                        v-for="item in width < 700
-                            ? data.tab.slice(0, 4)
-                            : data.tab"
-                        :product="item"
-                        :key="item.id"
-                    ></ProductHome>
+                    <div
+                        class="flex"
+                        v-for="promotion in promotions"
+                        :key="promotion.proptionId"
+                    >
+                        <ProductPromotion
+                            class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                            v-for="product in width < 700
+                                ? promotion.prodcutsList.slice(0, 4)
+                                : promotion.productsList"
+                            :product="product"
+                            :key="product.productId"
+                        ></ProductPromotion>
+                    </div>
                 </div>
             </div>
             <!-- <div
@@ -102,6 +108,7 @@
 import HomeCategories from '../components/HomeCategories'
 import spin from '../components/Spin'
 import ProductHome from '../components/ProductHome'
+import ProductPromotion from '../components/ProductPromotion'
 import notif from '../components/notif'
 import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -115,12 +122,16 @@ export default {
         notif,
         spin,
         HomeCategories,
+        ProductPromotion,
     },
     setup() {
         const store = useStore()
         const router = useRouter()
         const { width } = useBreakpoints()
         const { bestSeller } = useBestSeller()
+        const promotions = computed(() => {
+            return store.state.promotion.tab
+        })
 
         const availableBestSellers = computed(() => {
             var tab = []
@@ -171,6 +182,7 @@ export default {
             showCategorie,
             availableBestSellers,
             length,
+            promotions,
         }
     },
 }
