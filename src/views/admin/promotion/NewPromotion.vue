@@ -226,7 +226,7 @@ export default {
                 productsList.value = obj.value.map((params) => {
                     return {
                         ...params,
-                        newPrice: params.price * (1 + form.taux / 100),
+                        newPrice: params.price * (1 - form.taux / 100),
                     }
                 })
             }

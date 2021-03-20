@@ -10,10 +10,12 @@ import {
   searchProduct,
   updateProductStock,
   updateProductRating,
-  getCategorieProduct
+  getCategorieProduct,
+  updateProductPromotion
 } from '../database/product'
 import { updateOrderItems } from '../database/order'
 import store from '@/store'
+import { db } from '../firebase'
 // initial state
 const state = () => ({
   product: null,
@@ -197,6 +199,10 @@ const actions = {
   updateProductRating: async function ({ commit }, payload) {
     await updateProductRating(payload)
     commit('setProductRating', payload)
+  },
+  updateProductPromotion: async function ({ commit }, payload) {
+    await updateProductPromotion(payload)
+    commit('setProductPromotion', payload)
   }
 }
 
@@ -210,6 +216,13 @@ const mutations = {
       state.tab.find((product) => {
         return product.productId === payload.productId
       }).reviewNumber++
+    }
+  },
+  setProductPromotion: function (state, payload) {
+    if (state.tab !== null) {
+      state.tab.find((product) => {
+        return product.productId === payload.productId
+      }).promotion = payload.promotion
     }
   },
   setProductStock: function (state, payload) {

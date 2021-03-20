@@ -181,11 +181,20 @@
 import sidebar from '../../../components/admin/sidebar'
 import spin from '../../../components/Spin'
 import CardProducts from '../../../components/admin/promotion/CardProduct'
-import { ref, computed, onMounted, reactive, watch } from 'vue'
+import {
+    ref,
+    computed,
+    onMounted,
+    onBeforeMount,
+    onBeforeUnmount,
+    reactive,
+    watch,
+} from 'vue'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 import moment from 'moment'
+import { productsLength } from '../../../mixin'
 export default {
     components: {
         sidebar,
@@ -226,12 +235,9 @@ export default {
                     return params.productId === item.productId
                 }) === 'undefined'
             ) {
-                obj.value.push(params)
-                productsList.value = obj.value.map((params) => {
-                    return {
-                        ...params,
-                        newPrice: params.price * (1 + form.taux / 100),
-                    }
+                productsList.value.push({
+                    ...params,
+                    newPrice: params.price * (1 - form.taux / 100),
                 })
             }
         }
@@ -251,6 +257,10 @@ export default {
         )
 
         const removeProduct = (params) => {
+            store.dispatch('product/updateProductPromotion', {
+                productId: productsList.value[params].productId,
+                promotion: null,
+            })
             productsList.value.splice(params, 1)
         }
         const submit = (params) => {
@@ -293,6 +303,29 @@ export default {
 
             loading.value = false
         })
+        const preventNav = (event) => {
+            if (true) {
+                store.dispatch('promotion/deletePromotion', promotion.value)
+
+                event.preventDefault()
+                event.returnValue = 'Hello'
+            }
+        }
+        onBeforeMount(() => {
+            console.log('beforemount')
+            window.addEventListener('beforeunload', preventNav)
+        })
+        onBeforeUnmount((params) => {
+            console.log('destroy')
+            window.removeEventListener('beforeunload', preventNav)
+        })
+        /*  onBeforeRouteLeave((to, from) => {
+            const answer = window.confirm(
+                'Do you really want to leave? you have unsaved changes!'
+            )
+            // cancel the navigation and stay on the same page
+            if (!answer) return false
+        }) */
 
         return {
             toggle,

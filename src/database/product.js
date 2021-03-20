@@ -132,6 +132,15 @@ const updateProductStock = async function (payload) {
     console.log(error)
   }
 }
+const updateProductPromotion = async function (payload) {
+  try {
+    await db.collection('product').doc(payload.productId).update({
+      promotion: payload.promotion
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 const updateProductRating = async function (payload) {
   try {
     await db
@@ -193,5 +202,6 @@ export {
   searchProduct,
   updateProductStock,
   updateProductRating,
-  getCategorieProduct
+  getCategorieProduct,
+  updateProductPromotion
 }
