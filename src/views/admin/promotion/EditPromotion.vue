@@ -212,6 +212,7 @@ export default {
         const loading = ref(true)
         const showCard = ref(false)
         const productsList = ref([])
+        const buffer = ref([])
         const obj = ref([])
         const dateDisabled = ref(false)
         const productsListLength = computed(() => {
@@ -257,10 +258,7 @@ export default {
         )
 
         const removeProduct = (params) => {
-            store.dispatch('product/updateProductPromotion', {
-                productId: productsList.value[params].productId,
-                promotion: null,
-            })
+            buffer.value.push(productsList.value[params])
             productsList.value.splice(params, 1)
         }
         const submit = (params) => {
@@ -272,6 +270,12 @@ export default {
                 productsList: productsList.value,
                 promotionId: promotion.value.promotionId,
             }
+            buffer.value.forEach((params) => {
+                store.dispatch('product/updateProductPromotion', {
+                    productId: params.productId,
+                    promotion: null,
+                })
+            })
             store.dispatch('promotion/updatePromotion', obj)
             router.push({ name: 'ListPromotion' })
         }
@@ -303,22 +307,22 @@ export default {
 
             loading.value = false
         })
-        const preventNav = (event) => {
+        /* const preventNav = (event) => {
             if (true) {
                 store.dispatch('promotion/deletePromotion', promotion.value)
 
                 event.preventDefault()
                 event.returnValue = 'Hello'
             }
-        }
-        onBeforeMount(() => {
+        } */
+        /* onBeforeMount(() => {
             console.log('beforemount')
             window.addEventListener('beforeunload', preventNav)
         })
         onBeforeUnmount((params) => {
             console.log('destroy')
             window.removeEventListener('beforeunload', preventNav)
-        })
+        }) */
         /*  onBeforeRouteLeave((to, from) => {
             const answer = window.confirm(
                 'Do you really want to leave? you have unsaved changes!'
