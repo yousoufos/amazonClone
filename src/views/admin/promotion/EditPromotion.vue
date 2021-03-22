@@ -117,6 +117,9 @@
                                                 product, index
                                             ) in productsList"
                                             :key="product.productId"
+                                            :class="{
+                                                'bg-red-400': product.exist,
+                                            }"
                                         >
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
@@ -224,6 +227,9 @@ export default {
             dateDebut: '',
             dateFin: '',
         })
+        const checkProductInPromotion = computed(() => {
+            return store.getters['promotion/getCheckProductInPromotion']
+        })
         const promotion = computed(() => {
             return store.state.promotion.promotion
         })
@@ -270,14 +276,27 @@ export default {
                 productsList: productsList.value,
                 promotionId: promotion.value.promotionId,
             }
-            buffer.value.forEach((params) => {
-                store.dispatch('product/updateProductPromotion', {
-                    productId: params.productId,
-                    promotion: null,
-                })
+            var t = []
+            var i = 0
+            productsList.value.forEach((params, index) => {
+                store.dispatch('promotion/checkProductInPromotion', params)
+                if (checkProductInPromotion.value !== null) {
+                    productsList.value[index].exist = true
+                    i++
+                }
             })
-            store.dispatch('promotion/updatePromotion', obj)
-            router.push({ name: 'ListPromotion' })
+            if (i === 0) {
+                buffer.value.forEach((params) => {
+                    store.dispatch('product/updateProductPromotion', {
+                        productId: params.productId,
+                        promotion: null,
+                    })
+                })
+                store.dispatch('promotion/updatePromotion', obj)
+                router.push({ name: 'ListPromotion' })
+            } else {
+                alert(`Des produis existent deja dans d'autres promotions`)
+            }
         }
         const testTaux = (params) => {
             var regex = new RegExp('^[1-9][0-9]?$|^100$')

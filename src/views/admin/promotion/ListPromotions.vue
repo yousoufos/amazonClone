@@ -149,7 +149,7 @@ export default {
             })
         }
         const checkDate = (params) => {
-            return moment().isBefore(params)
+            return moment().isSameOrBefore(params)
         }
 
         onMounted(async () => {

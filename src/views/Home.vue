@@ -130,7 +130,7 @@ export default {
         const { width } = useBreakpoints()
         const { bestSeller } = useBestSeller()
         const promotions = computed(() => {
-            return store.state.promotion.tab
+            return store.getters['promotion/getAlivePromotions']
         })
 
         const availableBestSellers = computed(() => {

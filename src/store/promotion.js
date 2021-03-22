@@ -18,6 +18,15 @@ const getters = {
     getCheckProductInPromotion(state) {
         return state.checkProductInPromotion
     },
+    getAlivePromotions(state) {
+        const tab = []
+        state.tab.forEach((promotion) => {
+            if (moment().isSameOrBefore(promotion.dateFin)) {
+                tab.push(promotion)
+            }
+        })
+        return tab
+    },
 }
 
 // actions
@@ -39,8 +48,8 @@ const actions = {
         const result = await getPromotions()
         const tab = []
         result.forEach((params) => {
-            if (moment().isBefore(params.dateFin)) {
-                tab.push(params)
+            if (moment().isSameOrBefore(params.dateFin)) {
+                //tab.push(params)
             } else {
                 params.productsList.forEach((product) => {
                     store.dispatch('product/updateProductPromotion', {
@@ -50,7 +59,7 @@ const actions = {
                 })
             }
         })
-        commit('setPromotions', tab)
+        commit('setPromotions', result)
     },
     getPromotionById: async function ({ commit }, payload) {
         const result = await getPromotionById(payload)
@@ -84,7 +93,11 @@ const actions = {
         commit('setCheckProductInPromotion', null)
         state.tab.forEach((promotion) => {
             promotion.productsList.forEach((product) => {
-                if (product.productId === payload.productId && i === 0) {
+                if (
+                    product.productId === payload.productId &&
+                    i === 0 &&
+                    moment().isSameOrBefore(promotion.dateFin)
+                ) {
                     commit('setCheckProductInPromotion', promotion)
                     i++
                 }
@@ -94,7 +107,7 @@ const actions = {
     verifyDateValidity: async function ({ commit, state }, payload) {
         state.tab.forEach((promotion) => {
             promotion.productsList.forEach((product) => {
-                if (!moment().isBefore(promotion.dateFin)) {
+                if (!moment().isSameOrBefore(promotion.dateFin)) {
                     store.dispatch('product/updateProductPromotion', {
                         productId: product.productId,
                         promotion: null,
