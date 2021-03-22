@@ -136,12 +136,12 @@ export default {
         const availableBestSellers = computed(() => {
             var tab = []
 
-            bestSeller.value.forEach((params) => {
+            data.tab.forEach((params) => {
                 if (
-                    data.tab.find((product) => {
+                    bestSeller.value.find((product) => {
                         return (
                             product.productId === params.productId &&
-                            params.defaultPicture !== ''
+                            product.defaultPicture !== ''
                         )
                     })
                 ) {

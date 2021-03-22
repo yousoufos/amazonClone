@@ -64,7 +64,18 @@
                                     <td
                                         class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                     >
-                                        {{ item.dateFin }}
+                                        <span
+                                            :class="{
+                                                'bg-red-400 p-2 rounded-md text-gray-100': !checkDate(
+                                                    item.dateFin
+                                                ),
+                                                'bg-green-400 p-2 rounded-md ': checkDate(
+                                                    item.dateFin
+                                                ),
+                                            }"
+                                        >
+                                            {{ item.dateFin }}
+                                        </span>
                                     </td>
                                     <td
                                         class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
@@ -105,6 +116,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
+import moment from 'moment'
 export default {
     components: {
         sidebar,
@@ -136,6 +148,9 @@ export default {
                 query: { promotionId: params.promotionId },
             })
         }
+        const checkDate = (params) => {
+            return moment().isBefore(params)
+        }
 
         onMounted(async () => {
             //await store.dispatch('promotion/getPromotions')
@@ -150,6 +165,7 @@ export default {
             currency,
             remove,
             edit,
+            checkDate,
         }
     },
 }

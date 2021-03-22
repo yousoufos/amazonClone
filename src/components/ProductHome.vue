@@ -15,11 +15,25 @@
             />
         </div>
         <div class="">
-            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
+            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg">
                 {{ product.title }}
             </p>
-            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
+            <p
+                class=""
+                :class="{
+                    'line-through text-sm text-gray-700':
+                        product.promotion !== null,
+                    'text-xs font-light text-gray-700 lg:font-bold lg:text-lg':
+                        product.promotion === null,
+                }"
+            >
                 {{ currency.$t(product.price) }}
+            </p>
+            <p
+                v-if="product.promotion !== null"
+                class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+            >
+                {{ currency.$t(product.promotion.newPrice) }}
             </p>
         </div>
 

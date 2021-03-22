@@ -97,6 +97,7 @@ export default {
     },
     components: { 'quantity-component': quantityComponent },
     setup(props, { emit }) {
+        console.log(props.product)
         const store = useStore()
         const loading = ref(true)
         const currency = useCurrency()

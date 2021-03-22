@@ -15,12 +15,10 @@
             />
         </div>
         <div class="">
-            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-l">
+            <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg">
                 {{ product.title }}
             </p>
-            <p
-                class="text-xs font-light text-gray-700 line-through lg:font-bold lg:text-l"
-            >
+            <p class="text-xs font-light text-gray-700 line-through lg:text-sm">
                 {{ currency.$t(product.price) }}
             </p>
             <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg">

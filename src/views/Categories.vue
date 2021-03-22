@@ -139,9 +139,25 @@
                             <div class="flex flex-col w-1/4 text-right">
                                 <div class="flex-grow">
                                     <p
-                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
+                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:mt-4"
+                                        :class="{
+                                            'line-through text-sm':
+                                                product.promotion !== null,
+                                            'lg:text-xl lg:font-semibold':
+                                                product.promotion === null,
+                                        }"
                                     >
                                         {{ currency.$t(product.price) }}
+                                    </p>
+                                    <p
+                                        v-if="product.promotion"
+                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
+                                    >
+                                        {{
+                                            currency.$t(
+                                                product.promotion.newPrice
+                                            )
+                                        }}
                                     </p>
                                 </div>
                                 <div>
@@ -164,7 +180,7 @@
                             >
                                 <div
                                     @click="detail(product)"
-                                    class="flex flex-col px-2 text-left bg-gray-100 rounded xl:px-2 lg:bg-white"
+                                    class="flex flex-col px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
                                 >
                                     <div class="flex-grow py-2">
                                         <img
@@ -210,9 +226,25 @@
                                             </div>
                                         </div>
                                         <p
-                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
+                                            class="text-gray-700"
+                                            :class="{
+                                                'line-through text-sm':
+                                                    product.promotion !== null,
+                                                'text-xs font-light lg:font-bold lg:text-lg':
+                                                    product.promotion === null,
+                                            }"
                                         >
                                             {{ currency.$t(product.price) }}
+                                        </p>
+                                        <p
+                                            v-if="product.promotion"
+                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                        >
+                                            {{
+                                                currency.$t(
+                                                    product.promotion.newPrice
+                                                )
+                                            }}
                                         </p>
                                     </div>
 

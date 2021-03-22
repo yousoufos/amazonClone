@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-200 rounded">
-        <div class="px-2 xl:px-2 text-left">
+        <div class="px-2 text-left xl:px-2">
             <p class="font-bold text-l">
                 {{ product.title }}
             </p>
@@ -8,7 +8,7 @@
                 <strong> {{ currency.$t(product.price) }} </strong>
             </p>
             <p
-                class="font-semibold text-sm"
+                class="text-sm font-semibold"
                 :class="[
                     { 'text-green-500': product.stock > 0 },
                     { 'text-red-500': product.stock === 0 },
@@ -18,10 +18,10 @@
             </p>
             <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
             <div class="flex justify-center">
-                <div class="flex text-gray-400 space-x-1">
+                <div class="flex space-x-1 text-gray-400">
                     <span
                         v-for="item in 5"
-                        class="h-4 w-4 material-icons"
+                        class="w-4 h-4 material-icons"
                         :class="{
                             'text-yellow-500':
                                 item <=
@@ -35,23 +35,23 @@
                 </div>
             </div>
             <img
-                class="xl:w-56 xl:h-56 mt-4 mx-auto my-auto"
+                class="mx-auto my-auto mt-4 xl:w-56 xl:h-56"
                 :src="product.defaultPicture"
                 alt=""
             />
         </div>
-        <div class="text-center my-5 flex">
+        <div class="flex my-5 text-center">
             <button
                 :disabled="product.stock === 0"
                 :class="{ 'disabled:opacity-50': product.stock === 0 }"
                 @click="add"
-                class="btnOrange mr-2"
+                class="mr-2 btnOrange"
             >
                 Add to cart
             </button>
             <button
                 @click="detail"
-                class="bg-green-500 w-36 font-semibold rounded-sm"
+                class="font-semibold bg-green-500 rounded-sm w-36"
             >
                 Show
             </button>
@@ -75,6 +75,7 @@ export default {
     },
 
     setup(props, { emit }) {
+        console.log(props.product)
         const store = useStore()
         const router = useRouter()
         const route = useRoute()

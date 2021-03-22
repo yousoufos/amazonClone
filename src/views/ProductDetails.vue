@@ -31,8 +31,21 @@
                 <p class="text-sm font-light lg:text-3xl">
                     {{ product.title }}
                 </p>
-                <p class="py-2 text-lg font-bold lg:text-4xl">
+                <p
+                    class="py-2"
+                    :class="{
+                        'line-through text-sm ': product.promotion !== null,
+                        ' text-lg font-bold lg:text-4xl':
+                            product.promotion === null,
+                    }"
+                >
                     {{ currency.$t(product.price) }}
+                </p>
+                <p
+                    class="py-2 text-lg font-bold lg:text-4xl"
+                    v-if="product.promotion"
+                >
+                    {{ currency.$t(product.promotion.newPrice) }}
                 </p>
                 <div>
                     <div class="flex space-x-1 text-gray-400">
@@ -198,7 +211,10 @@ export default {
                     productId: product.value.productId,
                     title: product.value.title,
                     description: product.value.description,
-                    price: product.value.price,
+                    price:
+                        product.value.promotion !== null
+                            ? product.value.promotion.newPrice
+                            : product.value.price,
                     defaultPicture: product.value.defaultPicture,
                     rating: product.value.rating,
                     qte: 1,

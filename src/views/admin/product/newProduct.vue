@@ -2,10 +2,10 @@
     <div class="flex">
         <div><sidebar selected="Product"></sidebar></div>
         <div class="flex w-full">
-            <div class="width568 w-full">
+            <div class="w-full width568">
                 <div class="">
                     <form @submit.prevent class="">
-                        <div class="shadow overflow-hidden sm:rounded-md">
+                        <div class="overflow-hidden shadow sm:rounded-md">
                             <div class="px-4 py-5 bg-white sm:p-6">
                                 <div class="grid grid-cols-6 gap-6">
                                     <div class="col-span-6 sm:col-span-3">
@@ -19,7 +19,7 @@
                                             name="title"
                                             v-model="form.title"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
@@ -54,7 +54,7 @@
                                             name="price"
                                             v-model="form.price"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
                                     <div class="col-span-3">
@@ -68,7 +68,7 @@
                                             name="stock"
                                             v-model="form.stock"
                                             required
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
 
@@ -104,16 +104,16 @@
                                             name="file"
                                             accept="image/x-png,image/gif,image/jpeg"
                                             required
-                                            class="hidden mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                            class="hidden w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             id="file"
                                         />
 
                                         <div v-if="loading" class="w-1/5">
                                             <div
-                                                class="shadow w-full bg-grey-light"
+                                                class="w-full shadow bg-grey-light"
                                             >
                                                 <div
-                                                    class="bg-blue-600 text-xs leading-none py-1 text-center rounded-md"
+                                                    class="py-1 text-xs leading-none text-center bg-blue-600 rounded-md"
                                                     :style="{
                                                         width:
                                                             progressBar + '%',
@@ -126,22 +126,22 @@
                                         <div class="flex flex-wrap">
                                             <div
                                                 v-for="img in fileTab"
-                                                class="mt-2 mx-2"
+                                                class="mx-2 mt-2"
                                             >
                                                 <div
-                                                    class="flex justify-between items-center"
+                                                    class="flex items-center justify-between"
                                                 >
                                                     <span
                                                         @click="
                                                             removePicture(img)
                                                         "
-                                                        class="material-icons cursor-pointer text-red-600 font-semibold"
+                                                        class="font-semibold text-red-600 cursor-pointer material-icons"
                                                     >
                                                         clear
                                                     </span>
                                                     <span>
                                                         <label
-                                                            class="text-xs px-1"
+                                                            class="px-1 text-xs"
                                                             for="one"
                                                             >Default</label
                                                         >
@@ -166,12 +166,12 @@
                                 </div>
                             </div>
                             <div
-                                class="px-4 py-3 bg-gray-50 text-right sm:px-6"
+                                class="px-4 py-3 text-right bg-gray-50 sm:px-6"
                             >
                                 <button
                                     :disabled="disableOnSubmit"
                                     @click="onSubmit"
-                                    class="font-semibold bg-yellow-500 w-20"
+                                    class="w-20 font-semibold bg-yellow-500"
                                     :class="{
                                         'disabled:opacity-50': disableOnSubmit,
                                     }"
@@ -181,7 +181,7 @@
                                 <button
                                     :disabled="disableOnSubmit"
                                     @click="cancel"
-                                    class="ml-4 font-semibold bg-yellow-500 w-20"
+                                    class="w-20 ml-4 font-semibold bg-yellow-500"
                                     :class="{
                                         'disabled:opacity-50': disableOnSubmit,
                                     }"
@@ -336,6 +336,7 @@ export default {
                     reviewNumber: 0,
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
+                    promotion: null,
                 }
                 await store.dispatch('product/createProduct', {
                     ref: refi,
