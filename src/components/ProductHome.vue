@@ -3,8 +3,16 @@
         @click="detail"
         class="flex flex-col px-2 text-left bg-gray-100 rounded cursor-pointer xl:px-2 lg:bg-white"
     >
-        <div class="flex-grow">
-            <img
+        <div
+            :style="{
+                'background-image':
+                    product.defaultPicture === ''
+                        ? `url(${require('../assets/no-image.jpg')})`
+                        : `url(${product.defaultPicture})`,
+            }"
+            class="flex-grow bg-center bg-no-repeat bg-cover lg:w-56 lg:h-56"
+        >
+            <!-- <img
                 class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
                 :src="
                     product.defaultPicture === ''
@@ -12,7 +20,7 @@
                         : product.defaultPicture
                 "
                 alt=""
-            />
+            /> -->
         </div>
         <div class="">
             <p class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg">
