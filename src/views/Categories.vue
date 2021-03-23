@@ -99,7 +99,7 @@
                         >
                             <div class="w-1/4 my-auto ml-6">
                                 <img
-                                    class="object-cover w-24 h-24 lg:w-36 lg:h-36"
+                                    class="object-contain w-24 h-24 lg:w-36 lg:h-36"
                                     :src="product.defaultPicture"
                                     alt=""
                                 />
@@ -184,7 +184,7 @@
                                 >
                                     <div class="flex-grow py-2">
                                         <img
-                                            class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
+                                            class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
                                             :src="product.defaultPicture"
                                             alt=""
                                         />

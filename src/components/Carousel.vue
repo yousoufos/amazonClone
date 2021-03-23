@@ -1,15 +1,15 @@
 <template>
     <div class="flex flex-col">
-        <div class="relative overflow-hidden mx-autow h-80 lg:h-96 w-full">
+        <div class="relative w-full overflow-hidden mx-autow h-80 lg:h-96">
             <slot></slot>
             <div class="absolute inset-0 flex">
                 <div class="flex items-center justify-start w-1/2">
                     <button
                         @click="previous"
-                        class="bg-gray-50 flex items-center rounded-full focus:outline-none"
+                        class="flex items-center rounded-full bg-gray-50 focus:outline-none"
                     >
                         <span
-                            class="material-icons text-5xl text-gray-400 hover:text-yellow-500"
+                            class="text-5xl text-gray-400 material-icons hover:text-yellow-500"
                         >
                             navigate_before
                         </span>
@@ -18,10 +18,10 @@
                 <div class="flex items-center justify-end w-1/2">
                     <button
                         @click="next"
-                        class="bg-gray-50 flex items-center rounded-full focus:outline-none"
+                        class="flex items-center rounded-full bg-gray-50 focus:outline-none"
                     >
                         <span
-                            class="material-icons text-5xl text-gray-400 hover:text-yellow-500"
+                            class="text-5xl text-gray-400 material-icons hover:text-yellow-500"
                         >
                             navigate_next
                         </span>
@@ -29,10 +29,10 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto p-2 w-full overflow-y-auto mt-3">
+        <div class="w-full p-2 mx-auto mt-3 overflow-y-auto">
             <div class="flex space-x-1 w-14 h-14">
                 <img
-                    class="opacity-40 cursor-pointer w-14 h-14"
+                    class="object-contain cursor-pointer opacity-40 w-14 h-14"
                     :class="{
                         'opacity-100': index === selectedPicture,
                         'border-red-600': index === selectedPicture,

@@ -10,7 +10,7 @@
                         ? `url(${require('../assets/no-image.jpg')})`
                         : `url(${product.defaultPicture})`,
             }"
-            class="flex-grow bg-center bg-no-repeat bg-cover lg:w-56 lg:h-56"
+            class="flex-grow bg-center bg-no-repeat bg-contain lg:w-56 lg:h-56"
         >
             <!-- <img
                 class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"

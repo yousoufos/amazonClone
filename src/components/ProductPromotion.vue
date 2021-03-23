@@ -5,7 +5,7 @@
     >
         <div class="flex-grow">
             <img
-                class="object-cover mx-auto w-36 h-36 lg:w-56 lg:h-56"
+                class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
                 :src="
                     product.defaultPicture === ''
                         ? require('../assets/no-image.jpg')
