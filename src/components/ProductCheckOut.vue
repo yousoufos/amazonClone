@@ -4,7 +4,7 @@
         <div class="flex p-2 border-b">
             <div class="lg:w-1/5">
                 <img
-                    class="w-20 h-20 lg:w-36 lg:h-36"
+                    class="object-contain w-20 h-20 lg:w-36 lg:h-36"
                     :src="product.defaultPicture"
                     alt=""
                 />
@@ -97,7 +97,6 @@ export default {
     },
     components: { 'quantity-component': quantityComponent },
     setup(props, { emit }) {
-        console.log(props.product)
         const store = useStore()
         const loading = ref(true)
         const currency = useCurrency()

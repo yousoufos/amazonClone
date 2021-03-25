@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="bg-gray-900">
-            <div class="flex items-center space-x-2 w-full">
+            <div class="flex items-center w-full space-x-2">
                 <!-- logo -->
                 <div class="hidden lg:px-6 lg:flex">
                     <router-link to="/">
@@ -16,29 +16,29 @@
                 <!-- hamburger -->
                 <div class="flex justify-center lg:hidden">
                     <button @click="toggle">
-                        <span class="material-icons text-4xl text-white">
+                        <span class="text-4xl text-white material-icons">
                             menu
                         </span>
                     </button>
                 </div>
                 <!-- hamburger -->
                 <!-- search -->
-                <div class="w-full relative">
+                <div class="relative w-full">
                     <Search></Search>
                 </div>
                 <!-- search -->
                 <!-- mobile cart -->
-                <div class="flex relative pr-1 lg:hidden">
+                <div class="relative flex pr-1 lg:hidden">
                     <div
                         v-if="count != 0"
-                        class="absolute inset-y-0 left-0 h-4 w-4 my-1 rounded-full bg-green-400 z-2"
+                        class="absolute inset-y-0 left-0 w-4 h-4 my-1 bg-green-400 rounded-full z-2"
                     >
-                        <p class="text-xs px-1 text-white font-medium">
+                        <p class="px-1 text-xs font-medium text-white">
                             {{ count }}
                         </p>
                     </div>
                     <button @click="checkout">
-                        <span class="material-icons text-white text-4xl">
+                        <span class="text-4xl text-white material-icons">
                             shopping_cart
                         </span>
                         <!-- <svg
@@ -60,12 +60,12 @@
                     <div class="flex items-center">
                         <div class="flex flex-col px-4 text-base">
                             <span
-                                class="text-white font-semibold whitespace-nowrap"
+                                class="font-semibold text-white whitespace-nowrap"
                                 >{{
                                     user != null ? user.email : 'Hello Guest'
                                 }}</span
                             ><router-link :to="user != null ? '' : '/login'">
-                                <span class="text-white font-bold">{{
+                                <span class="font-bold text-white">{{
                                     user != null ? '' : 'SignIn'
                                 }}</span>
                             </router-link>
@@ -75,7 +75,7 @@
                             v-if="user != null"
                             class="relative cursor-pointer"
                         >
-                            <span class="mt-1 material-icons text-white">
+                            <span class="mt-1 text-white material-icons">
                                 {{
                                     toggleSettings === false
                                         ? 'keyboard_arrow_down'
@@ -83,16 +83,16 @@
                                 }}
                             </span>
                             <transition
-                                enter-active-class="transition ease-out duration-100 transform"
-                                enter-from-class="opacity-0 scale-95"
-                                enter-to-class="opacity-100 scale-100"
-                                leave-active-class="transition ease-in duration-75 transform"
-                                leave-from-class="opacity-100 scale-100"
-                                leave-to-class="opacity-0 scale-95"
+                                enter-active-class="transition duration-100 ease-out transform"
+                                enter-from-class="scale-95 opacity-0"
+                                enter-to-class="scale-100 opacity-100"
+                                leave-active-class="transition duration-75 ease-in transform"
+                                leave-from-class="scale-100 opacity-100"
+                                leave-to-class="scale-95 opacity-0"
                             >
                                 <div
                                     v-show="toggleSettings"
-                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                    class="absolute right-0 z-50 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
                                     role="menu"
                                     aria-orientation="vertical"
                                     aria-labelledby="user-menu"
@@ -136,17 +136,17 @@
                         </div>
                     </div>
 
-                    <div class="flex relative">
+                    <div class="relative flex">
                         <div
                             v-if="count != 0"
-                            class="absolute inset-y-0 left-0 h-4 w-4 my-1 rounded-full bg-green-400 z-2"
+                            class="absolute inset-y-0 left-0 w-4 h-4 my-1 bg-green-400 rounded-full z-2"
                         >
-                            <p class="text-xs px-1 text-white font-medium">
+                            <p class="px-1 text-xs font-medium text-white">
                                 {{ count }}
                             </p>
                         </div>
                         <button @click="checkout">
-                            <span class="material-icons text-white text-4xl">
+                            <span class="text-4xl text-white material-icons">
                                 shopping_cart
                             </span>
                         </button>
@@ -156,21 +156,21 @@
             </div>
             <!-- menu sm -->
             <transition
-                enter-active-class="transition ease-out duration-100 transform"
-                enter-from-class="opacity-0 scale-95"
-                enter-to-class="opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75 transform"
-                leave-from-class="opacity-100 scale-100"
-                leave-to-class="opacity-0 scale-95"
+                enter-active-class="transition duration-100 ease-out transform"
+                enter-from-class="scale-95 opacity-0"
+                enter-to-class="scale-100 opacity-100"
+                leave-active-class="transition duration-75 ease-in transform"
+                leave-from-class="scale-100 opacity-100"
+                leave-to-class="scale-95 opacity-0"
             >
                 <div
                     v-if="menu"
-                    class="text-white font-semibold flex flex-col h-screen lg:hidden"
+                    class="flex flex-col h-screen font-semibold text-white lg:hidden"
                 >
                     <ul class="p-4">
-                        <li class="hover:bg-red-400 py-2">
+                        <li class="py-2 hover:bg-red-400">
                             <router-link :to="{ name: 'Home' }">
-                                <div class="">Home</div>
+                                <div @click="toggle" class="">Home</div>
                             </router-link>
                         </li>
                         <router-link :to="user != null ? '/logout' : '/login'">

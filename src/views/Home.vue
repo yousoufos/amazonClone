@@ -78,15 +78,15 @@
                     <div
                         class="flex"
                         v-for="promotion in promotions"
-                        :key="promotion.proptionId"
+                        :key="promotion.promotionId"
                     >
                         <ProductPromotion
                             class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
-                            v-for="product in width < 700
-                                ? promotion.prodcutsList.slice(0, 4)
+                            v-for="(product, index) in width < 700
+                                ? promotion.productsList.slice(0, 4)
                                 : promotion.productsList"
                             :product="product"
-                            :key="product.productId"
+                            :key="index"
                         ></ProductPromotion>
                     </div>
                 </div>

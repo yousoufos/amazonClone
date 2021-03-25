@@ -23,7 +23,11 @@
                     <p
                         class="z-40 py-2 -mt-6 text-xs tracking-wider text-center text-gray-800 bg-white lg:text-base lg:-mt-8 lg:font-bold"
                     >
-                        {{ item.name }}
+                        {{
+                            item.name.length >= 15
+                                ? item.name.slice(0, 10) + '...'
+                                : item.name
+                        }}
                     </p>
                 </div>
             </div>

@@ -27,7 +27,7 @@
                     {{ categorie.name }} 
                 </p>
             </div> -->
-            <div class="flex space-x-2">
+            <div class="flex lg:space-x-2">
                 <div class="hidden lg:flex lg:w-1/3">
                     <img class="object-fill" :src="categorie.banniere" alt="" />
                 </div>
@@ -35,9 +35,9 @@
                     <div
                         class="flex items-center justify-between py-2 mb-2 bg-white"
                     >
-                        <div>
+                        <div class="">
                             <p
-                                class="px-2 font-light tracking-normal text-gray-700 uppercase"
+                                class="hidden px-2 font-light tracking-normal text-gray-700 uppercase lg:flex"
                             >
                                 {{ categorie.name }}>>
                             </p>
@@ -151,7 +151,7 @@
                                     </p>
                                     <p
                                         v-if="product.promotion"
-                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
+                                        class="px-2 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
                                     >
                                         {{
                                             currency.$t(
@@ -180,7 +180,7 @@
                             >
                                 <div
                                     @click="detail(product)"
-                                    class="flex flex-col px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
+                                    class="flex flex-col h-64 px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
                                 >
                                     <div class="flex-grow py-2">
                                         <img
