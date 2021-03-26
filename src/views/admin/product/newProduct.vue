@@ -336,6 +336,7 @@ export default {
                     reviewNumber: 0,
                     pictures: fileTab.value,
                     defaultPicture: alaune.value,
+                    createdAt: moment().format(),
                     promotion: null,
                 }
                 await store.dispatch('product/createProduct', {

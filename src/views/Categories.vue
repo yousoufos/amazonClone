@@ -1,8 +1,10 @@
 <template>
     <div class="bg-gray-200 lg:bg-gray-100">
-        <div v-if="loading">Loading...</div>
+        <div class="flex items-center justify-center h-screen" v-if="loading">
+            <spin></spin>
+        </div>
         <div v-else class="flex flex-col mx-auto lg:w-10/12">
-            <div class="px-10" @click="deleting" v-if="from.length > 0">
+            <div class="flex px-10" @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
                     ><span class="text-4xl material-icons">
                         keyboard_backspace
@@ -275,11 +277,13 @@ import { useCurrency } from '../plugins/currencyPlugin'
 import ProductHome from '../components/ProductHome'
 import notif from '../components/notif'
 import Pagination from '../components/Pagination'
+import spin from '../components/Spin'
 export default {
     components: {
         notif,
         ProductHome,
         Pagination,
+        spin,
     },
     setup() {
         const store = useStore()

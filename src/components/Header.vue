@@ -3,13 +3,9 @@
         <div class="bg-gray-900">
             <div class="flex items-center w-full space-x-2">
                 <!-- logo -->
-                <div class="hidden lg:px-6 lg:flex">
+                <div class="hidden lg:flex">
                     <router-link to="/">
-                        <img
-                            src="../assets/logo.png"
-                            alt=""
-                            class="w-56 h-12"
-                        />
+                        <img src="../assets/logoSvg.svg" alt="" class="" />
                     </router-link>
                 </div>
                 <!-- logo -->

@@ -2,8 +2,9 @@
     <div v-if="loading">
         <spin></spin>
     </div>
-    <div class="flex flex-col h-screen" v-else>
+    <div class="relative flex flex-col" v-else>
         <Header
+            class="sticky top-0 z-50"
             v-if="route.name !== 'Login' && !route.path.includes('/admin')"
         ></Header>
         <div class="flex-grow"><router-view /></div>

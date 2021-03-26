@@ -22,6 +22,9 @@
             <div class="">
                 <HomeCategories @showCategorie="showCategorie"></HomeCategories>
             </div>
+            <div class="mx-auto">
+                <img :src="require('../assets/banner_soldes.jpg')" alt="" />
+            </div>
             <div class="flex flex-col bg-white">
                 <div
                     class="px-2 py-2 font-light tracking-normal text-gray-700 uppercase bg-yellow-300"
@@ -38,6 +41,27 @@
                         v-for="(item, index) in width < 700
                             ? availableBestSellers.slice(0, 4)
                             : availableBestSellers"
+                        :product="item"
+                        :key="index"
+                    ></ProductHome>
+                </div>
+            </div>
+            <div class="flex flex-col bg-white">
+                <div
+                    class="px-2 py-2 font-light tracking-normal text-gray-700 uppercase bg-yellow-300"
+                >
+                    <p>New Products</p>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
+                    v-if="length"
+                >
+                    <ProductHome
+                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                        v-for="(item, index) in width < 700
+                            ? newProducts.slice(0, 4)
+                            : newProducts"
                         :product="item"
                         :key="index"
                     ></ProductHome>
@@ -116,6 +140,7 @@ import { useRouter } from 'vue-router'
 import store from '@/store'
 import useBreakpoints from '../compositionFunctions/useBreakpoints'
 import useBestSeller from '../compositionFunctions/bestSeller'
+import useNewProducts from '../compositionFunctions/newProducts'
 export default {
     components: {
         ProductHome,
@@ -129,6 +154,7 @@ export default {
         const router = useRouter()
         const { width } = useBreakpoints()
         const { bestSeller } = useBestSeller()
+        const { newProducts } = useNewProducts()
         const promotions = computed(() => {
             return store.getters['promotion/getAlivePromotions']
         })
@@ -183,6 +209,7 @@ export default {
             availableBestSellers,
             length,
             promotions,
+            newProducts,
         }
     },
 }
