@@ -10,6 +10,7 @@
         <div class="flex-grow"><router-view /></div>
 
         <Footer
+            class="mt-20"
             v-if="route.name !== 'Login' && !route.path.includes('/admin')"
         ></Footer>
     </div>

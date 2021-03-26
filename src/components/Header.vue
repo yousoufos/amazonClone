@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div class="bg-gray-900">
+        <div class="relative bg-gray-900">
             <div class="flex items-center w-full space-x-2">
                 <!-- logo -->
                 <div class="hidden lg:flex">
@@ -161,7 +161,7 @@
             >
                 <div
                     v-if="menu"
-                    class="flex flex-col h-screen font-semibold text-white lg:hidden"
+                    class="absolute flex flex-col h-screen font-semibold text-white bg-gray-900 top-12 lg:hidden"
                 >
                     <ul class="p-4">
                         <li class="py-2 hover:bg-red-400">

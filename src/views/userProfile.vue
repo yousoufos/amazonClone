@@ -15,18 +15,18 @@
         <div class="p-4 space-y-2 lg:w-1/2 lg:mx-auto">
             <div @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
-                    ><span class="material-icons text-4xl">
+                    ><span class="text-4xl material-icons">
                         keyboard_backspace
                     </span></router-link
                 >
             </div>
-            <div class="bg-gray-100 flex items-center">
-                <span class="material-icons text-gray-700">
+            <div class="flex items-center bg-gray-100">
+                <span class="text-gray-700 material-icons">
                     account_circle
                 </span>
-                <p class="text-gray-700 font-semibold py-2">Your profile</p>
+                <p class="py-2 font-semibold text-gray-700">Your profile</p>
             </div>
-            <div class="bg-gray-100 p-2">
+            <div class="p-2 bg-gray-100">
                 <div class="space-y-2 text-sm">
                     <div>
                         <p v-if="toggleEdit">
@@ -36,7 +36,7 @@
                                 capitalize(user.nom)
                             }}
                         </p>
-                        <div v-else class="space-y-2 flex flex-col">
+                        <div v-else class="flex flex-col space-y-2">
                             <input
                                 class="rounded-md"
                                 v-model="user.prenom"
@@ -82,7 +82,7 @@
                         <div v-if="toggleEdit">
                             <button
                                 @click="editProfile"
-                                class="bg-yellow-500 w-full rounded-md"
+                                class="w-full p-2 bg-yellow-500 rounded-md"
                             >
                                 Edit
                             </button>
@@ -90,13 +90,13 @@
                         <div v-else class="flex space-x-4">
                             <button
                                 @click="saveProfile"
-                                class="bg-yellow-500 w-full rounded-md"
+                                class="w-full p-2 bg-yellow-500 rounded-md"
                             >
                                 Save
                             </button>
                             <button
                                 @click="cancel"
-                                class="bg-yellow-500 w-full rounded-md"
+                                class="w-full p-2 bg-yellow-500 rounded-md"
                             >
                                 Cancel
                             </button>
@@ -104,16 +104,16 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-gray-100 flex items-center space-x-1">
-                <span class="material-icons text-gray-700"> vpn_key </span>
-                <p class="text-gray-700 font-semibold py-2">Reset Password</p>
+            <div class="flex items-center space-x-1 bg-gray-100">
+                <span class="text-gray-700 material-icons"> vpn_key </span>
+                <p class="py-2 font-semibold text-gray-700">Reset Password</p>
             </div>
-            <div class="bg-gray-100 p-2 text-sm flex flex-col space-y-4">
+            <div class="flex flex-col p-2 space-y-4 text-sm bg-gray-100">
                 <div class="flex flex-col">
                     <InputPassword
                         type="password"
-                        placeholder="New password"
-                        class="rounded-md w-full"
+                        placeholder="Old password"
+                        class="w-full rounded-md"
                         v-model="login.currentPwd"
                     ></InputPassword>
                 </div>
@@ -122,13 +122,13 @@
                         <InputPassword
                             type="password"
                             placeholder="New password"
-                            class="rounded-md w-full"
+                            class="w-full rounded-md"
                             v-model="login.newPwd"
                         ></InputPassword>
 
                         <div
                             v-if="login.newPwd !== ''"
-                            class="rounded-md p-1 mt-1"
+                            class="p-1 mt-1 rounded-md"
                             :class="[
                                 {
                                     'bg-red-300':
@@ -158,9 +158,9 @@
                     <div class="flex flex-col">
                         <InputPassword
                             type="password"
-                            placeholder="New password"
+                            placeholder="Confirm password"
                             v-model="login.verifyPwd"
-                            class="rounded-md w-full"
+                            class="w-full rounded-md"
                         ></InputPassword>
                     </div>
                 </div>
@@ -168,14 +168,14 @@
                     <button
                         :disabled="toggleUpdate"
                         @click="updateLogin"
-                        class="bg-yellow-500 w-full rounded-md"
+                        class="w-full p-2 bg-yellow-500 rounded-md"
                         :class="{ 'disabled:opacity-50': toggleUpdate }"
                     >
                         Update
                     </button>
                     <button
                         @click="cancelLogin"
-                        class="bg-yellow-500 w-full rounded-md"
+                        class="w-full p-2 bg-yellow-500 rounded-md"
                     >
                         Cancel
                     </button>

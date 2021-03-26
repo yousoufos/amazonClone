@@ -96,11 +96,9 @@
                 >
                     <p>Promotion</p>
                 </div>
-                <div
-                    class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
-                >
+                <div class="">
                     <div
-                        class="flex"
+                        class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
                         v-for="promotion in promotions"
                         :key="promotion.promotionId"
                     >
