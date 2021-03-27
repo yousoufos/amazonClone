@@ -1,6 +1,6 @@
 <template>
     <div
-        class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+        class="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8"
     >
         <transition
             enter-active-class="animate__animated animate__fadeInLeft"
@@ -12,24 +12,24 @@
                 :show="notification.show"
             ></notif>
         </transition>
-        <div class="max-w-md w-full space-y-8">
+        <div class="w-full max-w-md space-y-8">
             <div>
                 <router-link to="/">
                     <img
-                        class="mx-auto h-36 w-auto"
-                        src="../assets/logo1.jpg"
+                        class="w-auto mx-auto h-36"
+                        src="../assets/logoSvg.svg"
                         alt="Workflow"
                     />
                 </router-link>
                 <h2
-                    class="mt-6 text-center text-3xl font-extrabold text-gray-900"
+                    class="mt-6 text-3xl font-extrabold text-center text-gray-900"
                 >
                     Sign in to your account
                 </h2>
             </div>
             <form @submit.prevent class="mt-8 space-y-6">
                 <input type="hidden" name="remember" value="true" />
-                <div class="rounded-md shadow-sm -space-y-px">
+                <div class="-space-y-px rounded-md shadow-sm">
                     <div>
                         <label for="email-address" class="sr-only"
                             >Email address</label
@@ -41,7 +41,7 @@
                             type="email"
                             autocomplete="email"
                             required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Email address"
                         />
                     </div>
@@ -54,7 +54,7 @@
                             type="password"
                             autocomplete="current-password"
                             required="true"
-                            class="appearance-none rounded-none block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            class="block w-full px-3 py-2 text-gray-900 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Password"
                         ></InputPassword>
                     </div>
@@ -73,13 +73,13 @@
                 <div class="">
                     <button
                         @click="login"
-                        class="w-full bg-yellow-500 font-semibold"
+                        class="w-full font-semibold bg-yellow-500"
                     >
                         Sign in
                     </button>
                 </div>
                 <div class="text-center">
-                    <button class="bg-gray-200 w-full" @click="register">
+                    <button class="w-full bg-gray-200" @click="register">
                         Or Create an Amazon Account
                     </button>
                 </div>

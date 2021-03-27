@@ -110,17 +110,13 @@
                                                         class="flex flex-col space-y-2"
                                                     >
                                                         <input
-                                                            v-model="
-                                                                title[item.id]
-                                                            "
+                                                            v-model="title"
                                                             type="text"
                                                             placeholder="Un titre ici"
                                                             class="rounded-md"
                                                         />
                                                         <textarea
-                                                            v-model="
-                                                                message[item.id]
-                                                            "
+                                                            v-model="message"
                                                             name=""
                                                             id=""
                                                             cols="30"
@@ -168,6 +164,7 @@
                                                             v-for="(
                                                                 n, index
                                                             ) in 5"
+                                                            :key="index"
                                                             class="text-sm text-gray-500 material-icons"
                                                             :class="{
                                                                 'text-yellow-500':
@@ -257,7 +254,6 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 export default {
-    components: {},
     setup() {
         const store = useStore()
         const route = useRoute()
@@ -265,19 +261,37 @@ export default {
         const loading = ref(true)
         const toggleReviewForm = ref(true)
         const clickedIndex = ref()
-        const message = ref([])
-        const title = ref([])
-        const order = ref(
-            computed(() => {
-                return store.state.order.order
-            })
-        )
+        const title = ref()
+        const message = ref()
+        const order = computed(() => {
+            return store.state.order.order
+        })
+
         const product = ref(
             computed(() => {
                 return store.state.product.product
             })
         )
         const review = ref()
+        /* const review = computed(() => {
+            if (
+                store.state.review.userReviews.length > 0 &&
+                typeof item !== 'undefined'
+            ){
+                var r= store.state.review.userReviews.find((product) => {
+                    return product.productId === item.productId
+                })
+                if (typeof r !== 'undefined') {
+                    return r
+                } else {
+                    return null
+                }
+            }else{
+                return null
+            }
+
+        }) */
+        var i = 0
         const reviewProduct = (item) => {
             if (
                 store.state.review.userReviews.length > 0 &&
@@ -286,33 +300,47 @@ export default {
                 var r = store.state.review.userReviews.find((product) => {
                     return product.productId === item.productId
                 })
-
-                review.value = r
+                if (i === 0) {
+                    review.value = r
+                    i++
+                }
                 if (typeof r !== 'undefined') {
                     return r
                 } else {
                     return null
                 }
-            } else return null
+            } else {
+                return null
+            }
         }
 
         const addReview = async (item) => {
-            if (title.value[item.id] !== '' && clickedIndex !== 'undefined') {
+            if (title.value !== '' && clickedIndex !== 'undefined') {
                 var review = {
                     productId: item.productId,
                     userId: order.value.userId,
-                    message: message.value[item.id],
-                    title: title.value[item.id],
+                    message: message.value,
+                    title: title.value,
                     rating: Number(clickedIndex.value + 1),
                 }
-                await store.dispatch('review/addReview', review)
-                await store.dispatch('product/getProductById', item.productId)
-                await store.dispatch('product/updateProductRating', {
-                    productId: item.productId,
-                    rating:
-                        product.value.data.rating +
-                        Number(clickedIndex.value + 1),
-                })
+
+                try {
+                    await store.dispatch('review/addReview', review)
+                    await store.dispatch(
+                        'product/getProductById',
+                        item.productId
+                    )
+                    console.log(product.value)
+                    await store.dispatch('product/updateProductRating', {
+                        productId: item.productId,
+                        rating:
+                            product.value.rating +
+                            Number(clickedIndex.value + 1),
+                    })
+                    review.value = review
+                } catch (error) {
+                    console.log(error)
+                }
             } else {
                 return alert('Titre ou evaluation non renseigner')
             }
@@ -326,15 +354,14 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
-        const from = ref(
-            computed((params) => {
-                if (typeof store.state.navigation.from === 'undefined') {
-                    return []
-                } else {
-                    return store.state.navigation.from
-                }
-            })
-        )
+        const from = computed((params) => {
+            if (typeof store.state.navigation.from === 'undefined') {
+                return []
+            } else {
+                return store.state.navigation.from
+            }
+        })
+
         onMounted(async (params) => {
             await store.dispatch('order/getOrderById', route.query.orderId)
             await store.dispatch('review/getUserReviews', {
