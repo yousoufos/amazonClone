@@ -47,7 +47,7 @@
                             <div class="space-y-2">
                                 <div
                                     v-for="item in order.items"
-                                    :key="item.id"
+                                    :key="item.productId"
                                     class="p-4 mx-2 bg-white rounded-md"
                                 >
                                     <div class="space-y-2 text-sm border-b">
@@ -100,23 +100,29 @@
                                         <div
                                             class="p-4 mx-2 bg-white rounded-md"
                                         >
-                                            <div
-                                                v-if="
-                                                    reviewProduct(item) === null
-                                                "
-                                            >
+                                            <div v-if="reviewProduct(item)">
                                                 <div class="flex flex-col">
                                                     <div
                                                         class="flex flex-col space-y-2"
                                                     >
                                                         <input
-                                                            v-model="title"
+                                                            v-model="
+                                                                title[
+                                                                    item
+                                                                        .productId
+                                                                ]
+                                                            "
                                                             type="text"
                                                             placeholder="Un titre ici"
                                                             class="rounded-md"
                                                         />
                                                         <textarea
-                                                            v-model="message"
+                                                            v-model="
+                                                                message[
+                                                                    item
+                                                                        .productId
+                                                                ]
+                                                            "
                                                             name=""
                                                             id=""
                                                             cols="30"
@@ -169,26 +175,44 @@
                                                             :class="{
                                                                 'text-yellow-500':
                                                                     index <=
-                                                                    review.rating,
+                                                                    review[
+                                                                        item
+                                                                            .productId
+                                                                    ].rating,
                                                             }"
                                                             >grade</span
                                                         >
                                                         <span class="text-sm">{{
-                                                            review.rating + '/5'
+                                                            review[
+                                                                item.productId
+                                                            ].rating + '/5'
                                                         }}</span>
                                                     </div>
                                                     <div>
                                                         <p class="text-sm">
-                                                            {{ review.date }}
+                                                            {{
+                                                                review[
+                                                                    item
+                                                                        .productId
+                                                                ].date
+                                                            }}
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div class="p-2 text-sm">
                                                     <p class="font-semibold">
-                                                        {{ review.title }}
+                                                        {{
+                                                            review[
+                                                                item.productId
+                                                            ].title
+                                                        }}
                                                     </p>
                                                     <p class="text-gray-900">
-                                                        {{ review.message }}
+                                                        {{
+                                                            review[
+                                                                item.productId
+                                                            ].message
+                                                        }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -261,8 +285,8 @@ export default {
         const loading = ref(true)
         const toggleReviewForm = ref(true)
         const clickedIndex = ref()
-        const title = ref()
-        const message = ref()
+        const title = ref([])
+        const message = ref([])
         const order = computed(() => {
             return store.state.order.order
         })
@@ -272,7 +296,7 @@ export default {
                 return store.state.product.product
             })
         )
-        const review = ref()
+        const review = ref([])
         /* const review = computed(() => {
             if (
                 store.state.review.userReviews.length > 0 &&
@@ -300,32 +324,36 @@ export default {
                 var r = store.state.review.userReviews.find((product) => {
                     return product.productId === item.productId
                 })
-                if (i === 0) {
-                    review.value = r
-                    i++
-                }
+
                 if (typeof r !== 'undefined') {
-                    return r
+                    if (i === 0) {
+                        review.value[item.productId] = r
+                    }
+
+                    return false
                 } else {
-                    return null
+                    return true
                 }
             } else {
-                return null
+                return true
             }
         }
 
         const addReview = async (item) => {
-            if (title.value !== '' && clickedIndex !== 'undefined') {
-                var review = {
+            if (
+                title.value[item.productId] !== '' &&
+                clickedIndex !== 'undefined'
+            ) {
+                var Review = {
                     productId: item.productId,
                     userId: order.value.userId,
-                    message: message.value,
-                    title: title.value,
+                    message: message.value[item.productId],
+                    title: title.value[item.productId],
                     rating: Number(clickedIndex.value + 1),
                 }
 
                 try {
-                    await store.dispatch('review/addReview', review)
+                    await store.dispatch('review/addReview', Review)
                     await store.dispatch(
                         'product/getProductById',
                         item.productId
@@ -337,7 +365,8 @@ export default {
                             product.value.rating +
                             Number(clickedIndex.value + 1),
                     })
-                    review.value = review
+
+                    review.value[item.productId] = Review
                 } catch (error) {
                     console.log(error)
                 }

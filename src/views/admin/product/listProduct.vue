@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
+import navbar from '@/components/admin/navbar'
 import sidebar from '../../../components/admin/sidebar'
 import spin from '../../../components/Spin'
 import Pagination from '../../../components/Pagination'
