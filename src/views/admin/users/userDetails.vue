@@ -1,10 +1,10 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Users"></sidebar></div>
+        <div><Sidebar selected="Users" /></div>
         <div class="flex w-full">
-            <div class="width568 w-full">
-                <div v-if="loading">Loading...</div>
-                <div v-else class="py-4 w-11/12 mx-auto flex flex-col">
+            <div class="w-full width568">
+                <div v-if="loading"><Spin /></div>
+                <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
                     <div>
                         <div class="flex flex-col text-gray-700">
                             <div>{{ user.prenom + ', ' + user.nom }}</div>
@@ -16,14 +16,14 @@
                                     <p>{{ user.role }}</p>
                                     <button
                                         @click="editRole"
-                                        class="bg-yellow-500 rounded-md px-4"
+                                        class="px-4 bg-yellow-500 rounded-md"
                                     >
                                         Edit
                                     </button>
                                 </div>
                                 <div
                                     v-else
-                                    class="flex space-x-4 items-center py-2"
+                                    class="flex items-center py-2 space-x-4"
                                 >
                                     <div>
                                         <select v-model="selectedRole">
@@ -37,13 +37,13 @@
                                     <div class="space-x-4">
                                         <button
                                             @click="changeRole(user.userId)"
-                                            class="bg-yellow-500 rounded-md px-4"
+                                            class="px-4 bg-yellow-500 rounded-md"
                                         >
                                             Ok
                                         </button>
                                         <button
                                             @click="cancelRole"
-                                            class="bg-yellow-500 rounded-md px-4"
+                                            class="px-4 bg-yellow-500 rounded-md"
                                         >
                                             Cancel
                                         </button>
@@ -62,10 +62,10 @@
                                 class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
                             >
                                 <div
-                                    class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+                                    class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                                 >
                                     <div
-                                        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                        class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
                                     >
                                         <table
                                             class="min-w-full divide-y divide-gray-200"
@@ -74,31 +74,31 @@
                                                 <tr>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                     >
                                                         Date
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                     >
                                                         Order Number
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                     >
                                                         Total
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                     >
                                                         Status Delivery
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                     >
                                                         Status Payment
                                                     </th>
@@ -116,17 +116,17 @@
                                                     class="cursor-pointer"
                                                 >
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                     >
                                                         {{ item.date }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                     >
                                                         {{ item.orderId }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                     >
                                                         {{
                                                             currency.$t(
@@ -135,10 +135,10 @@
                                                         }}
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                     >
                                                         <span
-                                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
+                                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full"
                                                             :class="
                                                                 item.deliveryStatus ===
                                                                 'pending'
@@ -155,10 +155,10 @@
                                                         >
                                                     </td>
                                                     <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                        class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                     >
                                                         <span
-                                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800"
+                                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full"
                                                             :class="
                                                                 item.paymentStatus ===
                                                                 'pending'
@@ -191,18 +191,13 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 import moment from 'moment'
 export default {
-    components: {
-        navbar,
-        sidebar,
-    },
+    components: {},
 
     setup() {
         const route = useRoute()

@@ -1,23 +1,23 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Users"></sidebar></div>
+        <div><Sidebar selected="Users" /></div>
         <div class="flex w-full">
-            <div class="width568 w-full">
-                <div v-if="loading">Loading...</div>
+            <div class="w-full width568">
+                <div v-if="loading"><Spin /></div>
                 <div v-else>
-                    <div class="py-4 mx-auto flex flex-col w-11/12">
+                    <div class="flex flex-col w-11/12 py-4 mx-auto">
                         <Pagination
                             ref="child"
-                            :pas="3"
+                            :pas="10"
                             type="users"
                             :data="users"
-                        ></Pagination>
+                        />
                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div
-                                class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+                                class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                             >
                                 <div
-                                    class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                    class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
                                 >
                                     <table
                                         class="min-w-full divide-y divide-gray-200"
@@ -26,32 +26,32 @@
                                             <tr>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                 >
                                                     Email
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                 >
                                                     Name
                                                 </th>
 
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                 >
                                                     Second Name
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                 >
                                                     Role
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                    class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                                 >
                                                     Joining Date
                                                 </th>
@@ -66,28 +66,28 @@
                                                 @click="details(user.userId)"
                                             >
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                 >
                                                     {{ user.email }}
                                                 </td>
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                 >
                                                     {{ user.prenom }}
                                                 </td>
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                 >
                                                     {{ user.nom }}
                                                 </td>
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                 >
                                                     {{ user.role }}
                                                 </td>
 
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                                 >
                                                     {{ user.createdAt }}
                                                 </td>
@@ -105,18 +105,11 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import Pagination from '../../../components/Pagination'
 export default {
-    components: {
-        navbar,
-        sidebar,
-        Pagination,
-    },
+    components: {},
 
     setup() {
         const router = useRouter()

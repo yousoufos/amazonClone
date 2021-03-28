@@ -1,12 +1,12 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Categories"></sidebar></div>
+        <div><Sidebar selected="Categories" /></div>
         <div class="flex w-full">
-            <div class="width568 w-full h-screen overflow-y-auto">
+            <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loadingPage">loading....</div>
-                <div v-else class="py-4 mx-auto flex flex-col w-11/12">
+                <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
                     <div
-                        class="flex mb-4 space-x-2 justify-center items-center rounded-md py-2 bg-gray-300 cursor-pointer"
+                        class="flex items-center justify-center py-2 mb-4 space-x-2 bg-gray-300 rounded-md cursor-pointer"
                         :class="[add === false ? 'w-48' : 'w-96']"
                     >
                         <div
@@ -30,13 +30,13 @@
                                 />
                                 <button
                                     @click="submit"
-                                    class="bg-white w-16 rounded-md"
+                                    class="w-16 bg-white rounded-md"
                                 >
                                     Add
                                 </button>
                                 <button
                                     @click="cancelAdd"
-                                    class="bg-white w-16 rounded-md"
+                                    class="w-16 bg-white rounded-md"
                                 >
                                     Cancel
                                 </button>
@@ -63,16 +63,16 @@
                     </div>
                     <Pagination
                         ref="child"
-                        :pas="3"
+                        :pas="10"
                         type="categories"
                         :data="categories"
-                    ></Pagination>
+                    />
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
-                            class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+                            class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                         >
                             <div
-                                class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
                             >
                                 <table
                                     class="min-w-full divide-y divide-gray-200"
@@ -81,25 +81,25 @@
                                         <tr>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Name
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Picture
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Banner
                                             </th>
                                             <th
                                                 scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                             >
                                                 Actions
                                             </th>
@@ -136,7 +136,7 @@
                                                 }}</span>
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <div
                                                     class="flex flex-wrap"
@@ -160,7 +160,7 @@
                                                 </div>
                                                 <div v-else>
                                                     <img
-                                                        class="rounded-full w-20 h-20"
+                                                        class="w-20 h-20 rounded-full"
                                                         :src="
                                                             cat.picture === ''
                                                                 ? require('../../../assets/no-image.jpg')
@@ -170,7 +170,7 @@
                                                 </div>
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                                class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <div
                                                     class="flex flex-wrap"
@@ -194,7 +194,7 @@
                                                 </div>
                                                 <div v-else>
                                                     <img
-                                                        class="rounded-full w-20 h-20"
+                                                        class="w-20 h-20 rounded-full"
                                                         :src="
                                                             cat.banniere === ''
                                                                 ? require('../../../assets/no-image.jpg')
@@ -204,11 +204,11 @@
                                                 </div>
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2"
+                                                class="flex px-6 py-4 space-x-2 text-sm text-gray-500 whitespace-nowrap"
                                             >
                                                 <span
                                                     @click="remove(cat)"
-                                                    class="material-icons cursor-pointer text-red-500"
+                                                    class="text-red-500 cursor-pointer material-icons"
                                                 >
                                                     delete_forever
                                                 </span>
@@ -216,7 +216,7 @@
                                                     @click="
                                                         edit(cat, i, $event)
                                                     "
-                                                    class="material-icons cursor-pointer"
+                                                    class="cursor-pointer material-icons"
                                                 >
                                                     edit
                                                 </span>
@@ -234,19 +234,13 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import UploadFile from '../../../components/UploadFile'
-import Pagination from '../../../components/Pagination'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { storage, firebaseApp, db } from '../../../firebase'
 export default {
     components: {
-        navbar,
-        sidebar,
         UploadFile,
-        Pagination,
     },
     methods: {
         /* test() {

@@ -5,11 +5,11 @@
                 enter-active-class="animate__animated animate__fadeInLeft"
                 leave-active-class="animate__animated animate__fadeOutLeft"
             >
-                <notif
+                <Notif
                     v-if="notification.show"
                     :notification="notification"
                     :show="notification.show"
-                ></notif>
+                />
             </transition>
         </div>
         <div class="p-4 space-y-2 lg:w-1/2 lg:mx-auto">
@@ -186,7 +186,6 @@
 </template>
 
 <script>
-import Notif from '../components/notif.vue'
 import InputPassword from '../components/InputPassword'
 import { ref, computed, onMounted, reactive, watchEffect } from 'vue'
 import { useStore } from 'vuex'
@@ -194,7 +193,6 @@ import { useRoute, useRouter } from 'vue-router'
 import passwordStrength from 'check-password-strength'
 export default {
     components: {
-        Notif,
         InputPassword,
     },
     setup() {

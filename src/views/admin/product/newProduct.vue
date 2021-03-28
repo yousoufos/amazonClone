@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Product"></sidebar></div>
+        <div><Sidebar selected="Product" /></div>
         <div class="flex w-full">
             <div class="w-full width568">
                 <div class="">
@@ -195,11 +195,11 @@
                         enter-active-class="animate__animated animate__fadeInLeft"
                         leave-active-class="animate__animated animate__fadeOutLeft"
                     >
-                        <notif
+                        <Notif
                             v-if="notification.show"
                             :notification="notification"
                             :show="notification.show"
-                        ></notif>
+                        />
                     </transition>
                 </div>
             </div>
@@ -208,21 +208,17 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { storage, firebaseApp, db } from '../../../firebase'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import MultiSelect from '../../../components/MultiSelect.vue'
-import notif from '../../../components/notif.vue'
+import moment from 'moment'
+
 export default {
     components: {
-        navbar,
-        sidebar,
         MultiSelect,
-        notif,
     },
     setup() {
         const form = reactive({

@@ -1,9 +1,9 @@
 <template>
     <div class="flex">
-        <div><sidebar :selected="selected"></sidebar></div>
+        <div><Sidebar :selected="selected" /></div>
         <div class="flex w-full">
             <div class="w-full h-screen overflow-y-auto width568">
-                <div v-if="loading">Loading...</div>
+                <div v-if="loading"><Spin /></div>
                 <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
                     <router-link to="/admin/product/newProduct">
                         <div
@@ -17,10 +17,10 @@
                     </router-link>
                     <Pagination
                         ref="child"
-                        :pas="5"
+                        :pas="10"
                         type="products"
                         :data="products"
-                    ></Pagination>
+                    />
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
@@ -184,22 +184,13 @@
 </template>
 
 <script>
-import navbar from '@/components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
-import spin from '../../../components/Spin'
-import Pagination from '../../../components/Pagination'
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { storage } from '../../../firebase'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 export default {
-    components: {
-        navbar,
-        sidebar,
-        spin,
-        Pagination,
-    },
+    components: {},
     setup() {
         const store = useStore()
         const router = useRouter()

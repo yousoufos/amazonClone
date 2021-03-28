@@ -1,9 +1,9 @@
 <template>
     <div class="flex">
-        <div><sidebar :selected="selected"></sidebar></div>
+        <div><Sidebar :selected="selected" /></div>
         <div class="flex w-full">
             <div class="w-full h-screen overflow-y-auto width568">
-                <div v-if="loading">Loading...</div>
+                <div v-if="loading"><Spin /></div>
                 <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
                     <router-link to="/admin/promotion/newpromotion">
                         <div
@@ -109,8 +109,6 @@
 </template>
 
 <script>
-import sidebar from '../../../components/admin/sidebar'
-import spin from '../../../components/Spin'
 import Pagination from '../../../components/Pagination'
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -119,8 +117,6 @@ import { useCurrency } from '../../../plugins/currencyPlugin'
 import moment from 'moment'
 export default {
     components: {
-        sidebar,
-        spin,
         Pagination,
     },
     setup() {

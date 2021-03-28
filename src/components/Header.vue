@@ -11,7 +11,7 @@
                 <!-- logo -->
                 <!-- hamburger -->
                 <div class="flex justify-center lg:hidden">
-                    <button @click="toggle">
+                    <button ref="exclude" @click="toggle">
                         <span class="text-4xl text-white material-icons">
                             menu
                         </span>
@@ -162,6 +162,7 @@
                 <div
                     v-if="menu"
                     class="absolute flex flex-col h-screen font-semibold text-white bg-gray-900 top-12 lg:hidden"
+                    v-closable="{ exclude: exclude, handler: toggle }"
                 >
                     <ul class="p-4">
                         <li class="py-2 hover:bg-red-400">
@@ -230,6 +231,7 @@ export default {
         const menu = ref(false)
         const toggleSettings = ref(false)
         const toggle = ref(() => (menu.value = !menu.value))
+        const exclude = ref()
         const count = ref(
             computed(() => {
                 if (store.state.cart.cart === null) {
@@ -258,6 +260,7 @@ export default {
             menu,
             isAdmin,
             toggleSettings,
+            exclude,
         }
     },
 }

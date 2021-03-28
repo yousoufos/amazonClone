@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-gray-200 lg:bg-gray-100">
+    <div class="pb-4 bg-gray-200 lg:bg-gray-100">
         <div class="flex items-center justify-center h-screen" v-if="loading">
-            <spin></spin>
+            <Spin />
         </div>
         <div v-else class="flex flex-col mx-auto lg:w-10/12">
             <div class="flex px-10" @click="deleting" v-if="from.length > 0">
@@ -15,11 +15,11 @@
                 enter-active-class="animate__animated animate__fadeInLeft"
                 leave-active-class="animate__animated animate__fadeOutLeft"
             >
-                <notif
+                <Notif
                     v-if="notification.show"
                     :notification="notification"
                     :show="notification.show"
-                ></notif>
+                />
             </transition>
             <!-- <div class="bg-blue-700">
                 <img :src="require('../assets/informatiqueBanner.jpg')" alt="" />
@@ -29,6 +29,9 @@
                     {{ categorie.name }} 
                 </p>
             </div> -->
+            <div class="py-1 mx-auto">
+                <img :src="require('../assets/banner_soldes.jpg')" alt="" />
+            </div>
             <div class="flex lg:space-x-2">
                 <div class="hidden lg:flex lg:w-1/3">
                     <img class="object-fill" :src="categorie.banniere" alt="" />
@@ -88,10 +91,10 @@
                     </div>
                     <Pagination
                         ref="child"
-                        :pas="6"
+                        :pas="12"
                         type="products"
                         :data="products"
-                    ></Pagination>
+                    />
                     <div v-if="!grid" class="flex flex-col w-full space-y-2">
                         <div
                             @click="detail(product)"
@@ -275,15 +278,10 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
 import ProductHome from '../components/ProductHome'
-import notif from '../components/notif'
-import Pagination from '../components/Pagination'
-import spin from '../components/Spin'
+
 export default {
     components: {
-        notif,
         ProductHome,
-        Pagination,
-        spin,
     },
     setup() {
         const store = useStore()

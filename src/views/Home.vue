@@ -5,11 +5,11 @@
             enter-active-class="animate__animated animate__fadeInLeft"
             leave-active-class="animate__animated animate__fadeOutLeft"
         >
-            <notif
+            <Notif
                 v-if="notification.show"
                 :notification="notification"
                 :show="notification.show"
-            ></notif>
+            />
         </transition>
         <div class="flex flex-col mx-auto space-y-4 lg:w-11/12">
             <div class="hidden -mb-64 lg:flex">
@@ -58,7 +58,7 @@
                     v-if="length"
                 >
                     <ProductHome
-                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:w-1/4"
                         v-for="(item, index) in width < 700
                             ? newProducts.slice(0, 4)
                             : newProducts"
@@ -128,10 +128,10 @@
 </template>
 <script>
 import HomeCategories from '../components/HomeCategories'
-import spin from '../components/Spin'
+
 import ProductHome from '../components/ProductHome'
 import ProductPromotion from '../components/ProductPromotion'
-import notif from '../components/notif'
+
 import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -142,8 +142,7 @@ import useNewProducts from '../compositionFunctions/newProducts'
 export default {
     components: {
         ProductHome,
-        notif,
-        spin,
+
         HomeCategories,
         ProductPromotion,
     },

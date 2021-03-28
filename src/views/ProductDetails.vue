@@ -1,18 +1,18 @@
 <template>
     <div v-if="loading">
-        <spin></spin>
+        <Spin />
     </div>
 
-    <div v-else class="bg-gray-200">
+    <div v-else class="pb-4 bg-gray-200">
         <transition
             enter-active-class="animate__animated animate__fadeInLeft"
             leave-active-class="animate__animated animate__fadeOutLeft"
         >
-            <notif
+            <Notif
                 v-if="notification.show"
                 :notification="notification"
                 :show="notification.show"
-            ></notif>
+            />
         </transition>
         <div class="px-10" @click="deleting" v-if="from.length > 0">
             <router-link :to="from[from.length - 1]"
@@ -100,6 +100,7 @@
         <div class="p-2 text-sm text-gray-600 lg:w-10/12 lg:mx-auto">
             AVIS DES UTILISATEURS
         </div>
+
         <div
             v-if="product.reviewNumber !== 0"
             class="bg-white lg:w-10/12 lg:mx-auto"
@@ -157,25 +158,24 @@
                     </div>
                 </div>
             </div>
-            <div v-if="product.reviewNumber === 0">
-                <p>Pad d'avis pour ce produit</p>
-            </div>
+        </div>
+        <div class="p-4 bg-white lg:w-10/12 lg:mx-auto" v-else>
+            <p>Pas encore d'avis pour ce produit</p>
         </div>
     </div>
 </template>
 
 <script>
-import spin from '../components/Spin'
 import slider from '../components/slider'
 
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 import { useCurrency } from '../plugins/currencyPlugin'
-import notif from '../components/notif'
+import Notif from '../components/notif'
 
 export default {
-    components: { spin, slider, notif },
+    components: { slider, Notif },
     setup() {
         const store = useStore()
         const router = useRouter()

@@ -6,11 +6,11 @@
             enter-active-class="animate__animated animate__fadeInLeft"
             leave-active-class="animate__animated animate__fadeOutLeft"
         >
-            <notif
+            <Notif
                 v-if="notification.show"
                 :notification="notification"
                 :show="notification.show"
-            ></notif>
+            />
         </transition>
         <div class="w-full max-w-md space-y-8">
             <div>
@@ -92,11 +92,10 @@
 import { useStore } from 'vuex'
 import { reactive, ref, computed } from 'vue'
 import InputPassword from '../components/InputPassword'
-import notif from '../components/notif'
+
 export default {
     components: {
         InputPassword,
-        notif,
     },
     setup() {
         const user = reactive({ email: '', password: '' })

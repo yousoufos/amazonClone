@@ -1,6 +1,6 @@
 <template>
     <div v-if="loading">
-        <spin></spin>
+        <Spin />
     </div>
     <div class="relative flex flex-col" v-else>
         <Header
@@ -17,14 +17,14 @@
 </template>
 <script>
 import { provideCurrency } from '../src/plugins/currencyPlugin'
-import spin from './components/Spin'
+
 import Header from '../src/components/Header'
 import Footer from '../src/components/bas'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, watchEffect } from 'vue'
 export default {
-    components: { Header, Footer, spin },
+    components: { Header, Footer },
     setup() {
         const route = useRoute()
         const store = useStore()

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="loading">Loading...</div>
+        <div v-if="loading"><Spin /></div>
         <div v-else>
             <transition name="slide-fade">
                 <div>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div class="mb-2">
                             <div class="p-2 text-gray-800">
                                 <p>Payment</p>
                             </div>

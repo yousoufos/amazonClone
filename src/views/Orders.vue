@@ -8,12 +8,7 @@
             >
         </div>
         <div class="flex flex-col w-11/12 py-4 mx-auto">
-            <Pagination
-                ref="child"
-                :pas="20"
-                type="orders"
-                :data="orders"
-            ></Pagination>
+            <Pagination ref="child" :pas="30" type="orders" :data="orders" />
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div
                     class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
@@ -140,19 +135,25 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
-import Pagination from '../components/Pagination'
+
 import moment from 'moment'
 export default {
-    components: {
-        Pagination,
-    },
+    components: {},
     setup(props) {
         const router = useRouter()
         const store = useStore()
         const sortByPriceValue = ref('DESC')
         const sortByDateValue = ref('DESC')
         const currency = useCurrency()
-        const orders = ref(computed(() => store.state.order.orders))
+        const orders = ref(
+            computed(() => {
+                return store.state.order.orders.sort((a, b) => {
+                    if (moment(a) > moment(b)) {
+                        return 1
+                    } else return -1
+                })
+            })
+        )
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {

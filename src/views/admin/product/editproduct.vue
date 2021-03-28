@@ -1,9 +1,9 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Product"></sidebar></div>
+        <div><Sidebar selected="Product" /></div>
         <div class="flex w-full">
             <div class="w-full">
-                <div v-if="loading">Loading</div>
+                <div v-if="loading"><Spin /></div>
                 <div v-else :class="{ 'opacity-60': updating }">
                     <form @submit.prevent class="">
                         <div class="overflow-hidden shadow sm:rounded-md">
@@ -196,11 +196,11 @@
                         enter-active-class="animate__animated animate__fadeInLeft"
                         leave-active-class="animate__animated animate__fadeOutLeft"
                     >
-                        <notif
+                        <Notif
                             v-if="notification.show"
                             :notification="notification"
                             :show="notification.show"
-                        ></notif>
+                        />
                     </transition>
                 </div>
             </div>
@@ -209,25 +209,18 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { storage, firebaseApp, db } from '../../../firebase'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import MultiSelect from '../../../components/MultiSelect.vue'
-import notif from '../../../components/notif.vue'
-import Spin from '../../../components/Spin'
+
 import { isNumber } from '../../../mixin'
 import _ from 'lodash'
 export default {
     components: {
-        navbar,
-        sidebar,
         MultiSelect,
-        notif,
-        Spin,
     },
     setup() {
         const form = reactive({

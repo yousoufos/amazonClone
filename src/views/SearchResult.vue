@@ -13,11 +13,11 @@
                 enter-active-class="animate__animated animate__fadeInLeft"
                 leave-active-class="animate__animated animate__fadeOutLeft"
             >
-                <notif
+                <Notif
                     v-if="notification.show"
                     :notification="notification"
                     :show="notification.show"
-                ></notif>
+                />
             </transition>
             <!-- <div class="bg-blue-700">
                 <img :src="require('../assets/informatiqueBanner.jpg')" alt="" />
@@ -88,10 +88,10 @@
                     </div>
                     <Pagination
                         ref="child"
-                        :pas="6"
+                        :pas="12"
                         type="search"
                         :data="products"
-                    ></Pagination>
+                    />
                     <div v-if="!grid" class="flex flex-col w-full space-y-2">
                         <div
                             @click="detail(product)"
@@ -270,18 +270,15 @@
 </template>
 
 <script>
-import notif from '../components/notif'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { useCurrency } from '../plugins/currencyPlugin'
 import ProductHome from '../components/ProductHome'
-import Pagination from '../components/Pagination'
+
 export default {
     components: {
-        notif,
         ProductHome,
-        Pagination,
     },
 
     setup() {

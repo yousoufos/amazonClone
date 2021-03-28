@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Orders"></sidebar></div>
+        <div><Sidebar selected="Orders" /></div>
         <div class="flex w-full">
             <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loading">Loading...</div>
@@ -214,18 +214,13 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import moment from 'moment'
 export default {
-    components: {
-        navbar,
-        sidebar,
-    },
+    components: {},
 
     setup() {
         const store = useStore()

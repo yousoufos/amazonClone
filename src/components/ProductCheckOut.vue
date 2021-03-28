@@ -1,5 +1,5 @@
 <template>
-    <div v-if="loading">Loding...</div>
+    <div v-if="loading"><Spin /></div>
     <div v-else class="flex flex-col border-b lg:mb-10">
         <div class="flex p-2 border-b">
             <div class="lg:w-1/5">

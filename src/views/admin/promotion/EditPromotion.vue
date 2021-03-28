@@ -1,9 +1,9 @@
 <template>
     <div class="flex">
-        <div><sidebar :selected="selected"></sidebar></div>
+        <div><Sidebar :selected="selected" /></div>
         <div class="flex w-full">
             <div class="w-full h-screen overflow-y-auto width568">
-                <div v-if="loading">Loading...</div>
+                <div v-if="loading"><Spin /></div>
                 <div v-else class="relative flex flex-col w-11/12 py-4 mx-auto">
                     <CardProducts
                         @addProduct="addProduct"
@@ -181,8 +181,6 @@
 </template>
 
 <script>
-import sidebar from '../../../components/admin/sidebar'
-import spin from '../../../components/Spin'
 import CardProducts from '../../../components/admin/promotion/CardProduct'
 import {
     ref,
@@ -200,9 +198,6 @@ import moment from 'moment'
 import { productsLength } from '../../../mixin'
 export default {
     components: {
-        sidebar,
-        spin,
-
         CardProducts,
     },
     setup() {

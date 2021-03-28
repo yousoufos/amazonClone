@@ -1,15 +1,11 @@
 <template>
     <div class="flex">
-        <div><sidebar selected="Orders"></sidebar></div>
+        <div><Sidebar selected="Orders" /></div>
         <div class="flex w-full">
             <div class="w-full h-screen overflow-y-auto width568">
-                <div v-if="loading">Loading...</div>
+                <div v-if="loading"><Spin /></div>
                 <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
-                    <Pagination
-                        :pas="10"
-                        type="orders"
-                        :data="orders"
-                    ></Pagination>
+                    <Pagination :pas="20" type="orders" :data="orders" />
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div
                             class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
@@ -149,20 +145,13 @@
 </template>
 
 <script>
-import navbar from '../../../components/admin/navbar'
-import sidebar from '../../../components/admin/sidebar'
 import { useCurrency } from '../../../plugins/currencyPlugin'
-import Pagination from '../../../components/Pagination'
 import { computed, onMounted, ref, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import moment from 'moment'
 export default {
-    components: {
-        navbar,
-        sidebar,
-        Pagination,
-    },
+    components: {},
 
     setup() {
         const router = useRouter()
