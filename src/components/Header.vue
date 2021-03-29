@@ -161,7 +161,7 @@
             >
                 <div
                     v-if="menu"
-                    class="absolute flex flex-col h-screen font-semibold text-white bg-gray-900 top-12 lg:hidden"
+                    class="absolute flex flex-col h-screen font-semibold text-white bg-gray-900 w-60 top-12 lg:hidden"
                     v-closable="{ exclude: exclude, handler: toggle }"
                 >
                     <ul class="p-4">

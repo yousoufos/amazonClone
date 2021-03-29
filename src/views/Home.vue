@@ -37,7 +37,7 @@
                     v-if="length"
                 >
                     <ProductHome
-                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                        class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:w-1/4"
                         v-for="(item, index) in width < 700
                             ? availableBestSellers.slice(0, 4)
                             : availableBestSellers"
@@ -103,7 +103,7 @@
                         :key="promotion.promotionId"
                     >
                         <ProductPromotion
-                            class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
+                            class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:w-1/"
                             v-for="(product, index) in width < 700
                                 ? promotion.productsList.slice(0, 4)
                                 : promotion.productsList"

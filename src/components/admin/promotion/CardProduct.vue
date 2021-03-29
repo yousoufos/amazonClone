@@ -1,15 +1,24 @@
 <template>
-    <div class="w-10/12 bg-yellow-100 centerVH">
+    <div class="w-10/12 mt-16 bg-yellow-100 centerVH">
         <div class="w-full">
             <div class="p-4 rounded-lg shadow-lg">
                 <div class="flex flex-col">
                     <div class="flex justify-end w-full">
                         <span
+                            ref="exclude"
                             @click="close"
                             class="text-red-500 cursor-pointer material-icons"
                         >
                             disabled_by_default
                         </span>
+                    </div>
+                    <div>
+                        <Pagination
+                            ref="child"
+                            :pas="5"
+                            type="products"
+                            :data="products"
+                        />
                     </div>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -47,7 +56,7 @@
                         >
                             <tr
                                 @click="add(product)"
-                                v-for="product in products"
+                                v-for="product in tab"
                                 :key="product.productId"
                             >
                                 <td
@@ -55,9 +64,7 @@
                                 >
                                     {{ product.productId }}
                                 </td>
-                                <td
-                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
-                                >
+                                <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ product.title }}
                                 </td>
                                 <td
@@ -97,6 +104,7 @@ export default {
         const store = useStore()
         const currency = useCurrency()
         const products = store.state.product.tab
+        const exclude = ref()
         const checkProductInPromotion = computed(() => {
             return store.getters['promotion/getCheckProductInPromotion']
         })
@@ -115,11 +123,16 @@ export default {
         const close = (params) => {
             emit('closeCard', true)
         }
+        const tab = computed(() => {
+            return store.getters['navigation/getProductsPagination']
+        })
         return {
             products,
             currency,
             add,
             close,
+            exclude,
+            tab,
         }
     },
 }
@@ -131,5 +144,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    height: 600 px;
 }
 </style>

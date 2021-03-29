@@ -5,7 +5,8 @@ const state = () => ({
   categoriesPagination: null,
   ordersPaginations: null,
   usersPagination: null,
-  searchPagination: null
+  searchPagination: null,
+  promotionPagination: null
 })
 
 // getters
@@ -58,6 +59,9 @@ const mutations = {
   },
   setSearchPagination (state, payload) {
     state.searchPagination = payload
+  },
+  setPromotionPagination (state, payload) {
+    state.promotionPagination = payload
   }
 }
 

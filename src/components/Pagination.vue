@@ -57,6 +57,9 @@ export default {
                     break
                 case 'search':
                     store.commit('navigation/setSearchPagination', tableau)
+                case 'promotion':
+                    store.commit('navigation/setPromotionPagination', tableau)
+                    break
             }
 
             return tableau
@@ -86,6 +89,9 @@ export default {
                     break
                 case 'search':
                     store.commit('navigation/setSearchPagination', tab.value)
+                    break
+                case 'promotion':
+                    store.commit('navigation/setPromotionPagination', tab.value)
                     break
             }
         })
