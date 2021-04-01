@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-gray-200 w-1/3 ml-10">
+    <div class="flex flex-col w-1/3 ml-10 bg-gray-200">
         <div class="p-4 border-b border-gray-400">
             <p class="text-lg font-medium">Order</p>
         </div>
@@ -10,14 +10,14 @@
                 </div>
                 <div class="py-4">
                     <p class="text-sm">{{ item.title }}</p>
-                    <p class="text-sm text-yellow-500 font-medium">
-                        $ {{ currency.$t(item.price) }}
+                    <p class="text-sm font-medium text-yellow-500">
+                        {{ currency.$t(item.price) }}
                     </p>
                     <p class="text-sm font-medium">Qte : {{ item.qte }}</p>
                 </div>
             </div>
         </div>
-        <div class="flex flex-col border-t border-b border-gray-400 py-2">
+        <div class="flex flex-col py-2 border-t border-b border-gray-400">
             <div class="flex justify-between text-sm font-medium text-black">
                 <span class="px-4">Sous-total : </span>
                 <span class="px-4">{{ currency.$t(cart.total) }}</span>
@@ -28,13 +28,13 @@
             </div>
         </div>
         <div class="flex justify-between p-4">
-            <span class="font-semibold text-lg">Total : </span>
-            <span class="font-bold text-lg text-yellow-500">{{
+            <span class="text-lg font-semibold">Total : </span>
+            <span class="text-lg font-bold text-yellow-500">{{
                 currency.$t(Number(cart.total) + 5)
             }}</span>
         </div>
         <div class="p-6">
-            <button @click="valider" class="font-semibold bg-yellow-500 w-full">
+            <button @click="valider" class="w-full font-semibold bg-yellow-500">
                 Order Now
             </button>
         </div>

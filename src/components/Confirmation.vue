@@ -93,7 +93,7 @@
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            {{ product.price }}
+                                            {{ currency.$t(product.price) }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
@@ -103,7 +103,11 @@
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            {{ product.price * product.qte }}
+                                            {{
+                                                currency.$t(
+                                                    product.price * product.qte
+                                                )
+                                            }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -121,7 +125,9 @@
                             <p class="text-right">Produits</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="text-center">{{ order.total }}</p>
+                            <p class="text-center">
+                                {{ currency.$t(order.total) }}
+                            </p>
                         </div>
                     </div>
                     <div
@@ -133,7 +139,7 @@
                             <p class="text-right">Livraison</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="text-center">5.000</p>
+                            <p class="text-center">{{ currency.$t(5) }}</p>
                         </div>
                     </div>
                     <div
@@ -145,7 +151,7 @@
                             <p class="text-right">Timbre Fiscal</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="text-center">0.600</p>
+                            <p class="text-center">{{ currency.$t(0.6) }}</p>
                         </div>
                     </div>
                     <div
@@ -158,7 +164,7 @@
                         </div>
                         <div class="w-2/12 text-gray-600">
                             <p class="font-bold text-center">
-                                {{ order.total + 5 + 0.6 }}
+                                {{ currency.$t(order.total + 5 + 0.6) }}
                             </p>
                         </div>
                     </div>
@@ -188,7 +194,7 @@
                         </p>
                         <span class="flex">
                             <p class="text-sm text-gray-700">
-                                {{ user.adress }}
+                                {{ user.adresse }}
                             </p></span
                         >
                     </div>
@@ -200,10 +206,19 @@
                         </p>
                         <span class="flex">
                             <p class="text-sm text-gray-700">
-                                {{ user.adress }}
+                                {{ user.adresse }}
                             </p></span
                         >
                     </div>
+                </div>
+                <div class="mt-4">
+                    <button
+                        @click="close"
+                        class="w-full p-2 bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none"
+                        type="button"
+                    >
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -214,6 +229,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
+import { useRouter } from 'vue-router'
+import { useCurrency } from '../plugins/currencyPlugin'
 export default {
     props: {
         order: Object,
@@ -222,10 +239,15 @@ export default {
     setup(props) {
         const store = useStore()
         const date = computed(() => {
-            return moment(props.date).format()
+            return moment(props.date).format('MMMM Do YYYY, h:mm:ss a')
         })
+        const router = useRouter()
+        const close = (params) => {
+            router.push('/')
+        }
+        const currency = useCurrency()
 
-        return { date }
+        return { date, close, currency }
     },
 }
 </script>

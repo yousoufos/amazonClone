@@ -172,7 +172,7 @@ export default {
                 total: cart.value.total,
                 deliveryStatus: 'pending',
                 paymentStatus: 'pending',
-                orderId: id.value,
+                orderId: id,
             }
             for (const item of cart.value.items) {
                 await store.dispatch('product/getProductById', item.productId)

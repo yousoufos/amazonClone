@@ -225,6 +225,14 @@
                         >
                     </div>
                 </div>
+                <div class="mt-4">
+                    <button
+                        class="w-full p-2 bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none"
+                        type="button"
+                    >
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>

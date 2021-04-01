@@ -11,7 +11,11 @@
                 <!-- logo -->
                 <!-- hamburger -->
                 <div class="flex justify-center lg:hidden">
-                    <button ref="exclude" @click="toggle">
+                    <button
+                        class="focus:outline-none"
+                        ref="exclude"
+                        @click="toggle"
+                    >
                         <span class="text-4xl text-white material-icons">
                             menu
                         </span>
@@ -33,7 +37,7 @@
                             {{ count }}
                         </p>
                     </div>
-                    <button @click="checkout">
+                    <button class="focus:outline-none" @click="checkout">
                         <span class="text-4xl text-white material-icons">
                             shopping_cart
                         </span>
@@ -141,7 +145,7 @@
                                 {{ count }}
                             </p>
                         </div>
-                        <button @click="checkout">
+                        <button class="focus:outline-none" @click="checkout">
                             <span class="text-4xl text-white material-icons">
                                 shopping_cart
                             </span>
