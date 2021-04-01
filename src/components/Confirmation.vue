@@ -5,7 +5,7 @@
                 <img :src="require('@/assets/logoSvg.svg')" alt="" />
             </div>
             <div class="flex flex-col mt-4 text-gray-700 uppercase">
-                <p class="text-xl text-center">Hello Youssef Benmosbah</p>
+                <p class="text-xl text-center">Hello {{ user.prenom }}</p>
                 <p class="text-center">thank you for your visit!</p>
             </div>
             <div class="flex flex-col p-2 mt-4 space-y-2 bg-gray-100">
@@ -15,16 +15,18 @@
                 <span class="flex"
                     ><p class="text-sm">Command:</p>
                     <p class="px-4 text-gray-700 px-4text-sm">
-                        qsdfkjdmkjqsdqs
+                        {{ order.orderId }}
                     </p></span
                 >
                 <span class="flex text-sm"
                     ><p class="">Date :</p>
-                    <p class="px-4 text-gray-700">30/03/2021</p></span
+                    <p class="px-4 text-gray-700">{{ date }}</p></span
                 >
                 <span class="flex text-sm"
                     ><p class="">Payment:</p>
-                    <p class="px-4 text-gray-700">on delivery</p></span
+                    <p class="px-4 text-gray-700">
+                        {{ order.paymentMethod }}
+                    </p></span
                 >
             </div>
             <div class="mt-4">
@@ -74,60 +76,34 @@
                                 <tbody
                                     class="bg-white divide-y divide-gray-200 cursor-pointer"
                                 >
-                                    <tr>
+                                    <tr
+                                        v-for="(product, index) in order.items"
+                                        :key="product.productId"
+                                    >
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            45454554
+                                            {{ product.productId }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500"
                                         >
-                                            Clavier mécanique spirit of gamer
-                                            XPERT
+                                            {{ product.title }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            125.000
+                                            {{ product.price }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            1
+                                            {{ product.qte }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                                         >
-                                            125.000
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                            class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
-                                        >
-                                            45454554
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 text-sm text-gray-500"
-                                        >
-                                            Clavier mécanique spirit of gamer
-                                            XPERT
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
-                                        >
-                                            125.000
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
-                                        >
-                                            1
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
-                                        >
-                                            125.000
+                                            {{ product.price * product.qte }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -142,10 +118,10 @@
                         <div
                             class="w-10/12 px-2 text-gray-600 border-r border-gray-300"
                         >
-                            <p class="text-right">Produis</p>
+                            <p class="text-right">Produits</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="text-center">125.000</p>
+                            <p class="text-center">{{ order.total }}</p>
                         </div>
                     </div>
                     <div
@@ -157,7 +133,7 @@
                             <p class="text-right">Livraison</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="text-center">8.000</p>
+                            <p class="text-center">5.000</p>
                         </div>
                     </div>
                     <div
@@ -178,10 +154,12 @@
                         <div
                             class="w-10/12 px-2 text-gray-600 border-r border-gray-300"
                         >
-                            <p class="text-right">Totla Payé</p>
+                            <p class="text-right">Total Payé</p>
                         </div>
                         <div class="w-2/12 text-gray-600">
-                            <p class="font-bold text-center">133.600</p>
+                            <p class="font-bold text-center">
+                                {{ order.total + 5 + 0.6 }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -196,7 +174,9 @@
 
                     <span class="flex text-sm"
                         ><p class="">Payment:</p>
-                        <p class="px-4 text-gray-700">on delivery</p></span
+                        <p class="px-4 text-gray-700">
+                            {{ order.paymentMethod }}
+                        </p></span
                     >
                 </div>
                 <div class="flex p-2 mt-4 space-x-2">
@@ -208,7 +188,7 @@
                         </p>
                         <span class="flex">
                             <p class="text-sm text-gray-700">
-                                26 rue d'espagne Bizerte 7000
+                                {{ user.adress }}
                             </p></span
                         >
                     </div>
@@ -220,7 +200,7 @@
                         </p>
                         <span class="flex">
                             <p class="text-sm text-gray-700">
-                                26 rue d'espagne Bizerte 7000
+                                {{ user.adress }}
                             </p></span
                         >
                     </div>
@@ -233,12 +213,19 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import moment from 'moment'
 export default {
-    components: {},
-    setup() {
+    props: {
+        order: Object,
+        user: Object,
+    },
+    setup(props) {
         const store = useStore()
+        const date = computed(() => {
+            return moment(props.date).format()
+        })
 
-        return {}
+        return { date }
     },
 }
 </script>
