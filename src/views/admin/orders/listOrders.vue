@@ -161,7 +161,11 @@ export default {
         const sortByPriceValue = ref('DESC')
         const sortByDateValue = ref('DESC')
         const orders = computed(() => {
-            return store.state.order.orders
+            return store.state.order.orders.sort((a, b) => {
+                if (moment(a.date) > moment(b.date)) {
+                    return -1
+                } else return 1
+            })
         })
 
         const details = ref((params) => {
@@ -206,9 +210,9 @@ export default {
                     sortByDateValue.value = 'ASC'
                     sortType.value = ''
                     return obj.sort((a, b) => {
-                        if (moment(a) > moment(b)) {
-                            return 1
-                        } else return -1
+                        if (moment(a.date) > moment(b.date)) {
+                            return -1
+                        } else return 1
                     })
                 }
                 if (sortByDateValue.value === 'ASC') {

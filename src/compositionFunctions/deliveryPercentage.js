@@ -12,7 +12,7 @@ export default function () {
     const count = orders.value.length
     let countPending = 0
     orders.value.forEach((element) => {
-      if (element.deliveryStatus === 'Pending') {
+      if (element.deliveryStatus === 'pending') {
         countPending++
       }
     })

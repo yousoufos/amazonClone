@@ -251,7 +251,7 @@
                                             >Delevery :
                                         </span>
                                         <span class="ml-2 text-xs">{{
-                                            currency.$t(8)
+                                            currency.$t(5)
                                         }}</span>
                                     </div>
                                     <div class="flex py-2">
@@ -259,7 +259,7 @@
                                             >Total :
                                         </span>
                                         <span class="ml-2 text-xs">{{
-                                            currency.$t(order.total)
+                                            currency.$t(order.total + 5)
                                         }}</span>
                                     </div>
                                 </div>

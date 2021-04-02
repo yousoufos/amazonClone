@@ -17,7 +17,7 @@ export default function () {
     const result = []
     orders.value.forEach((element) => {
       if (typeof findElem(result, element) !== 'undefined') {
-        findElem(result, element).total + element.total
+        findElem(result, element).total += element.total
       } else {
         result.push(element)
       }

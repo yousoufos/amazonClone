@@ -148,7 +148,7 @@ export default {
         const orders = ref(
             computed(() => {
                 return store.state.order.orders.sort((a, b) => {
-                    if (moment(a) < moment(b)) {
+                    if (moment(a.date) > moment(b.date)) {
                         return -1
                     } else return 1
                 })

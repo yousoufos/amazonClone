@@ -11,7 +11,7 @@ export default function () {
       .sort((a, b) => {
         return b.stock - a.stock
       })
-      .map((product) => product.title)
+      .map((product) => product.title.slice(0, 20) + '...')
   })
 
   return { labels, products }

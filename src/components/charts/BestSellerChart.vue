@@ -28,7 +28,9 @@ export default {
             return [
                 {
                     label: 'Best Seller',
-                    data: bestSeller.value,
+                    data: bestSeller.value.map((product) => {
+                        return product.total
+                    }),
                     backgroundColor: 'rgba(0, 255, 255)',
 
                     borderWidth: 2,
@@ -95,7 +97,7 @@ export default {
                 .sort((a, b) => {
                     return b.total - a.total
                 })
-                .map((items) => items.title)
+                .map((items) => items.title.slice(0, 20) + '...')
         })
         onMounted(async (params) => {
             //await store.dispatch('order/getOrders')
