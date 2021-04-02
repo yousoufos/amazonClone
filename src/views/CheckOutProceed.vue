@@ -83,13 +83,15 @@
                                 class="flex justify-between text-sm font-medium text-black"
                             >
                                 <span class="px-4">Frais de livraison : </span>
-                                <span class="px-4">{{ currency.$t(5) }}</span>
+                                <span class="px-4">{{
+                                    currency.$t(deliveryPrice)
+                                }}</span>
                             </div>
                         </div>
                         <div class="flex justify-between p-4">
                             <span class="text-lg font-semibold">Total : </span>
                             <span class="text-lg font-bold text-yellow-500">{{
-                                currency.$t(Number(cart.total) + 5)
+                                currency.$t(Number(cart.total) + deliveryPrice)
                             }}</span>
                         </div>
                         <div class="p-6">
@@ -135,6 +137,7 @@ export default {
         const id = refi.id
         const show = ref(false)
         const currency = useCurrency()
+        const deliveryPrice = ref(5)
         const modifier = ref(() => {
             show.value = !show.value
         })
@@ -170,6 +173,7 @@ export default {
                 paymentMethod: payment.value,
                 date: Date.now(),
                 total: cart.value.total,
+                deliveryPrice: deliveryPrice.value,
                 deliveryStatus: 'pending',
                 paymentStatus: 'pending',
                 orderId: id,
@@ -224,6 +228,7 @@ export default {
             deleting,
             confirmation,
             order,
+            deliveryPrice,
         }
     },
 

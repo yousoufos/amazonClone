@@ -358,7 +358,7 @@ export default {
                         'product/getProductById',
                         item.productId
                     )
-                    console.log(product.value)
+
                     await store.dispatch('product/updateProductRating', {
                         productId: item.productId,
                         rating:

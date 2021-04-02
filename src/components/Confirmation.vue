@@ -164,7 +164,11 @@
                         </div>
                         <div class="w-2/12 text-gray-600">
                             <p class="font-bold text-center">
-                                {{ currency.$t(order.total + 5 + 0.6) }}
+                                {{
+                                    currency.$t(
+                                        order.total + order.deliveryPrice + 0.6
+                                    )
+                                }}
                             </p>
                         </div>
                     </div>
