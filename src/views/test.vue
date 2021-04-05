@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto lg:w-1/2">
+    <div class="lg:mx-auto lg:w-1/2">
         <div class="flex flex-col mt-4">
             <div class="flex justify-center border-b-2 border-black">
                 <img :src="require('@/assets/logoSvg.svg')" alt="" />

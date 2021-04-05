@@ -57,6 +57,7 @@ export default {
                     break
                 case 'search':
                     store.commit('navigation/setSearchPagination', tableau)
+                    break
                 case 'promotion':
                     store.commit('navigation/setPromotionPagination', tableau)
                     break

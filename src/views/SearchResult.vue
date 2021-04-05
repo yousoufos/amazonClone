@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-200 lg:bg-gray-100">
-        <div v-if="loading">Loading...</div>
+        <div v-if="loading"><Spin /></div>
         <div v-else class="flex flex-col mx-auto lg:w-10/12">
             <div class="px-10" @click="deleting" v-if="from.length > 0">
                 <router-link :to="from[from.length - 1]"
@@ -19,14 +19,7 @@
                     :show="notification.show"
                 />
             </transition>
-            <!-- <div class="bg-blue-700">
-                <img :src="require('../assets/informatiqueBanner.jpg')" alt="" />
-            </div> -->
-            <!-- <div class="px-2 py-2">
-                <p class="font-light tracking-normal text-gray-700 uppercase">
-                    {{ categorie.name }} 
-                </p>
-            </div> -->
+
             <div class="flex space-x-2">
                 <div class="flex flex-col w-full">
                     <div

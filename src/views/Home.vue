@@ -94,7 +94,9 @@
                 <div
                     class="px-2 py-2 font-light tracking-normal text-gray-700 uppercase bg-yellow-300"
                 >
-                    <p>Promotion</p>
+                    <router-link to="/promotions">
+                        <p>Promotion</p>
+                    </router-link>
                 </div>
                 <div class="">
                     <div
