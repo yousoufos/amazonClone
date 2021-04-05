@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto lg:w-1/2">
+    <div class="mx-auto lg:w-10/12">
         <div class="flex flex-col mt-4">
             <div class="flex justify-center border-b-2 border-black">
                 <img :src="require('@/assets/logoSvg.svg')" alt="" />
@@ -247,6 +247,7 @@ export default {
         })
         const router = useRouter()
         const close = (params) => {
+            store.commit('order/setConfirmation', false)
             router.push('/')
         }
         const currency = useCurrency()
