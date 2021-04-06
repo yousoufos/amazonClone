@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div v-if="loading"><Spin /></div>
+    <div v-else>
         <div class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4">
             <div class="lg:w-8/12">
                 <div @click="deleting" v-if="from.length > 0">
@@ -101,7 +102,7 @@
 <script>
 import product from '../components/ProductCheckOut'
 import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import store from '@/store'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin.js'
@@ -112,8 +113,13 @@ export default {
         const router = useRouter()
         const cart = ref(computed(() => store.state.cart.cart))
         const total = ref(computed(() => store.getters['cart/total']))
-        const count = ref(computed(() => store.state.cart.cart.items.length))
+        const count = ref(
+            computed(() => {
+                return store.state.cart.cart.items.length
+            })
+        )
         const currency = useCurrency()
+        const loading = ref(true)
         const update = ref(({ qte, productId }) => {
             store.dispatch('cart/updateQuantity', {
                 total: total.value,
@@ -121,7 +127,9 @@ export default {
                 productId: productId,
             })
         })
-        const proceed = ref(() => router.push({ name: 'CheckOutProceed' }))
+        const proceed = ref(() => {
+            router.push({ name: 'CheckOutProceed' })
+        })
         const back = ref(() => router.push('/'))
         const from = ref(
             computed((params) => {
@@ -135,6 +143,13 @@ export default {
         const deleting = (params) => {
             store.commit('navigation/removeFrom')
         }
+        onMounted(async (params) => {
+            await store.dispatch(
+                'cart/getUserCart',
+                store.getters['auth/user'].userId
+            )
+            loading.value = false
+        })
 
         return {
             cart,
@@ -146,15 +161,16 @@ export default {
             currency,
             from,
             deleting,
+            loading,
         }
     },
-    async beforeRouteEnter(to, from, next) {
+    /* async beforeRouteEnter(to, from, next) {
         await store.dispatch(
             'cart/getUserCart',
             store.getters['auth/user'].userId
         )
         next()
-    },
+    }, */
 }
 </script>
 

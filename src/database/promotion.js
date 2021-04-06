@@ -1,5 +1,4 @@
 import { db } from '../firebase'
-import firebase from 'firebase/app'
 
 const createPromotion = async function (payload) {
   try {

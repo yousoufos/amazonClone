@@ -106,11 +106,10 @@ export default {
                 total: props.total,
             })
         }
-        const stock = ref(
-            computed(() => {
-                return store.state.product.product
-            })
-        )
+        const stock = computed(() => {
+            return store.state.product.product
+        })
+
         const update = ref(async (productId) => {
             await store.dispatch('product/getProductById', productId)
             if (stock.value.stock >= props.product.qte) {

@@ -116,7 +116,7 @@ import paymentmethod from '../components/PaymentMethods'
 import userorderdetails from '../components/UserOrderDetails'
 import Confirmation from '@/components/Confirmation'
 import { useCurrency } from '../plugins/currencyPlugin'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useStore } from 'vuex'
 import store from '@/store'
@@ -214,6 +214,16 @@ export default {
         const confirmation = computed(() => {
             return store.getters['order/getConfirmation']
         })
+        onMounted(async (params) => {
+            await store.dispatch(
+                'auth/getUserDetails',
+                store.state.auth.user.userId
+            )
+            await store.dispatch(
+                'cart/getUserCart',
+                store.state.auth.user.userId
+            )
+        })
 
         return {
             show,
@@ -232,7 +242,7 @@ export default {
         }
     },
 
-    async beforeRouteEnter(to, from, next) {
+    /* async beforeRouteEnter(to, from, next) {
         await store.dispatch(
             'auth/getUserDetails',
             store.state.auth.user.userId
@@ -243,7 +253,7 @@ export default {
         } else {
             next('/')
         }
-    },
+    }, */
 }
 </script>
 

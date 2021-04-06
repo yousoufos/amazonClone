@@ -46,7 +46,7 @@ const actions = {
       router.push('/')
     } else {
       store.dispatch('notification/setNotification', {
-        message: 'User already exist',
+        message: 'User already exist or Password not Strong',
         type: 'error',
         show: true
       })

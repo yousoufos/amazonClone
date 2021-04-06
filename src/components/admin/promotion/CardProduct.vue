@@ -100,6 +100,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 export default {
+    props: { promotion: Object },
     setup(props, { emit }) {
         const store = useStore()
         const currency = useCurrency()
@@ -109,7 +110,10 @@ export default {
             return store.getters['promotion/getCheckProductInPromotion']
         })
         const add = (params) => {
-            store.dispatch('promotion/checkProductInPromotion', params)
+            store.dispatch('promotion/checkProductInPromotion', {
+                product: params,
+                promotionId: props.promotion.promotionId,
+            })
 
             if (checkProductInPromotion.value === null) {
                 emit('addProduct', params)

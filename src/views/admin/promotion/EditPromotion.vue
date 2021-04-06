@@ -8,6 +8,7 @@
                     <CardProducts
                         @addProduct="addProduct"
                         @closeCard="showCard = !showCard"
+                        :promotion="promotion"
                         class="z-20"
                         v-if="showCard === true"
                     ></CardProducts>
@@ -274,7 +275,10 @@ export default {
             var t = []
             var i = 0
             productsList.value.forEach((params, index) => {
-                store.dispatch('promotion/checkProductInPromotion', params)
+                store.dispatch('promotion/checkProductInPromotion', {
+                    product: params,
+                    promotionId: obj.promotionId,
+                })
                 if (checkProductInPromotion.value !== null) {
                     productsList.value[index].exist = true
                     i++
@@ -361,6 +365,7 @@ export default {
             productsListLength,
             promotion,
             minDate,
+            promotion,
         }
     },
 }

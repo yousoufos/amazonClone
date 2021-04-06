@@ -55,15 +55,14 @@
 
                 <div
                     class="grid grid-cols-2 gap-2 lg:flex lg:flex-nowrap lg:overflow-x-auto lg:overflow-y-hidden scrollbar scrollbar_delayed"
-                    v-if="length"
                 >
                     <ProductHome
                         class="flex-none p-4 scrollbar-content lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:w-1/4"
-                        v-for="(item, index) in width < 700
+                        v-for="item in width < 700
                             ? newProducts.slice(0, 4)
                             : newProducts"
                         :product="item"
-                        :key="index"
+                        :key="item.productId"
                     ></ProductHome>
                 </div>
             </div>

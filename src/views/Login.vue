@@ -80,7 +80,7 @@
                 </div>
                 <div class="text-center">
                     <button class="w-full bg-gray-200" @click="register">
-                        Or Create an Amazon Account
+                        Or Create an Account
                     </button>
                 </div>
             </form>
