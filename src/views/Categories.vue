@@ -95,7 +95,10 @@
                         type="products"
                         :data="products"
                     />
-                    <div class="flex justify-center" v-if="tab.length === 0">
+                    <div
+                        class="flex justify-center"
+                        v-if="products.length === 0"
+                    >
                         <p class="mt-10 text-4xl text-gray-700">
                             No products in this category
                         </p>
