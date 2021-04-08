@@ -1,7 +1,7 @@
 <template>
     <div class="hidden lg:flex lg:flex-col lg:py-4 lg:border-b-2">
-        <div class="py-4 flex flex-col">
-            <legend class="text-lg font-medium">Coordonées :</legend>
+        <div class="flex flex-col py-4">
+            <legend class="text-lg font-medium">Details :</legend>
             <div class="px-4 py-2">
                 <p>
                     {{ capitalize(user.prenom) + ' ' + capitalize(user.nom) }}
@@ -14,22 +14,21 @@
         <div>
             <button
                 @click="modifier"
-                class="font-semibold bg-yellow-500 w-20"
+                class="w-20 font-semibold bg-yellow-500"
                 :class="{ 'disabled:opacity-50': show }"
                 :disabled="show"
             >
-                Modifier
+                Edit
             </button>
         </div>
     </div>
     <div class="flex flex-col lg:hidden">
-        <div class="p-4 bg-gray-200 flex w-full justify-between">
-            <span class="text-sm text-gray-500 tracking-wider"
-                >Adress Details</span
+        <div class="flex justify-between w-full p-4 bg-gray-200">
+            <span class="text-sm tracking-wider text-gray-500"> Details</span
             ><span
                 ><button
                     @click="modifier"
-                    class="text-sm text-yellow-500 font-semibold tracking-wider"
+                    class="text-sm font-semibold tracking-wider text-yellow-500"
                 >
                     Edit
                 </button></span

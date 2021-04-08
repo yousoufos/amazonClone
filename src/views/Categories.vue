@@ -33,18 +33,18 @@
                 <img :src="require('../assets/banner_soldes.jpg')" alt="" />
             </div>
             <div class="flex lg:space-x-2">
-                <div class="hidden lg:flex lg:w-1/3">
+                <!-- <div class="hidden lg:flex lg:w-1/3">
                     <img class="object-fill" :src="categorie.banniere" alt="" />
-                </div>
+                </div> -->
                 <div class="flex flex-col w-full">
                     <div
                         class="flex items-center justify-between py-2 mb-2 bg-white"
                     >
                         <div class="">
                             <p
-                                class="hidden px-2 font-light tracking-normal text-gray-700 uppercase lg:flex"
+                                class="hidden px-2 font-bold tracking-normal text-gray-700 underline uppercase lg:flex"
                             >
-                                {{ categorie.name }}>>
+                                {{ categorie.name }}
                             </p>
                         </div>
                         <div class="flex items-center space-x-6">
@@ -95,147 +95,73 @@
                         type="products"
                         :data="products"
                     />
-                    <div v-if="!grid" class="flex flex-col w-full space-y-2">
-                        <div
-                            @click="detail(product)"
-                            class="flex bg-white rounded-md cursor-pointer h-36 lg:h-48 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md"
-                            v-for="product in tab"
-                            :key="product.productId"
-                        >
-                            <div class="w-1/4 my-auto ml-6">
-                                <img
-                                    class="object-contain w-24 h-24 lg:w-36 lg:h-36"
-                                    :src="product.defaultPicture"
-                                    alt=""
-                                />
-                            </div>
-                            <div class="flex flex-col w-2/4 p-4">
-                                <div>
-                                    <p class="mt-4">{{ product.title }}</p>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex text-gray-400">
-                                        <span
-                                            v-for="(item, index) in 5"
-                                            :key="index"
-                                            class="text-xs material-icons lg:text-sm"
-                                            :class="{
-                                                'text-yellow-500':
-                                                    item <=
-                                                    Math.round(
-                                                        product.rating /
-                                                            product.reviewNumber
-                                                    ),
-                                            }"
-                                        >
-                                            grade
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <p class="px-2 text-sm text-gray-400">
-                                            {{
-                                                '(' + product.reviewNumber + ')'
-                                            }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div></div>
-                            </div>
-                            <div class="flex flex-col w-1/4 text-right">
-                                <div class="flex-grow">
-                                    <p
-                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:mt-4"
-                                        :class="{
-                                            'line-through text-sm':
-                                                product.promotion !== null,
-                                            'lg:text-xl lg:font-semibold':
-                                                product.promotion === null,
-                                        }"
-                                    >
-                                        {{ currency.$t(product.price) }}
-                                    </p>
-                                    <p
-                                        v-if="product.promotion"
-                                        class="px-2 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
-                                    >
-                                        {{
-                                            currency.$t(
-                                                product.promotion.newPrice
-                                            )
-                                        }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <button
-                                        @click="add(product)"
-                                        class="w-full mb-2 text-sm bg-yellow-500 rounded-sm lg:px-8 lg:py-1 text-gray-50 lg:font-semibold"
-                                    >
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex justify-center" v-if="tab.length === 0">
+                        <p class="mt-10 text-4xl text-gray-700">
+                            No products in this category
+                        </p>
                     </div>
-                    <div v-else class="">
-                        <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
+                    <div v-else>
+                        <div
+                            v-if="!grid"
+                            class="flex flex-col w-full space-y-2"
+                        >
                             <div
+                                @click="detail(product)"
+                                class="flex bg-white rounded-md cursor-pointer h-36 lg:h-48 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-95 lg:hover:shadow-md"
                                 v-for="product in tab"
                                 :key="product.productId"
-                                class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
                             >
-                                <div
-                                    @click="detail(product)"
-                                    class="flex flex-col h-64 px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
-                                >
-                                    <div class="flex-grow py-2">
-                                        <img
-                                            class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
-                                            :src="product.defaultPicture"
-                                            alt=""
-                                        />
+                                <div class="w-1/4 my-auto ml-6">
+                                    <img
+                                        class="object-contain w-24 h-24 lg:w-36 lg:h-36"
+                                        :src="product.defaultPicture"
+                                        alt=""
+                                    />
+                                </div>
+                                <div class="flex flex-col w-2/4 p-4">
+                                    <div>
+                                        <p class="mt-4">{{ product.title }}</p>
                                     </div>
-                                    <div class="flex flex-col mt-2">
-                                        <p
-                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
-                                        >
-                                            {{ product.title }}
-                                        </p>
-                                        <div class="flex items-center">
-                                            <div class="flex text-gray-400">
-                                                <span
-                                                    v-for="(item, index) in 5"
-                                                    :key="index"
-                                                    class="text-xs material-icons lg:text-sm"
-                                                    :class="{
-                                                        'text-yellow-500':
-                                                            item <=
-                                                            Math.round(
-                                                                product.rating /
-                                                                    product.reviewNumber
-                                                            ),
-                                                    }"
-                                                >
-                                                    grade
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <p
-                                                    class="px-2 text-sm text-gray-400"
-                                                >
-                                                    {{
-                                                        '(' +
-                                                        product.reviewNumber +
-                                                        ')'
-                                                    }}
-                                                </p>
-                                            </div>
+                                    <div class="flex items-center">
+                                        <div class="flex text-gray-400">
+                                            <span
+                                                v-for="(item, index) in 5"
+                                                :key="index"
+                                                class="text-xs material-icons lg:text-sm"
+                                                :class="{
+                                                    'text-yellow-500':
+                                                        item <=
+                                                        Math.round(
+                                                            product.rating /
+                                                                product.reviewNumber
+                                                        ),
+                                                }"
+                                            >
+                                                grade
+                                            </span>
                                         </div>
+                                        <div>
+                                            <p
+                                                class="px-2 text-sm text-gray-400"
+                                            >
+                                                {{
+                                                    '(' +
+                                                    product.reviewNumber +
+                                                    ')'
+                                                }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                </div>
+                                <div class="flex flex-col w-1/4 text-right">
+                                    <div class="flex-grow">
                                         <p
-                                            class="text-gray-700"
+                                            class="px-2 mt-12 text-gray-900 lg:p-4 lg:mt-4"
                                             :class="{
                                                 'line-through text-sm':
                                                     product.promotion !== null,
-                                                'text-xs font-light lg:font-bold lg:text-lg':
+                                                'lg:text-xl lg:font-semibold':
                                                     product.promotion === null,
                                             }"
                                         >
@@ -243,7 +169,7 @@
                                         </p>
                                         <p
                                             v-if="product.promotion"
-                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                            class="px-2 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
                                         >
                                             {{
                                                 currency.$t(
@@ -252,16 +178,108 @@
                                             }}
                                         </p>
                                     </div>
-
-                                    <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
+                                    <div>
+                                        <button
+                                            @click="add(product)"
+                                            class="w-full mb-2 text-sm bg-yellow-500 rounded-sm lg:px-8 lg:py-1 text-gray-50 lg:font-semibold"
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button
-                                        @click="add(product)"
-                                        class="w-full bg-yellow-500 rounded-sm shadow-sm text-gray-50"
+                            </div>
+                        </div>
+                        <div v-else class="">
+                            <div class="grid grid-cols-2 gap-2 lg:grid-cols-4">
+                                <div
+                                    v-for="product in tab"
+                                    :key="product.productId"
+                                    class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
+                                >
+                                    <div
+                                        @click="detail(product)"
+                                        class="flex flex-col h-64 px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
                                     >
-                                        Add to cart
-                                    </button>
+                                        <div class="flex-grow py-2">
+                                            <img
+                                                class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
+                                                :src="product.defaultPicture"
+                                                alt=""
+                                            />
+                                        </div>
+                                        <div class="flex flex-col mt-2">
+                                            <p
+                                                class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
+                                            >
+                                                {{ product.title }}
+                                            </p>
+                                            <div class="flex items-center">
+                                                <div class="flex text-gray-400">
+                                                    <span
+                                                        v-for="(
+                                                            item, index
+                                                        ) in 5"
+                                                        :key="index"
+                                                        class="text-xs material-icons lg:text-sm"
+                                                        :class="{
+                                                            'text-yellow-500':
+                                                                item <=
+                                                                Math.round(
+                                                                    product.rating /
+                                                                        product.reviewNumber
+                                                                ),
+                                                        }"
+                                                    >
+                                                        grade
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <p
+                                                        class="px-2 text-sm text-gray-400"
+                                                    >
+                                                        {{
+                                                            '(' +
+                                                            product.reviewNumber +
+                                                            ')'
+                                                        }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p
+                                                class="text-gray-700"
+                                                :class="{
+                                                    'line-through text-sm':
+                                                        product.promotion !==
+                                                        null,
+                                                    'text-xs font-light lg:font-bold lg:text-lg':
+                                                        product.promotion ===
+                                                        null,
+                                                }"
+                                            >
+                                                {{ currency.$t(product.price) }}
+                                            </p>
+                                            <p
+                                                v-if="product.promotion"
+                                                class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                            >
+                                                {{
+                                                    currency.$t(
+                                                        product.promotion
+                                                            .newPrice
+                                                    )
+                                                }}
+                                            </p>
+                                        </div>
+                                        <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
+                                    </div>
+                                    <div>
+                                        <button
+                                            @click="add(product)"
+                                            class="w-full bg-yellow-500 rounded-sm shadow-sm text-gray-50"
+                                        >
+                                            Add to cart
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

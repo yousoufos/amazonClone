@@ -5,7 +5,7 @@
         </div>
         <div v-else>
             <div
-                class="hidden lg:flex lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4 lg:relative"
+                class="hidden lg:flex lg:flex-col lg:w-4/5 lg:mx-auto lg:mt-10 lg:px-4 lg:relative"
             >
                 <cardUser
                     :user="user"
@@ -13,14 +13,14 @@
                     v-if="show"
                     class="absolute top-0 bottom-0 left-0 right-0"
                 ></cardUser>
+                <div @click="deleting" v-if="from.length > 0">
+                    <router-link :to="from[from.length - 1]"
+                        ><span class="text-4xl material-icons">
+                            keyboard_backspace
+                        </span></router-link
+                    >
+                </div>
                 <div class="flex w-full">
-                    <div @click="deleting" v-if="from.length > 0">
-                        <router-link :to="from[from.length - 1]"
-                            ><span class="text-4xl material-icons">
-                                keyboard_backspace
-                            </span></router-link
-                        >
-                    </div>
                     <div class="w-2/3">
                         <p class="py-3 text-2xl font-bold border-b-2">
                             Finalize your order
@@ -67,14 +67,16 @@
                         class="py-2"
                         @methodSelected="paymentFromEvent"
                     ></payment-methods>
-                    <div class="flex flex-col w-full p-4 bg-gray-200">
+                    <div
+                        class="flex flex-col w-full p-4 bg-gray-200 rounded-md"
+                    >
                         <div
                             class="flex flex-col py-2 border-t border-b border-gray-400"
                         >
                             <div
                                 class="flex justify-between text-sm font-medium text-black"
                             >
-                                <span class="px-4">Sous-total : </span>
+                                <span class="px-4">Sub Total : </span>
                                 <span class="px-4">{{
                                     currency.$t(cart.total)
                                 }}</span>
@@ -82,7 +84,7 @@
                             <div
                                 class="flex justify-between text-sm font-medium text-black"
                             >
-                                <span class="px-4">Frais de livraison : </span>
+                                <span class="px-4">Delivery Price : </span>
                                 <span class="px-4">{{
                                     currency.$t(deliveryPrice)
                                 }}</span>

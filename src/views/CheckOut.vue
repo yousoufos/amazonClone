@@ -27,9 +27,7 @@
                     :total="total"
                 ></product>
             </div>
-            <div
-                class="flex flex-col w-4/12 h-screen ml-10 bg-gray-200 rounded-md"
-            >
+            <div class="flex flex-col w-4/12 ml-10 bg-gray-200 rounded-md">
                 <p class="p-10 text-lg font-semibold">
                     Subtotal ({{ count }} items ) :
                     <span class="font-bold">{{ currency.$t(total) }}</span>

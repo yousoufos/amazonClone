@@ -23,7 +23,11 @@
                 <HomeCategories @showCategorie="showCategorie"></HomeCategories>
             </div>
             <div class="mx-auto">
-                <img :src="require('../assets/banner_soldes.jpg')" alt="" />
+                <img
+                    class="h-56"
+                    :src="require('../assets/soldes.jpg')"
+                    alt=""
+                />
             </div>
             <div class="flex flex-col bg-white">
                 <div

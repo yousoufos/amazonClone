@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col w-1/3 ml-10 bg-gray-200">
+    <div class="flex flex-col w-1/3 ml-10 bg-gray-200 rounded-md">
         <div class="p-4 border-b border-gray-400">
-            <p class="text-lg font-medium">Order</p>
+            <p class="text-lg font-medium">Your Order</p>
         </div>
         <div v-for="item in cart.items" :key="item.productId">
             <div class="flex">
@@ -19,11 +19,11 @@
         </div>
         <div class="flex flex-col py-2 border-t border-b border-gray-400">
             <div class="flex justify-between text-sm font-medium text-black">
-                <span class="px-4">Sous-total : </span>
+                <span class="px-4">Sub Total : </span>
                 <span class="px-4">{{ currency.$t(cart.total) }}</span>
             </div>
             <div class="flex justify-between text-sm font-medium text-black">
-                <span class="px-4">Frais de livraison : </span>
+                <span class="px-4">Delivery Price : </span>
                 <span class="px-4">{{ currency.$t(5) }}</span>
             </div>
         </div>
