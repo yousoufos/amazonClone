@@ -1,19 +1,14 @@
-# amazone
+# eShop-Amazon Clone 
+An Amazon Clone eShop, created with VueJs 3, TailwindCss and Firebase.
 
-## Project setup
-```
-npm install
-```
+## General info
+This project is a full eShop App with both frontend and backend designed and developped from scratch.
+## Technologies
+Project is created with:
+* VueJs 3, composition API
+* Tailwindcss
+* Firebase
+* Algolia
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+ 
