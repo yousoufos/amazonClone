@@ -9,6 +9,7 @@
                         @addProduct="addProduct"
                         @closeCard="showCard = !showCard"
                         class="z-20"
+                        :promotion="{ promotionId: '123456789' }"
                         v-if="showCard === true"
                     ></CardProducts>
                     <div
