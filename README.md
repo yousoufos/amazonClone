@@ -24,7 +24,7 @@ Project is created with:
 - Create a firebase account https://firebase.google.com/
 - Create an algolia acount https://www.algolia.com/
 - Rename the .envSample by .env and fill it with your firbase and algolia credentials
-- npm instal
+- npm install
 
 ## Info
 
