@@ -20,6 +20,12 @@ Project is created with:
 -   Algolia
 -   chart.js
 
+## Installation
+- Create a firebase account https://firebase.google.com/
+- Create an algolia acount https://www.algolia.com/
+- Rename the .envExample by .env and fill it with your firbase and algolia credentials
+- npm instal
+
 ## Info
 
 All the product in the app are fake and just for example, if you do a precess order you will not be chrged ;)
