@@ -28,4 +28,4 @@ Project is created with:
 
 ## Info
 
-All the product in the app are fake and just for example, if you do a precess order you will not be chrged ;)
+All the product in the app are fake and just for example, if you do a precess order you will not be charged ;)
