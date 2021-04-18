@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <p class="px-4 mt-2 text-xs">
-                            {{ product.reviewNumber + ' Notes' }}
+                            {{ product.reviewNumber + ' Ratings' }}
                         </p>
                     </div>
                     <div class="mt-10">
@@ -84,13 +84,11 @@
                 </div>
             </div>
         </div>
-        <div class="p-2 text-sm text-gray-600 lg:hidden">
-            DETAILS DU PRODUIT
-        </div>
+        <div class="p-2 text-sm text-gray-600 lg:hidden">PRODUCT DETAILS</div>
         <div class="text-sm bg-white lg:w-10/12 lg:mx-auto">
             <div class="hidden lg:flex">
                 <p class="w-full px-4 text-base text-gray-500 border-b">
-                    DETAILS DU PRODUIT
+                    PRODUCT DETAILS
                 </p>
             </div>
             <div class="p-4">
@@ -98,7 +96,7 @@
             </div>
         </div>
         <div class="p-2 text-sm text-gray-600 lg:w-10/12 lg:mx-auto">
-            AVIS DES UTILISATEURS
+            CUSTOMERS REVIEWS
         </div>
 
         <div
@@ -154,13 +152,13 @@
                         <span class="text-sm material-icons">
                             verified_user
                         </span>
-                        <p class="">Achat verifié</p>
+                        <p class="">Verified purchase</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="p-4 bg-white lg:w-10/12 lg:mx-auto" v-else>
-            <p>Pas encore d'avis pour ce produit</p>
+            <p>No reviews yet</p>
         </div>
     </div>
 </template>
