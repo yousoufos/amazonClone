@@ -41,12 +41,15 @@
                 >
                     {{ currency.$t(product.price) }}
                 </p>
-                <p
-                    class="py-2 text-lg font-bold lg:text-4xl"
+                <div
+                    class="flex items-center space-x-1"
                     v-if="product.promotion"
                 >
-                    {{ currency.$t(product.promotion.newPrice) }}
-                </p>
+                    <p class="py-2 text-lg font-bold lg:text-4xl">
+                        {{ currency.$t(product.promotion.newPrice) }}
+                    </p>
+                    <p class="bg-yellow-500 rounded-md">-{{ taux }}%</p>
+                </div>
                 <div>
                     <div class="flex space-x-1 text-gray-400">
                         <span
@@ -180,6 +183,10 @@ export default {
         const route = useRoute()
         const loading = ref(true)
         const currency = useCurrency()
+        const taux = computed(() => {
+            let num = (1 - product.value.newPrice / product.value.price) * 100
+            return Math.round((num + Number.EPSILON) * 100) / 100
+        })
         const from = ref(
             computed((params) => {
                 if (typeof store.state.navigation.from === 'undefined') {
@@ -266,6 +273,7 @@ export default {
             deleting,
             add,
             notification,
+            taux,
         }
     },
 }
