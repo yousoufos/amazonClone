@@ -148,7 +148,7 @@
                 <div class="flex justify-between p-2 text-sm">
                     <div>
                         <p class="text-gray-700">
-                            Posté par {{ item.user.prenom }}
+                            Posted By {{ item.user.prenom }}
                         </p>
                     </div>
                     <div class="flex space-x-1 text-green-500">
@@ -184,7 +184,9 @@ export default {
         const loading = ref(true)
         const currency = useCurrency()
         const taux = computed(() => {
-            let num = (1 - product.value.newPrice / product.value.price) * 100
+            let num =
+                (1 - product.value.promotion.newPrice / product.value.price) *
+                100
             return Math.round((num + Number.EPSILON) * 100) / 100
         })
         const from = ref(

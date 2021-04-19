@@ -37,12 +37,18 @@
             >
                 {{ currency.$t(product.price) }}
             </p>
-            <p
+            <div
                 v-if="product.promotion !== null"
-                class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                class="flex items-center space-x-2"
             >
-                {{ currency.$t(product.promotion.newPrice) }}
-            </p>
+                <p
+                    class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                >
+                    {{ currency.$t(product.promotion.newPrice) }}
+                </p>
+
+                <p class="bg-yellow-500 rounded-md">-{{ taux }}%</p>
+            </div>
         </div>
 
         <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
@@ -51,7 +57,7 @@
 
 <script>
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import notif from '../components/notif'
 import { useRouter, useRoute } from 'vue-router'
 import { useCurrency } from '../plugins/currencyPlugin'
@@ -69,6 +75,12 @@ export default {
         const router = useRouter()
         const route = useRoute()
         const currency = useCurrency()
+        const taux = computed(() => {
+            let num =
+                (1 - props.product.promotion.newPrice / props.product.price) *
+                100
+            return Math.round((num + Number.EPSILON) * 100) / 100
+        })
 
         const add = () => {
             if (props.product.stock > 0) {
@@ -94,7 +106,7 @@ export default {
             src.value = product.defaultPicture
         }
 
-        return { add, detail, currency, test, src, show }
+        return { add, detail, currency, test, src, show, taux }
     },
 }
 </script>
