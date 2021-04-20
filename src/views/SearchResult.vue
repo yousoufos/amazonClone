@@ -134,26 +134,45 @@
                             <div class="flex flex-col w-1/4 text-right">
                                 <div class="flex-grow">
                                     <p
-                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:mt-4"
+                                        class="text-gray-700"
                                         :class="{
                                             'line-through text-sm':
                                                 product.promotion !== null,
-                                            'lg:text-xl lg:font-semibold':
+                                            'text-xs font-light lg:font-bold lg:text-lg':
                                                 product.promotion === null,
                                         }"
                                     >
                                         {{ currency.$t(product.price) }}
                                     </p>
-                                    <p
+                                    <div
                                         v-if="product.promotion"
-                                        class="px-2 mt-12 text-gray-900 lg:p-4 lg:text-xl lg:mt-4 lg:font-semibold"
+                                        class="flex items-center space-x-2"
                                     >
-                                        {{
-                                            currency.$t(
-                                                product.promotion.newPrice
-                                            )
-                                        }}
-                                    </p>
+                                        <p
+                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                        >
+                                            {{
+                                                currency.$t(
+                                                    product.promotion.newPrice
+                                                )
+                                            }}
+                                        </p>
+                                        <p
+                                            class="px-1 text-xs bg-yellow-500 rounded-md"
+                                        >
+                                            -{{
+                                                Math.round(
+                                                    ((1 -
+                                                        product.promotion
+                                                            .newPrice /
+                                                            product.price) *
+                                                        100 +
+                                                        Number.EPSILON) *
+                                                        100
+                                                ) / 100
+                                            }}%
+                                        </p>
+                                    </div>
                                 </div>
                                 <div>
                                     <button
@@ -231,16 +250,36 @@
                                         >
                                             {{ currency.$t(product.price) }}
                                         </p>
-                                        <p
+                                        <div
                                             v-if="product.promotion"
-                                            class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                            class="flex items-center space-x-2"
                                         >
-                                            {{
-                                                currency.$t(
-                                                    product.promotion.newPrice
-                                                )
-                                            }}
-                                        </p>
+                                            <p
+                                                class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                            >
+                                                {{
+                                                    currency.$t(
+                                                        product.promotion
+                                                            .newPrice
+                                                    )
+                                                }}
+                                            </p>
+                                            <p
+                                                class="px-1 text-xs bg-yellow-500 rounded-md"
+                                            >
+                                                -{{
+                                                    Math.round(
+                                                        ((1 -
+                                                            product.promotion
+                                                                .newPrice /
+                                                                product.price) *
+                                                            100 +
+                                                            Number.EPSILON) *
+                                                            100
+                                                    ) / 100
+                                                }}%
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
