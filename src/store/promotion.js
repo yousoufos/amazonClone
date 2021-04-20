@@ -131,7 +131,8 @@ const mutations = {
     state.tab.splice(
       state.tab.indexOf((params) => {
         return params.promotionId === payload.promotionId
-      })
+      }),
+      1
     )
   },
   setPromotion: function (state, payload) {
