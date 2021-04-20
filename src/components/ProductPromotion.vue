@@ -1,7 +1,7 @@
 <template>
     <div
         @click="detail"
-        class="flex flex-col px-2 text-left bg-gray-100 rounded cursor-pointer xl:px-2 lg:bg-white"
+        class="flex flex-col px-2 text-left bg-gray-100 rounded cursor-pointer xl:px-2 lg:bg-white lg:w-72"
     >
         <div class="flex-grow">
             <img
@@ -27,7 +27,9 @@
                 >
                     {{ currency.$t(product.newPrice) }}
                 </p>
-                <p class="bg-yellow-500 rounded-md">-{{ taux }}%</p>
+                <p class="px-1 text-xs bg-yellow-500 rounded-md">
+                    -{{ taux }}%
+                </p>
             </div>
         </div>
 

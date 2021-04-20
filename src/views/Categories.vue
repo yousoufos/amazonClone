@@ -184,7 +184,9 @@
                                                     )
                                                 }}
                                             </p>
-                                            <p class="bg-yellow-500 rounded-md">
+                                            <p
+                                                class="px-1 text-xs bg-yellow-500 rounded-md"
+                                            >
                                                 -{{
                                                     Math.round(
                                                         ((1 -
@@ -215,105 +217,115 @@
                                 <div
                                     v-for="product in tab"
                                     :key="product.productId"
-                                    class="cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
+                                    class="flex flex-col cursor-pointer lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105 lg:hover:shadow-md"
                                 >
-                                    <div
-                                        @click="detail(product)"
-                                        class="flex flex-col h-64 px-2 text-left bg-gray-100 rounded lg:h-96 xl:px-2 lg:bg-white"
-                                    >
-                                        <div class="flex-grow py-2">
-                                            <img
-                                                class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
-                                                :src="product.defaultPicture"
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div class="flex flex-col mt-2">
-                                            <p
-                                                class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
-                                            >
-                                                {{ product.title }}
-                                            </p>
-                                            <div class="flex items-center">
-                                                <div class="flex text-gray-400">
-                                                    <span
-                                                        v-for="(
-                                                            item, index
-                                                        ) in 5"
-                                                        :key="index"
-                                                        class="text-xs material-icons lg:text-sm"
-                                                        :class="{
-                                                            'text-yellow-500':
-                                                                item <=
-                                                                Math.round(
-                                                                    product.rating /
-                                                                        product.reviewNumber
-                                                                ),
-                                                        }"
-                                                    >
-                                                        grade
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <p
-                                                        class="px-2 text-sm text-gray-400"
-                                                    >
-                                                        {{
-                                                            '(' +
-                                                            product.reviewNumber +
-                                                            ')'
-                                                        }}
-                                                    </p>
-                                                </div>
+                                    <div class="">
+                                        <div
+                                            @click="detail(product)"
+                                            class="flex flex-col px-2 text-left bg-gray-100 rounded h-72 lg:h-96 xl:px-2 lg:bg-white"
+                                        >
+                                            <div class="py-2">
+                                                <img
+                                                    class="object-contain mx-auto w-36 h-36 lg:w-56 lg:h-56"
+                                                    :src="
+                                                        product.defaultPicture
+                                                    "
+                                                    alt=""
+                                                />
                                             </div>
-                                            <p
-                                                class="text-gray-700"
-                                                :class="{
-                                                    'line-through text-sm':
-                                                        product.promotion !==
-                                                        null,
-                                                    'text-xs font-light lg:font-bold lg:text-lg':
-                                                        product.promotion ===
-                                                        null,
-                                                }"
-                                            >
-                                                {{ currency.$t(product.price) }}
-                                            </p>
-                                            <div
-                                                v-if="product.promotion"
-                                                class="flex items-center space-x-2"
-                                            >
+                                            <div class="flex flex-col mt-2">
                                                 <p
-                                                    class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                                    class="text-xs font-light text-gray-700 lg:font-bold lg:text-l"
+                                                >
+                                                    {{ product.title }}
+                                                </p>
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="flex text-gray-400"
+                                                    >
+                                                        <span
+                                                            v-for="(
+                                                                item, index
+                                                            ) in 5"
+                                                            :key="index"
+                                                            class="text-xs material-icons lg:text-sm"
+                                                            :class="{
+                                                                'text-yellow-500':
+                                                                    item <=
+                                                                    Math.round(
+                                                                        product.rating /
+                                                                            product.reviewNumber
+                                                                    ),
+                                                            }"
+                                                        >
+                                                            grade
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <p
+                                                            class="px-2 text-sm text-gray-400"
+                                                        >
+                                                            {{
+                                                                '(' +
+                                                                product.reviewNumber +
+                                                                ')'
+                                                            }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <p
+                                                    class="text-gray-700"
+                                                    :class="{
+                                                        'line-through text-sm':
+                                                            product.promotion !==
+                                                            null,
+                                                        'text-xs font-light lg:font-bold lg:text-lg':
+                                                            product.promotion ===
+                                                            null,
+                                                    }"
                                                 >
                                                     {{
                                                         currency.$t(
-                                                            product.promotion
-                                                                .newPrice
+                                                            product.price
                                                         )
                                                     }}
                                                 </p>
-                                                <p
-                                                    class="bg-yellow-500 rounded-md"
+                                                <div
+                                                    v-if="product.promotion"
+                                                    class="flex items-center space-x-2"
                                                 >
-                                                    -{{
-                                                        Math.round(
-                                                            ((1 -
+                                                    <p
+                                                        class="text-xs font-light text-gray-700 lg:font-bold lg:text-lg"
+                                                    >
+                                                        {{
+                                                            currency.$t(
                                                                 product
                                                                     .promotion
-                                                                    .newPrice /
-                                                                    product.price) *
-                                                                100 +
-                                                                Number.EPSILON) *
-                                                                100
-                                                        ) / 100
-                                                    }}%
-                                                </p>
+                                                                    .newPrice
+                                                            )
+                                                        }}
+                                                    </p>
+                                                    <p
+                                                        class="px-1 text-xs bg-yellow-500 rounded-md"
+                                                    >
+                                                        -{{
+                                                            Math.round(
+                                                                ((1 -
+                                                                    product
+                                                                        .promotion
+                                                                        .newPrice /
+                                                                        product.price) *
+                                                                    100 +
+                                                                    Number.EPSILON) *
+                                                                    100
+                                                            ) / 100
+                                                        }}%
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!-- <p class="py-2 text-sm">{{ product.description }}</p> -->
                                     </div>
-                                    <div>
+                                    <div class="mt-4">
                                         <button
                                             @click="add(product)"
                                             class="w-full bg-yellow-500 rounded-sm shadow-sm text-gray-50"

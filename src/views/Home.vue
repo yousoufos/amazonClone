@@ -118,16 +118,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div
-                class="flex flex-col lg:mx-auto lg:grid lg:grid-cols-4 lg:gap-2"
-            >
-                <ProductHome
-                    class="p-4 m-4 lg:transition lg:duration-500 lg:ease-in-out lg:transform lg:hover:scale-105"
-                    v-for="item in data.tab"
-                    :key="item.id"
-                    :product="item"
-                ></ProductHome>
-            </div> -->
         </div>
     </div>
 </template>

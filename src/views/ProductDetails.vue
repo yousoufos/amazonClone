@@ -48,7 +48,9 @@
                     <p class="py-2 text-lg font-bold lg:text-4xl">
                         {{ currency.$t(product.promotion.newPrice) }}
                     </p>
-                    <p class="bg-yellow-500 rounded-md">-{{ taux }}%</p>
+                    <p class="px-1 text-xs bg-yellow-500 rounded-md">
+                        -{{ taux }}%
+                    </p>
                 </div>
                 <div>
                     <div class="flex space-x-1 text-gray-400">
