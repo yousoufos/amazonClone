@@ -5,6 +5,7 @@
             <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loading"><Spin /></div>
                 <div v-else class="flex flex-col w-11/12 py-4 mx-auto">
+                    <vue-progress-bar></vue-progress-bar>
                     <router-link to="/admin/promotion/newpromotion">
                         <div
                             class="flex justify-center w-48 py-2 mb-4 space-x-2 bg-gray-300 rounded-md cursor-pointer"
@@ -114,6 +115,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
+import { getCurrentInstance } from 'vue'
 import moment from 'moment'
 export default {
     components: {
@@ -126,14 +128,16 @@ export default {
         const toggle = ref(true)
         const selected = ref('Promotion')
         const loading = ref(true)
-
+        const internalInstance = getCurrentInstance()
         const promotions = computed(() => {
             return store.state.promotion.tab
         })
 
-        const remove = (params) => {
+        const remove = async (params) => {
             if (confirm('Do you really want to remove this promotion ?')) {
-                store.dispatch('promotion/deletePromotion', params)
+                internalInstance.appContext.config.globalProperties.$Progress.start()
+                await store.dispatch('promotion/deletePromotion', params)
+                internalInstance.appContext.config.globalProperties.$Progress.finish()
             } else {
                 return
             }

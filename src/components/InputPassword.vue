@@ -40,6 +40,7 @@ export default {
         autocomplete: String,
         required: Boolean,
         class: String,
+        modelValue: String,
     },
     setup(props, { emit }) {
         const prop = reactive({

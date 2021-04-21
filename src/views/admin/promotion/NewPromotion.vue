@@ -5,6 +5,7 @@
             <div class="w-full h-screen overflow-y-auto width568">
                 <div v-if="loading"><Spin /></div>
                 <div v-else class="relative flex flex-col w-11/12 py-4 mx-auto">
+                    <vue-progress-bar></vue-progress-bar>
                     <CardProducts
                         @addProduct="addProduct"
                         @closeCard="showCard = !showCard"
@@ -161,9 +162,10 @@
                                 <button
                                     @click="submit"
                                     class="w-full p-2 bg-yellow-500 rounded-md"
-                                    :disabled="productsListLength"
+                                    :disabled="productsListLength || waiting"
                                     :class="{
-                                        'disabled:opacity-50': productsListLength,
+                                        'disabled:opacity-50':
+                                            productsListLength || waiting,
                                     }"
                                     type="button"
                                 >
@@ -185,6 +187,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useCurrency } from '../../../plugins/currencyPlugin'
 import moment from 'moment'
+import { getCurrentInstance } from 'vue'
 export default {
     components: {
         CardProducts,
@@ -200,6 +203,8 @@ export default {
         const productsList = ref([])
         const obj = ref([])
         const dateDisabled = ref(false)
+        const waiting = ref(false)
+        const internalInstance = getCurrentInstance()
         const productsListLength = computed(() => {
             return productsList.value.length === 0 || form.name === ''
         })
@@ -249,7 +254,7 @@ export default {
         const removeProduct = (params) => {
             productsList.value.splice(params, 1)
         }
-        const submit = (params) => {
+        const submit = async (params) => {
             var obj = {
                 name: form.name,
                 taux: form.taux,
@@ -257,7 +262,11 @@ export default {
                 dateFin: moment(form.dateFin).format('LL'),
                 productsList: productsList.value,
             }
-            store.dispatch('promotion/addPromotion', obj)
+            internalInstance.appContext.config.globalProperties.$Progress.start()
+            waiting.value = true
+            await store.dispatch('promotion/addPromotion', obj)
+            internalInstance.appContext.config.globalProperties.$Progress.finish()
+            waiting.value = false
             router.push({ name: 'ListPromotion' })
         }
         const testTaux = (params) => {
@@ -289,6 +298,7 @@ export default {
             testTaux,
             productsListLength,
             minDate,
+            waiting,
         }
     },
 }

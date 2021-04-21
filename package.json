@@ -8,6 +8,7 @@
         "dev": "vue-cli-service serve --host 0.0.0.0"
     },
     "dependencies": {
+        "@aacassandra/vue3-progressbar": "^1.0.3",
         "@ckeditor/ckeditor5-build-classic": "^24.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",
         "@tailwindcss/aspect-ratio": "^0.2.0",

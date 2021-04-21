@@ -9,6 +9,21 @@ import Spin from '@/components/Spin'
 import Notif from '@/components/notif'
 import Sidebar from '@/components/admin/sidebar'
 import Pagination from '@/components/Pagination'
+import VueProgressBar from '@aacassandra/vue3-progressbar'
+
+const options = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
 
 let app
 let handleOutsideClick
@@ -61,6 +76,7 @@ auth.onAuthStateChanged((authUser) => {
     app.use(store)
     app.use(router)
     app.use(CKEditor)
+    app.use(VueProgressBar, options)
     app.component('Spin', Spin)
     app.component('Notif', Notif)
     app.component('Sidebar', Sidebar)
