@@ -303,7 +303,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { useCurrency } from '../plugins/currencyPlugin'
 import ProductHome from '../components/ProductHome'
@@ -315,6 +315,7 @@ export default {
 
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const store = useStore()
         const loading = ref(true)
         const products = ref(
